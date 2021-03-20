@@ -21779,6 +21779,26 @@ PrefabInstance:
       propertyPath: m_GravityScale
       value: 13.5
       objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231993, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_Offset.x
+      value: 0.060399305
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231993, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_Size.x
+      value: 0.7651672
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231993, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.60453695
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231993, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_Offset.y
+      value: 0.02063591
+      objectReference: {fileID: 0}
     - target: {fileID: 3138409461971231994, guid: 35cbb72988d3d6340884b77644bfeb14,
         type: 3}
       propertyPath: m_Name
