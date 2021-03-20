@@ -1,0 +1,704 @@
+fileFormatVersion: 2
+guid: b220281e2bada7547ac9271f4cca3ba2
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1222506089805039954
+    second: Horse Gallop Gray_0
+  - first:
+      213: 3469156634957555181
+    second: Horse Gallop Gray_1
+  - first:
+      213: -3017899135089033964
+    second: Horse Gallop Gray_2
+  - first:
+      213: 6538353323865666080
+    second: Horse Gallop Gray_3
+  - first:
+      213: 3280297729318404672
+    second: Horse Gallop Gray_4
+  - first:
+      213: 3182683620686427464
+    second: Horse Gallop Gray_5
+  - first:
+      213: 6096387394136896288
+    second: Horse Gallop Gray_6
+  - first:
+      213: 4622815648145472451
+    second: Horse Gallop Gray_7
+  - first:
+      213: -959024919405792341
+    second: Horse Gallop Gray_8
+  - first:
+      213: 2637887068011759720
+    second: Horse Gallop Gray_9
+  - first:
+      213: 8692139741892087769
+    second: Horse Gallop Gray_10
+  - first:
+      213: 1641254547256966995
+    second: Horse Gallop Gray_11
+  - first:
+      213: 5491772821654405040
+    second: Horse Gallop Gray_12
+  - first:
+      213: -2880026238796427799
+    second: Horse Gallop Gray_13
+  - first:
+      213: -8657102409776831457
+    second: Horse Gallop Gray_14
+  - first:
+      213: -2408127094577869161
+    second: Horse Gallop Gray_15
+  - first:
+      213: -3304214266048106184
+    second: Horse Gallop Gray_16
+  - first:
+      213: 6814529494246670987
+    second: Horse Gallop Gray_17
+  - first:
+      213: 1728734029595978405
+    second: Horse Gallop Gray_18
+  - first:
+      213: -7003101540073923986
+    second: Horse Gallop Gray_19
+  - first:
+      213: -3245509799929330740
+    second: Horse Gallop Gray_20
+  - first:
+      213: -8721508745937624653
+    second: Horse Gallop Gray_21
+  - first:
+      213: 7337363928299514646
+    second: Horse Gallop Gray_22
+  - first:
+      213: -305071579628863390
+    second: Horse Gallop Gray_23
+  externalObjects: {}
+  serializedVersion: 11
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: -1
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  applyGammaDecoding: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Horse Gallop Gray_0
+      rect:
+        serializedVersion: 2
+        x: 53
+        y: 413
+        width: 21
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 259c492cfc637f010800000000000000
+      internalID: 1222506089805039954
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_1
+      rect:
+        serializedVersion: 2
+        x: 181
+        y: 414
+        width: 21
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de5a5d0449be42030800000000000000
+      internalID: 3469156634957555181
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_2
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 408
+        width: 21
+        height: 72
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 41d3f05e9b44e16d0800000000000000
+      internalID: -3017899135089033964
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_3
+      rect:
+        serializedVersion: 2
+        x: 437
+        y: 401
+        width: 23
+        height: 81
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 022f105d4b5ecba50800000000000000
+      internalID: 6538353323865666080
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_4
+      rect:
+        serializedVersion: 2
+        x: 565
+        y: 404
+        width: 23
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0424b81b765f58d20800000000000000
+      internalID: 3280297729318404672
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_5
+      rect:
+        serializedVersion: 2
+        x: 693
+        y: 406
+        width: 23
+        height: 74
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 845f773f3e92b2c20800000000000000
+      internalID: 3182683620686427464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_6
+      rect:
+        serializedVersion: 2
+        x: 22
+        y: 299
+        width: 86
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 023f2b0f808ba9450800000000000000
+      internalID: 6096387394136896288
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_7
+      rect:
+        serializedVersion: 2
+        x: 150
+        y: 291
+        width: 86
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3cbf3d9d65a872040800000000000000
+      internalID: 4622815648145472451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_8
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 291
+        width: 86
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ba3f11cbaebd0b2f0800000000000000
+      internalID: -959024919405792341
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_9
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 291
+        width: 98
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 868007eef48ab9420800000000000000
+      internalID: 2637887068011759720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_10
+      rect:
+        serializedVersion: 2
+        x: 532
+        y: 291
+        width: 90
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9df8885da0fa0a870800000000000000
+      internalID: 8692139741892087769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_11
+      rect:
+        serializedVersion: 2
+        x: 662
+        y: 291
+        width: 90
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 35ffe33a058e6c610800000000000000
+      internalID: 1641254547256966995
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_12
+      rect:
+        serializedVersion: 2
+        x: 52
+        y: 167
+        width: 22
+        height: 63
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0bffaddd842b63c40800000000000000
+      internalID: 5491772821654405040
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_13
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 164
+        width: 22
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9ed0cb415671808d0800000000000000
+      internalID: -2880026238796427799
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_14
+      rect:
+        serializedVersion: 2
+        x: 308
+        y: 157
+        width: 22
+        height: 78
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: f14e211c93bcbd780800000000000000
+      internalID: -8657102409776831457
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_15
+      rect:
+        serializedVersion: 2
+        x: 436
+        y: 158
+        width: 22
+        height: 76
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 79e41b19a2d949ed0800000000000000
+      internalID: -2408127094577869161
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_16
+      rect:
+        serializedVersion: 2
+        x: 564
+        y: 160
+        width: 22
+        height: 73
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 831bc6aa1a21522d0800000000000000
+      internalID: -3304214266048106184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_17
+      rect:
+        serializedVersion: 2
+        x: 692
+        y: 165
+        width: 22
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b82cef75872129e50800000000000000
+      internalID: 6814529494246670987
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_18
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 43
+        width: 86
+        height: 50
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5aaa231d072bdf710800000000000000
+      internalID: 1728734029595978405
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_19
+      rect:
+        serializedVersion: 2
+        x: 148
+        y: 35
+        width: 86
+        height: 57
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e6a17e9d04cffce90800000000000000
+      internalID: -7003101540073923986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_20
+      rect:
+        serializedVersion: 2
+        x: 277
+        y: 35
+        width: 86
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: cc3c92c4802a5f2d0800000000000000
+      internalID: -3245509799929330740
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_21
+      rect:
+        serializedVersion: 2
+        x: 399
+        y: 35
+        width: 98
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3b1ecec010af6f680800000000000000
+      internalID: -8721508745937624653
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_22
+      rect:
+        serializedVersion: 2
+        x: 530
+        y: 35
+        width: 90
+        height: 54
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61bae062e9d83d560800000000000000
+      internalID: 7337363928299514646
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Horse Gallop Gray_23
+      rect:
+        serializedVersion: 2
+        x: 656
+        y: 35
+        width: 90
+        height: 55
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2608721c30b24cbf0800000000000000
+      internalID: -305071579628863390
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

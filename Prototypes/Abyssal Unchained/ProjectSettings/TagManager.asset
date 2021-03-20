@@ -6,6 +6,9 @@ TagManager:
   tags:
   - HurtAudio
   - EnemyDeathParticles
+  - BottomCollider
+  - TopCollider
+  - Ground
   layers:
   - Default
   - TransparentFX
