@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Melee : MonoBehaviour
 {
-    public void Attack(Enemy enemy)
+    public void Attack(EnemyStats enemy)
     {
-        enemy.health--;
+        enemy.TakeDamage(1);
     }
 
 
@@ -14,7 +14,7 @@ public class Melee : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Enemy"))
         {
-            Attack(collision.gameObject.GetComponent<Enemy>());
+            Attack(collision.gameObject.GetComponent<EnemyStats>());
         }
     }
 }
