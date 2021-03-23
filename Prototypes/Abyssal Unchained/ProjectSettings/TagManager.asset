@@ -9,6 +9,8 @@ TagManager:
   - BottomCollider
   - TopCollider
   - Ground
+  - MeleeAttackCollider
+  - Enemy
   layers:
   - Default
   - TransparentFX
