@@ -75,7 +75,7 @@ public class CharacterController2D : MonoBehaviour
             //rb.AddForce(Vector3.up * jumpSpeed);
             //Debug.Log("jumping");
             //currentPosition.y = transform.position.y;
-            //grounded = false;
+            grounded = false;
         }
         Vector3 targetVelocity = new Vector3(velocity.x * moveSpeed, rb.velocity.y, 0);
 
@@ -94,15 +94,9 @@ public class CharacterController2D : MonoBehaviour
     {
        if (collision.gameObject.CompareTag("Ground"))
        {
-                    grounded = true;
+             grounded = true;
        }
     }
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-         if (collision.gameObject.CompareTag("Ground"))
-         {
-                 grounded = false;
-         }
-    }
+    
 
 }
