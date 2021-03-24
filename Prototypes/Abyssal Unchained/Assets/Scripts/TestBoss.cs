@@ -7,11 +7,14 @@ public class TestBoss : MonoBehaviour
     public GameObject enemy;
     public float cooldown;
     float timer = 0;
+    public float attackCooldown;
+    float attackTimer = 0;
     [SerializeField] GameObject diveEnemy;
     public float dCooldown;
     float dTimer = 0;
 
     Vector3 spawn;
+    [SerializeField] Animator bossAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +30,7 @@ public class TestBoss : MonoBehaviour
         if(timer > cooldown)
 		{
             timer = 0;
-            Instantiate(enemy, spawn, transform.rotation);
+            //Instantiate(enemy, spawn, transform.rotation);
 		}
 
         dTimer += Time.deltaTime;
@@ -36,5 +39,17 @@ public class TestBoss : MonoBehaviour
             dTimer = 0;
             //Instantiate(diveEnemy, spawn, transform.rotation);
 		}
+        attackTimer += Time.deltaTime;
+        if(attackTimer > attackCooldown)
+		{
+            attackTimer = 0;
+            Attack1();
+
+        }
+    }
+
+    void Attack1()
+	{
+        bossAnimator.SetTrigger("Attack1");
     }
 }

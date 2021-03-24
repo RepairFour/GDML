@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class UIHandler : MonoBehaviour
 {
-    public static UIHandler instance;
-
+	public static UIHandler instance;
+	[SerializeField] Animator playerHeartAni;
+	[SerializeField] TextMeshProUGUI playerHealthText;
 	public Canvas GameOver;
 	private void Awake()
 	{
@@ -17,9 +19,12 @@ public class UIHandler : MonoBehaviour
 		else
 		{
 			Destroy(this);
-		}
+		}	
 	}
-
+	private void Start()
+	{
+		playerHealthText.text = Player.instance.CurrentHealth().ToString();
+	}
 	public void GameOverScreen(bool answer)
 	{
 		GameOver.gameObject.SetActive(answer);
@@ -35,4 +40,11 @@ public class UIHandler : MonoBehaviour
 	{
 		Application.Quit();
 	}
+
+	public void ReducePlayerHealthText()
+	{
+		playerHeartAni.SetTrigger("TakenDamage");
+		playerHealthText.text = Player.instance.CurrentHealth().ToString();
+	}
+
 }
