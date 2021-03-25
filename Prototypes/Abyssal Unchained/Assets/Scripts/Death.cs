@@ -8,8 +8,7 @@ public class Death : MonoBehaviour
 	public Spawn playerSpawner;
 	private void OnTriggerEnter2D(Collider2D collision)
 	{
-		if (collision.GetComponent<PlayerMovement>() != null)
-		{
+		if (collision.gameObject.CompareTag("Player")){
 			playerSpawner.gameObject.SetActive(true);
 			Player.instance.TakeDamage(1);
 			Player.instance.respawning = true;
