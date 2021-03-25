@@ -54,6 +54,12 @@ public class EnemyStats : MonoBehaviour
 			Destroy(gameObject);			
 		}
 	}
+
+	public int CurrentHealth()
+	{
+		return health;
+	}
+
 	private void Update()
 	{
 		if (aniCon)

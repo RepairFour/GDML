@@ -11582,6 +11582,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231994, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35cbb72988d3d6340884b77644bfeb14, type: 3}
 --- !u!1 &1013530903
@@ -28567,6 +28572,7 @@ MonoBehaviour:
   playerHeartAni: {fileID: 1140204655}
   playerHealthText: {fileID: 1519138122}
   GameOver: {fileID: 823780125}
+  bossHealthSlider: {fileID: 56704335}
 --- !u!1 &1857912171
 GameObject:
   m_ObjectHideFlags: 0
