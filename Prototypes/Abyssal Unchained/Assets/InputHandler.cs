@@ -28,5 +28,10 @@ public class InputHandler : MonoBehaviour
             ah.HandleAttack(1);
         }
 
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            cc.KnockBack(new Vector2(20, 10), 0.2f);
+        }
+
     }
 }

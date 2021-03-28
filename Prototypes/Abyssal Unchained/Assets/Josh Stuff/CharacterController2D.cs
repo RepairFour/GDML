@@ -13,6 +13,7 @@ public class CharacterController2D : MonoBehaviour
 
     Vector3 velocity;
     public bool grounded;
+    public bool knockedBack = false;
     public float forwardsVelocityMultiplier;
     public float backwardsVelocityMultiplier;
     public float gravityModifier;
@@ -100,7 +101,11 @@ public class CharacterController2D : MonoBehaviour
 
     public void Move(float direction)
     {
-        if(direction == 1)
+        if (knockedBack)
+        {
+            return;
+        }
+        if (direction == 1)
         {
             velocity.x = currentForwardsVelocityMultiplier;
             animator.SetBool("Running", true);
@@ -144,6 +149,21 @@ public class CharacterController2D : MonoBehaviour
             grounded = false;
         }
         
+    }
+
+    public void KnockBack(Vector2 force, float duration)
+    {
+        knockedBack = true;
+        StartCoroutine(knockBack(force, duration));
+    }
+
+    IEnumerator knockBack(Vector2 force, float duration)
+    {
+        rb.velocity = new Vector2(0, 0);
+        rb.AddForce(force * new Vector2(-1,1), ForceMode2D.Impulse);
+        yield return new WaitForSeconds(duration);
+        knockedBack = false;
+
     }
 
 
