@@ -22,7 +22,7 @@ public class CharacterController2D : MonoBehaviour
     float currentBackwardsVelocityMultiplier;
 
     Animator animator;
-    public Animator weaponAnimation;
+    //public Animator weaponAnimation;
 
 
     // Start is called before the first frame update
