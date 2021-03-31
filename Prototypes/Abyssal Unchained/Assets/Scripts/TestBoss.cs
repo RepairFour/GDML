@@ -46,7 +46,7 @@ public class TestBoss : MonoBehaviour
         if(attackTimer > attackCooldown)
 		{
             attackTimer = 0;
-            Attack1();
+            //Attack1();
 
         }
     }
