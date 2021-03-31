@@ -11,6 +11,8 @@ TagManager:
   - Ground
   - MeleeAttackCollider
   - Enemy
+  - LeftBound
+  - RightBound
   layers:
   - Default
   - TransparentFX

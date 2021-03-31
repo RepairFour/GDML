@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class Melee : MonoBehaviour
 {
+    [SerializeField] int damage;
     public void Attack(EnemyStats enemy)
     {
-        enemy.TakeDamage(1);
+        enemy.TakeDamage(damage);
     }
 
 

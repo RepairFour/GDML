@@ -15,12 +15,15 @@ public enum BossState
     Attack4,
 }
 
+
 public class BossStateMachine : MonoBehaviour
 {
     BossState currentState;
+    Animator animator;
     void Start()
     {
         currentState = BossState.Idle;
+        animator = GetComponent<Animator>();
     }
 
     public void ChangeState(BossState bs)
@@ -31,7 +34,36 @@ public class BossStateMachine : MonoBehaviour
 
     void RunState()
 	{
-
+        switch(currentState)
+		{
+            case BossState.Idle:
+                animator.SetTrigger("Idle");
+                break;
+            case BossState.WideUp1:
+                animator.SetTrigger("WideUp1");
+                break;
+            case BossState.WideUp2:
+                animator.SetTrigger("WideUp2");
+                break;
+            case BossState.WideUp3:
+                animator.SetTrigger("WideUp3");
+                break;
+            case BossState.WideUp4:
+                animator.SetTrigger("WideUp4");
+                break;
+            case BossState.Attack1:
+                animator.SetTrigger("Attack1");
+                break;
+            case BossState.Attack2:
+                animator.SetTrigger("Attack2");
+                break;
+            case BossState.Attack3:
+                animator.SetTrigger("Attack3");
+                break;
+            case BossState.Attack4:
+                animator.SetTrigger("Attack4");
+                break;
+        }
 	}
 
     public BossState CurrentState()

@@ -16,6 +16,9 @@ public class TestBoss : MonoBehaviour
     Vector3 spawn;
     [SerializeField] Animator bossAnimator;
 
+    [SerializeField] Vector2 HitBossKnockback;
+    [SerializeField] float knockbackDuration;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,5 +54,13 @@ public class TestBoss : MonoBehaviour
     void Attack1()
 	{
         bossAnimator.SetTrigger("Attack1");
+    }
+
+	private void OnCollisionEnter2D(Collision2D collision)
+	{
+        if (collision.gameObject.GetComponent<CharacterController2D>() != null)
+        {
+            collision.gameObject.GetComponent<CharacterController2D>().KnockBack(HitBossKnockback, knockbackDuration);
+        }
     }
 }
