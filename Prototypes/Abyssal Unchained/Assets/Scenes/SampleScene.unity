@@ -5137,9 +5137,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1421724103}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 20
+  m_MaxValue: 250
   m_WholeNumbers: 1
-  m_Value: 20
+  m_Value: 250
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12172,6 +12172,26 @@ PrefabInstance:
       propertyPath: HitBossKnockback.y
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231989, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: backwardsVelocityMultiplier
+      value: 1.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231989, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: forwardsVelocityMultiplier
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231989, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: moveSpeed
+      value: 14
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231989, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: jumpSpeed
+      value: 40
+      objectReference: {fileID: 0}
     - target: {fileID: 3138409461971231990, guid: 35cbb72988d3d6340884b77644bfeb14,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -12226,6 +12246,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231990, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 3.6220224
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231990, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 3.6220224
+      objectReference: {fileID: 0}
+    - target: {fileID: 3138409461971231990, guid: 35cbb72988d3d6340884b77644bfeb14,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.4488089
       objectReference: {fileID: 0}
     - target: {fileID: 3138409461971231991, guid: 35cbb72988d3d6340884b77644bfeb14,
         type: 3}
@@ -27615,7 +27650,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6fe051256c8a2d540be2c62fec4d70df, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 20
+  health: 250
   hurt: {fileID: 247217846}
   slider: {fileID: 56704335}
 --- !u!61 &1269248769
@@ -34548,7 +34583,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Tutorial Boss, Destroyer of Noobs
+  m_text: N'zzorath, Unchained Tyrant
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -34576,13 +34611,13 @@ MonoBehaviour:
   m_outlineColor:
     serializedVersion: 2
     rgba: 4278190080
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 14
+  m_fontSizeBase: 14
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 2
+  m_fontStyle: 3
   m_textAlignment: 514
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -34617,10 +34652,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1932533927}
-    characterCount: 33
+    characterCount: 27
     spriteCount: 0
-    spaceCount: 4
-    wordCount: 5
+    spaceCount: 2
+    wordCount: 3
     linkCount: 0
     lineCount: 1
     pageCount: 1
