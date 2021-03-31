@@ -33,7 +33,7 @@ public class AttackHandler : MonoBehaviour
         {
             if (!rangeAttack)
             {
-                var temp = Instantiate(rangedAttackPrefab, rangedAttackSpawnLocation.transform.position, Quaternion.identity);
+                var temp = Instantiate(rangedAttackPrefab, rangedAttackSpawnLocation.transform.position, rangedAttackPrefab.transform.rotation);
                 temp.GetComponent<Rigidbody2D>().AddForce(forceForRangedAttack);
                 temp.GetComponent<RangedBullet>().lifeTimer = 0;
                 rangeAttack = true;

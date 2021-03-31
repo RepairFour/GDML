@@ -24,6 +24,8 @@ public class CharacterController2D : MonoBehaviour
     Animator animator;
     //public Animator weaponAnimation;
 
+    ParticleSystem airDrag;
+    ParticleSystem.EmissionModule emission;
 
     // Start is called before the first frame update
     void Start()
@@ -35,6 +37,8 @@ public class CharacterController2D : MonoBehaviour
         currentBackwardsVelocityMultiplier = backwardsVelocityMultiplier;
 
         animator = GetComponent<Animator>();
+        airDrag = GetComponent<ParticleSystem>();
+        emission = airDrag.emission;
     }
 
  
@@ -50,7 +54,12 @@ public class CharacterController2D : MonoBehaviour
 	   {
             currentForwardsVelocityMultiplier = 0;
        }
-     
+
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            AudioHandler.instance.PlaySound("PlayerLand", 1);
+        }
+
     }
 
 	private void OnTriggerStay2D(Collider2D collision)
@@ -84,16 +93,19 @@ public class CharacterController2D : MonoBehaviour
         {
             velocity.x = currentForwardsVelocityMultiplier;
             animator.SetBool("Running", true);
+            emission.rateOverTime = 20;
         }
         if(direction == -1)
         {
             velocity.x = -currentBackwardsVelocityMultiplier;
             animator.SetBool("Backwards", true);
+            emission.rateOverTime = 5;
         }
         if(direction == 0)
         {
             animator.SetBool("Running", false);
             animator.SetBool("Backwards", false);
+            emission.rateOverTime = 10;
         }
         //if(direction.y == 1 && grounded)
         //{
@@ -117,7 +129,7 @@ public class CharacterController2D : MonoBehaviour
         if (grounded)
         {
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
-
+            AudioHandler.instance.PlaySound("PlayerJump",1);
             //rb.AddForce(Vector3.up * jumpSpeed);
             //Debug.Log("jumping");
             //currentPosition.y = transform.position.y;
