@@ -27,6 +27,10 @@ public class CharacterController2D : MonoBehaviour
     ParticleSystem airDrag;
     ParticleSystem.EmissionModule emission;
 
+    bool startGroundedTimer = false;
+    float lastGroundedTimer = 0;
+    [SerializeField]float lastGroundedMaxTime;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -67,6 +71,7 @@ public class CharacterController2D : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             grounded = true;
+            startGroundedTimer = false;
         }
     }
 
@@ -79,7 +84,11 @@ public class CharacterController2D : MonoBehaviour
         else if (collision.gameObject.CompareTag("RightBound"))
         {
             currentForwardsVelocityMultiplier = forwardsVelocityMultiplier;
-        }       
+        }     
+        else if(collision.CompareTag("Ground"))
+		{
+               startGroundedTimer = true;
+        }
         
     }
 
@@ -126,8 +135,26 @@ public class CharacterController2D : MonoBehaviour
     }
     public void Jump()
     {
-        if (grounded)
-        {
+        if(startGroundedTimer == true)
+		{
+            lastGroundedTimer += Time.deltaTime;
+            if(lastGroundedTimer < lastGroundedMaxTime)
+			{
+                if (grounded)
+                {
+                    rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+                    AudioHandler.instance.PlaySound("PlayerJump", 1);
+                    grounded = false;
+                }
+            }
+			else
+			{
+                lastGroundedTimer = 0;
+                startGroundedTimer = false;
+            }
+		}
+        else if (grounded)
+         {
             rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
             AudioHandler.instance.PlaySound("PlayerJump",1);
             //rb.AddForce(Vector3.up * jumpSpeed);

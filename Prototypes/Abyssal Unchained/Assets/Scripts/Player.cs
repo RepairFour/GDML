@@ -40,6 +40,7 @@ public class Player : MonoBehaviour
 		if (!respawning && !takenDmg)
 		{
 			GetComponent<Animator>().SetTrigger("PlayerHit");
+			AudioHandler.instance.PlaySound("PlayerHurt",1,true,1);
 			takenDmg = true;
  			health -= amount;
 			UIHandler.instance.ReducePlayerHealthText();

@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayLaserSound : MonoBehaviour
+public class PlaySound : MonoBehaviour
 {
     [SerializeField] bool triggerSound;
+    [SerializeField] string audioClipName;
     
     void Update()
     {
         if(triggerSound)
 		{
-            AudioHandler.instance.PlaySound("LaserBeam",1,false,2);
+            AudioHandler.instance.PlaySound(audioClipName, 1,false,2);
 		}
     }
 }

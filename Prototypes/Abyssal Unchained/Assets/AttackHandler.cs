@@ -23,7 +23,7 @@ public class AttackHandler : MonoBehaviour
     {
         if(attack == 0)
         {
-            if (!attacking)
+            if (!attacking && !rangeAttack)
             {
                 StartCoroutine(MeleeAttackToggle());
                 attacking = true;
@@ -31,7 +31,7 @@ public class AttackHandler : MonoBehaviour
         }
         if (attack == 1)
         {
-            if (!rangeAttack)
+            if (!rangeAttack && !attacking)
             {
                 var temp = Instantiate(rangedAttackPrefab, rangedAttackSpawnLocation.transform.position, rangedAttackPrefab.transform.rotation);
                 temp.GetComponent<Rigidbody2D>().AddForce(forceForRangedAttack);
