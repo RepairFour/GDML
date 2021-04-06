@@ -51,6 +51,13 @@ public class EnemyStats : MonoBehaviour
 				temp.transform.position = transform.position;
 				temp.Play();
 			}
+			else
+			{
+				ParticleSystem temp = GameObject.FindGameObjectWithTag("EnemyDeathParticles").GetComponent<ParticleSystem>();
+				temp.transform.position = transform.position;
+				temp.Play();
+				UIHandler.instance.ShowWinScreen(true);
+			}
 			Destroy(gameObject);			
 		}
 	}

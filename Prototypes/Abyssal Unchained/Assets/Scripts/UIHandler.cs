@@ -12,6 +12,7 @@ public class UIHandler : MonoBehaviour
 	[SerializeField] TextMeshProUGUI playerHealthText;
 	public Canvas GameOver;
 	[SerializeField] Slider bossHealthSlider;
+	[SerializeField] GameObject WinScreen;
 	private void Awake()
 	{
 		if (instance == null)
@@ -50,4 +51,9 @@ public class UIHandler : MonoBehaviour
 		playerHealthText.text = Player.instance.CurrentHealth().ToString();
 	}
 
+	public void ShowWinScreen(bool answer)
+	{
+		WinScreen.SetActive(answer);
+		Time.timeScale = 0;
+	}
 }
