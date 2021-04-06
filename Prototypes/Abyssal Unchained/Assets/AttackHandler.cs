@@ -27,6 +27,7 @@ public class AttackHandler : MonoBehaviour
             {
                 StartCoroutine(MeleeAttackToggle());
                 attacking = true;
+                AudioHandler.instance.PlaySound("PlayerMelee",1);
             }
         }
         if (attack == 1)

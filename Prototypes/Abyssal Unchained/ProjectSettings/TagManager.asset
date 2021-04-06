@@ -13,6 +13,7 @@ TagManager:
   - Enemy
   - LeftBound
   - RightBound
+  - Checkpoint
   layers:
   - Default
   - TransparentFX
