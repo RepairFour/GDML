@@ -94,12 +94,22 @@ public class LevelEventManager : MonoBehaviour
         customParams.Add("Defeated Boss", defeatedBoss);
         customParams.Add("Session Time", totalSessionTime);
 
+        Debug.Log("Loss Replays " + customParams["Replays after loss"]);
+        Debug.Log("Replays after win " + customParams["Replays after win"]);
+        Debug.Log("Deaths " + customParams["Deaths"]);
+        Debug.Log("Defeated Boss" + customParams["Defeated Boss"]);
+        Debug.Log("Session Time" + customParams["Session Time"]);
+
 
         AnalyticsEvent.Custom("User Data", customParams);
 
         AnalyticsEvent.Custom("PlayTime Data", playTimes);
 
-        Debug.Log(customParams);
-        Debug.Log(playTimes);
+        //Debug.Log(customParams["Replays after loss"]);
+        for (int i = 0; i < playTimes.Count; i++)
+        {
+            Debug.Log(playTimes[i.ToString()]);
+        }
+        
     }
 }
