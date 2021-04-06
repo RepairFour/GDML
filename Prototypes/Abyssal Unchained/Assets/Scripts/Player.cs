@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class Player : MonoBehaviour
 {
@@ -53,7 +54,8 @@ public class Player : MonoBehaviour
 	{
         if(health < 1)
 		{
-			UIHandler.instance.GameOverScreen(true);			
+			UIHandler.instance.GameOverScreen(true);
+            DeathAnalytics();
 		}
 	}
 
@@ -61,4 +63,12 @@ public class Player : MonoBehaviour
 	{
 		return health;
 	}
+
+    void DeathAnalytics()
+    {
+        AnalyticsEvent.Custom("PlayerDied", new Dictionary<string, object>
+        {
+            {"levelTime", Time.timeSinceLevelLoad}
+        });
+    }
 }
