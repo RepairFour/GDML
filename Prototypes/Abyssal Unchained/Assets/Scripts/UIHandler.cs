@@ -56,4 +56,15 @@ public class UIHandler : MonoBehaviour
 		WinScreen.SetActive(answer);
 		Time.timeScale = 0;
 	}
+
+	public void PlayGame()
+	{
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		Time.timeScale = 1;
+	}
+
+	public void LoadMenu()
+	{
+		SceneManager.LoadScene(0);
+	}
 }
