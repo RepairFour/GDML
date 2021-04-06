@@ -87,4 +87,8 @@ public class UIHandler : MonoBehaviour
             {"levelTime", Time.timeSinceLevelLoad}
         });
     }
+	public void OpenURL(string url)
+	{
+		Application.OpenURL(url);
+	}
 }
