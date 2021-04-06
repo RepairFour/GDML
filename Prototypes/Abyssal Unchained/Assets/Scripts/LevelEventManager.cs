@@ -6,7 +6,7 @@ using UnityEngine.Analytics;
 
 public class LevelEventManager : MonoBehaviour
 {
-    
+
     public static LevelEventManager instance;
     private Scene thisScene;
 
@@ -15,9 +15,9 @@ public class LevelEventManager : MonoBehaviour
     private int deaths = 0;
     private int defeatedBoss = 0;
 
-    int sessions;
-    float sessionTime;
-    Dictionary<string, object> playTimes = new Dictionary<string, object>();
+    int runs;
+    float runTime;
+    
 
     private float totalSessionTime;
 
@@ -40,22 +40,35 @@ public class LevelEventManager : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
         
     }
-
-    public void IncrementReplayAfterLoss()
+    
+    public void RaiseReplayAfterLossEvent()
     {
         replaysAfterLoss++;
+        Dictionary<string, object> customParams = new Dictionary<string, object>();
+        customParams.Add("Player Loss", replaysAfterLoss);
+        AnalyticsEvent.Custom("Player Loss", customParams);
+       
     }
-    public void IncrementReplayAfterWin()
+    public void RaiseReplayAfterWinEvent()
     {
         replaysAfterWin++;
+        Dictionary<string, object> customParams = new Dictionary<string, object>();
+        customParams.Add("Player Win", replaysAfterWin);
+        AnalyticsEvent.Custom("Player Win", customParams);
     }
-    public void IncrementDeaths()
+    public void RaiseDeathEvent()
     {
         deaths++;
+        Dictionary<string, object> customParams = new Dictionary<string, object>();
+        customParams.Add("Deaths", deaths);
+        AnalyticsEvent.Custom("Deaths", customParams);
     }
-    public void IncrementBossKills()
+    public void RaiseBossKillEvent()
     {
         defeatedBoss++;
+        Dictionary<string, object> customParams = new Dictionary<string, object>();
+        customParams.Add("Boss Kills", defeatedBoss);
+        AnalyticsEvent.Custom("Deaths", customParams);
     }
 
     public void ToggleTimer(bool a)
@@ -63,12 +76,15 @@ public class LevelEventManager : MonoBehaviour
         timerStarted = a;
     }
 
-    public void ResetTimer()
+    public void RaiseRunFinishedEvent()
     {
-        playTimes.Add(sessions.ToString(), sessionTime);
-        sessions++;
-        sessionTime = 0;
+        runs++;
+        Dictionary<string, object> playTimes = new Dictionary<string, object>();
+        playTimes.Add(runs.ToString(), runTime);
+
+        runTime = 0;
         ToggleTimer(false);
+        AnalyticsEvent.Custom("RunTime Data", playTimes);
     }
 
     private void Update()
@@ -77,39 +93,8 @@ public class LevelEventManager : MonoBehaviour
         totalSessionTime += Time.deltaTime;
         if (timerStarted)
         {
-            sessionTime += Time.deltaTime;
+            runTime += Time.deltaTime;
         }
-
-        
-
     }
 
-    private void OnDestroy()
-    {
-        Dictionary<string, object> customParams = new Dictionary<string, object>();
-
-        customParams.Add("Replays after loss", replaysAfterLoss);
-        customParams.Add("Replays after win", replaysAfterWin);
-        customParams.Add("Deaths", deaths);
-        customParams.Add("Defeated Boss", defeatedBoss);
-        customParams.Add("Session Time", totalSessionTime);
-
-        Debug.Log("Loss Replays " + customParams["Replays after loss"]);
-        Debug.Log("Replays after win " + customParams["Replays after win"]);
-        Debug.Log("Deaths " + customParams["Deaths"]);
-        Debug.Log("Defeated Boss" + customParams["Defeated Boss"]);
-        Debug.Log("Session Time" + customParams["Session Time"]);
-
-
-        AnalyticsEvent.Custom("User Data", customParams);
-
-        AnalyticsEvent.Custom("PlayTime Data", playTimes);
-
-        //Debug.Log(customParams["Replays after loss"]);
-        for (int i = 0; i < playTimes.Count; i++)
-        {
-            Debug.Log(playTimes[i.ToString()]);
-        }
-        
-    }
 }

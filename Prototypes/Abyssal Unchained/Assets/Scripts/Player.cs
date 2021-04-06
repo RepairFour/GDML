@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
 
     void DeathAnalytics()
     {
-        LevelEventManager.instance.IncrementDeaths();
-        LevelEventManager.instance.ResetTimer();
+        LevelEventManager.instance.RaiseDeathEvent();
+        LevelEventManager.instance.RaiseRunFinishedEvent();
     }
 }

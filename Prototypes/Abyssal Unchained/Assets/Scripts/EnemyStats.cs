@@ -87,7 +87,7 @@ public class EnemyStats : MonoBehaviour
 
     void DeathAnalytics()
     {
-        LevelEventManager.instance.IncrementBossKills();
-        LevelEventManager.instance.ResetTimer();
+        LevelEventManager.instance.RaiseBossKillEvent();
+        LevelEventManager.instance.RaiseRunFinishedEvent();
     }
 }

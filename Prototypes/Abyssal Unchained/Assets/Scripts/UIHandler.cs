@@ -41,14 +41,14 @@ public class UIHandler : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		Time.timeScale = 1;
-        LevelEventManager.instance.IncrementReplayAfterWin();
+        LevelEventManager.instance.RaiseReplayAfterWinEvent();
         LevelEventManager.instance.ToggleTimer(true);
 	}
     public void PlayAgainButtonLose()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         Time.timeScale = 1;
-        LevelEventManager.instance.IncrementReplayAfterLoss();
+        LevelEventManager.instance.RaiseReplayAfterLossEvent();
         LevelEventManager.instance.ToggleTimer(true);
     }
     public void ExitButton()
