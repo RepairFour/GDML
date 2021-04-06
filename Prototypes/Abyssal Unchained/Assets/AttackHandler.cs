@@ -46,32 +46,14 @@ public class AttackHandler : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.GetButtonDown("MeleeAttack"))
-        //{
-        //    if (!attacking)
-        //    {
-        //        StartCoroutine(MeleeAttackToggle());
-        //        attacking = true;
-        //    }
-        //}
-        //if (Input.GetKeyDown(KeyCode.K))
-        //{
-        //    if (!rangeAttack)
-        //    {
-        //        var temp = Instantiate(rangedAttackPrefab, rangedAttackSpawnLocation.transform.position, Quaternion.identity);
-        //        temp.GetComponent<Rigidbody2D>().AddForce(forceForRangedAttack);
-        //        rangeAttack = true;
-        //        rangedAttackInternalTimer = 0f;
-        //    }
-        //}
-
+   
         if (rangeAttack)
         {
             rangedAttackInternalTimer += Time.deltaTime;
             if(rangedAttackInternalTimer >= rangedAttackCooldown)
             {
                 rangeAttack = false;
-                rangedAttackInternalTimer = 0f;
+                //rangedAttackInternalTimer = 0f;
             }
         }
     }
