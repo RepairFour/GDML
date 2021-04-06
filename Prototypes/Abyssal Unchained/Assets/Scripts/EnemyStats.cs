@@ -1,9 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Analytics;
 using UnityEngine.UI;
-
 
 public class EnemyStats : MonoBehaviour
 {
@@ -45,8 +43,7 @@ public class EnemyStats : MonoBehaviour
 	}
 	private void CheckDeath()
 	{
-        
-        if (health < 1)
+		if(health < 1)
 		{
 			if (!isBoss)
 			{
@@ -54,8 +51,14 @@ public class EnemyStats : MonoBehaviour
 				temp.transform.position = transform.position;
 				temp.Play();
 			}
-			Destroy(gameObject);
-            
+			else
+			{
+				ParticleSystem temp = GameObject.FindGameObjectWithTag("EnemyDeathParticles").GetComponent<ParticleSystem>();
+				temp.transform.position = transform.position;
+				temp.Play();
+				UIHandler.instance.ShowWinScreen(true);
+			}
+			Destroy(gameObject);			
 		}
 	}
 
@@ -79,17 +82,4 @@ public class EnemyStats : MonoBehaviour
 			}
 		}
 	}
-
-    private void DeathAnalytics()
-    {
-        AnalyticsEvent.LevelComplete("Boss Killed");
-
-        AnalyticsEvent.Custom("Boss Killed", new Dictionary<string, object>
-        {
-            {"levelTime", Time.timeSinceLevelLoad},
-            {"BossKilled", this.gameObject.name }
-        });
-
-
-    }
 }
