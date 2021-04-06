@@ -66,9 +66,7 @@ public class Player : MonoBehaviour
 
     void DeathAnalytics()
     {
-        AnalyticsEvent.Custom("PlayerDied", new Dictionary<string, object>
-        {
-            {"levelTime", Time.timeSinceLevelLoad}
-        });
+        LevelEventManager.instance.IncrementDeaths();
+        LevelEventManager.instance.ResetTimer();
     }
 }

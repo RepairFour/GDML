@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 
 public class UIHandler : MonoBehaviour
 {
@@ -13,7 +14,8 @@ public class UIHandler : MonoBehaviour
 	public Canvas GameOver;
 	[SerializeField] Slider bossHealthSlider;
 	[SerializeField] GameObject WinScreen;
-	private void Awake()
+
+    private void Awake()
 	{
 		if (instance == null)
 		{
@@ -35,12 +37,19 @@ public class UIHandler : MonoBehaviour
 		Time.timeScale = 0;
 	}
 
-	public void PlayAgainButton()
+	public void PlayAgainButtonWin()
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		Time.timeScale = 1;
+        LevelEventManager.instance.IncrementReplayAfterWin();
 	}
-	public void ExitButton()
+    public void PlayAgainButtonLose()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Time.timeScale = 1;
+        LevelEventManager.instance.IncrementReplayAfterLoss();
+    }
+    public void ExitButton()
 	{
 		Application.Quit();
 	}
@@ -61,10 +70,19 @@ public class UIHandler : MonoBehaviour
 	{
 		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
 		Time.timeScale = 1;
+        LevelEventManager.instance.ToggleTimer(true);
 	}
 
 	public void LoadMenu()
 	{
 		SceneManager.LoadScene(0);
 	}
+
+    void ReplayAnalytics()
+    {
+        AnalyticsEvent.Custom("Clicked Replay", new Dictionary<string, object>
+        {
+            {"levelTime", Time.timeSinceLevelLoad}
+        });
+    }
 }

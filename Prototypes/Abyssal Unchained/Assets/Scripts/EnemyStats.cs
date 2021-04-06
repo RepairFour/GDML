@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Analytics;
 using UnityEngine.UI;
 
 public class EnemyStats : MonoBehaviour
@@ -58,7 +59,8 @@ public class EnemyStats : MonoBehaviour
 				temp.Play();
 				UIHandler.instance.ShowWinScreen(true);
 			}
-			Destroy(gameObject);			
+			Destroy(gameObject);
+            DeathAnalytics();
 		}
 	}
 
@@ -82,4 +84,10 @@ public class EnemyStats : MonoBehaviour
 			}
 		}
 	}
+
+    void DeathAnalytics()
+    {
+        LevelEventManager.instance.IncrementBossKills();
+        LevelEventManager.instance.ResetTimer();
+    }
 }

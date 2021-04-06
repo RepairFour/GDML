@@ -6,17 +6,100 @@ using UnityEngine.Analytics;
 
 public class LevelEventManager : MonoBehaviour
 {
-    public enum LevelPlayState { InProgress, Won, Lost, Quit};
-
+    
+    public static LevelEventManager instance;
     private Scene thisScene;
-    private LevelPlayState state = LevelPlayState.InProgress;
-    private int secondsElasped = 0;
-    private int deaths = 0;
 
+    private int replaysAfterLoss = 0;
+    private int replaysAfterWin = 0;
+    private int deaths = 0;
+    private int defeatedBoss = 0;
+
+    int sessions;
+    float sessionTime;
+    Dictionary<string, object> playTimes = new Dictionary<string, object>();
+
+    private float totalSessionTime;
+
+    private bool timerStarted;
+    
+    
     private void Awake()
     {
-        thisScene = SceneManager.GetActiveScene();
+        if(instance == null)
+        {
+            instance = this;
+            thisScene = SceneManager.GetActiveScene();
 
-        AnalyticsEvent.LevelStart(thisScene.name, thisScene.buildIndex);
+            AnalyticsEvent.LevelStart(thisScene.name, thisScene.buildIndex);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+        DontDestroyOnLoad(this.gameObject);
+        
+    }
+
+    public void IncrementReplayAfterLoss()
+    {
+        replaysAfterLoss++;
+    }
+    public void IncrementReplayAfterWin()
+    {
+        replaysAfterWin++;
+    }
+    public void IncrementDeaths()
+    {
+        deaths++;
+    }
+    public void IncrementBossKills()
+    {
+        defeatedBoss++;
+    }
+
+    public void ToggleTimer(bool a)
+    {
+        timerStarted = a;
+    }
+
+    public void ResetTimer()
+    {
+        playTimes.Add(sessions.ToString(), sessionTime);
+        sessions++;
+        sessionTime = 0;
+        ToggleTimer(false);
+    }
+
+    private void Update()
+    {
+
+        totalSessionTime += Time.deltaTime;
+        if (timerStarted)
+        {
+            sessionTime += Time.deltaTime;
+        }
+
+        
+
+    }
+
+    private void OnDestroy()
+    {
+        Dictionary<string, object> customParams = new Dictionary<string, object>();
+
+        customParams.Add("Replays after loss", replaysAfterLoss);
+        customParams.Add("Replays after win", replaysAfterWin);
+        customParams.Add("Deaths", deaths);
+        customParams.Add("Defeated Boss", defeatedBoss);
+        customParams.Add("Session Time", totalSessionTime);
+
+
+        AnalyticsEvent.Custom("User Data", customParams);
+
+        AnalyticsEvent.Custom("PlayTime Data", playTimes);
+
+        Debug.Log(customParams);
+        Debug.Log(playTimes);
     }
 }
