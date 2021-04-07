@@ -48,15 +48,15 @@ public class EnemyStats : MonoBehaviour
 		{
 			if (!isBoss)
 			{
-				ParticleSystem temp = GameObject.FindGameObjectWithTag("EnemyDeathParticles").GetComponent<ParticleSystem>();
-				temp.transform.position = transform.position;
-				temp.Play();
+				//ParticleSystem temp = GameObject.FindGameObjectWithTag("EnemyDeathParticles").GetComponent<ParticleSystem>();
+				//temp.transform.position = transform.position;
+				//temp.Play();
 			}
 			else
 			{
-				ParticleSystem temp = GameObject.FindGameObjectWithTag("EnemyDeathParticles").GetComponent<ParticleSystem>();
-				temp.transform.position = transform.position;
-				temp.Play();
+				//ParticleSystem temp = GameObject.FindGameObjectWithTag("EnemyDeathParticles").GetComponent<ParticleSystem>();
+				//temp.transform.position = transform.position;
+				//temp.Play();
 				UIHandler.instance.ShowWinScreen(true);
 			}
 			Destroy(gameObject);

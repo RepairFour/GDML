@@ -28,8 +28,12 @@ public class UIHandler : MonoBehaviour
 	}
 	private void Start()
 	{
-		playerHealthText.text = Player.instance.CurrentHealth().ToString();
-		bossHealthSlider.maxValue = FindObjectOfType<TestBoss>().GetComponent<EnemyStats>().CurrentHealth();
+		if (playerHealthText)
+		{
+			playerHealthText.text = Player.instance.CurrentHealth().ToString();
+			bossHealthSlider.maxValue = FindObjectOfType<TestBoss>().GetComponent<EnemyStats>().CurrentHealth();
+		}
+		
 	}
 	public void GameOverScreen(bool answer)
 	{

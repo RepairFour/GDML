@@ -24,7 +24,7 @@ public class RangedBullet : MonoBehaviour
         {
             Attack(collision.gameObject.GetComponent<EnemyStats>());
         }
-        if (collision.tag != "Checkpoint")
+        if (collision.tag != "Checkpoint" && collision.tag != "Player")
         {
             Destroy(gameObject);
         }

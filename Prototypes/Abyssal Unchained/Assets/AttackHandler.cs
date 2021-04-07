@@ -19,7 +19,13 @@ public class AttackHandler : MonoBehaviour
     public float rangedAttackCooldown = 1f;
     float rangedAttackInternalTimer = 0f;
 
-    public void HandleAttack(float attack)
+    Animator playerAni;
+
+	private void Start()
+	{
+        playerAni = GetComponent<Animator>();
+    }
+	public void HandleAttack(float attack)
     {
         if(attack == 0)
         {
@@ -28,6 +34,7 @@ public class AttackHandler : MonoBehaviour
                 StartCoroutine(MeleeAttackToggle());
                 attacking = true;
                 AudioHandler.instance.PlaySound("PlayerMelee",1);
+                playerAni.SetTrigger("Melee");
             }
         }
         if (attack == 1)
