@@ -11,6 +11,7 @@ public class Player : MonoBehaviour
 	[SerializeField] float invincibilityTime;
 	float invincibilityTimer = 0;
 	bool takenDmg = false;
+	[SerializeField] Animator screenFlash;
 	private void Awake()
 	{
 		if(instance == null)
@@ -45,6 +46,7 @@ public class Player : MonoBehaviour
 			takenDmg = true;
  			health -= amount;
 			UIHandler.instance.ReducePlayerHealthText();
+			screenFlash.SetTrigger("Trigger");
 			CheckDeath();
 		}
 		

@@ -36,7 +36,7 @@ public class EnemyStats : MonoBehaviour
 		}
 		if(isBoss)
 		{
-			aniCon.SetBool("Hit", true);
+			aniCon.SetTrigger("Hit");
 		}
 		hurt.Play();
 		
@@ -69,21 +69,6 @@ public class EnemyStats : MonoBehaviour
 		return health;
 	}
 
-	private void Update()
-	{
-		if (aniCon)
-		{
-			if (aniCon.GetBool("Hit") == true)
-			{
-				timer += Time.deltaTime;
-				if (timer > cooldown)
-				{
-					timer = 0;
-					aniCon.SetBool("Hit", false);
-				}
-			}
-		}
-	}
 
     void DeathAnalytics()
     {
