@@ -47,6 +47,7 @@ public class LevelEventManager : MonoBehaviour
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Player Loss", replaysAfterLoss);
         AnalyticsEvent.Custom("Player Loss", customParams);
+        Debug.Log("PlayerLoss");
        
     }
     public void RaiseReplayAfterWinEvent()
@@ -55,6 +56,7 @@ public class LevelEventManager : MonoBehaviour
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Player Win", replaysAfterWin);
         AnalyticsEvent.Custom("Player Win", customParams);
+        Debug.Log("PlayerWin");
     }
     public void RaiseDeathEvent()
     {
@@ -62,13 +64,15 @@ public class LevelEventManager : MonoBehaviour
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Deaths", deaths);
         AnalyticsEvent.Custom("Deaths", customParams);
+        Debug.Log("PlayerDeath");
     }
     public void RaiseBossKillEvent()
     {
         defeatedBoss++;
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Boss Kills", defeatedBoss);
-        AnalyticsEvent.Custom("Deaths", customParams);
+        AnalyticsEvent.Custom("Boss Kills", customParams);
+        Debug.Log("BossKill");
     }
 
     public void ToggleTimer(bool a)
@@ -85,6 +89,7 @@ public class LevelEventManager : MonoBehaviour
         runTime = 0;
         ToggleTimer(false);
         AnalyticsEvent.Custom("RunTime Data", playTimes);
+        Debug.Log("RunFinished");
     }
 
     private void Update()
