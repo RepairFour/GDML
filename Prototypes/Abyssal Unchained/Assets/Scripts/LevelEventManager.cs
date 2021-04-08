@@ -46,8 +46,8 @@ public class LevelEventManager : MonoBehaviour
         replaysAfterLoss++;
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Player Loss", replaysAfterLoss);
-        AnalyticsEvent.Custom("Player Loss", customParams);
-        Debug.Log("PlayerLoss");
+        AnalyticsResult result = AnalyticsEvent.Custom("Player Loss", customParams);
+        Debug.Log("PlayerLoss " + result);
        
     }
     public void RaiseReplayAfterWinEvent()
@@ -55,24 +55,24 @@ public class LevelEventManager : MonoBehaviour
         replaysAfterWin++;
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Player Win", replaysAfterWin);
-        AnalyticsEvent.Custom("Player Win", customParams);
-        Debug.Log("PlayerWin");
+        AnalyticsResult result = AnalyticsEvent.Custom("Player Win", customParams);
+        Debug.Log("PlayerWin" + result);
     }
     public void RaiseDeathEvent()
     {
         deaths++;
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Deaths", deaths);
-        AnalyticsEvent.Custom("Deaths", customParams);
-        Debug.Log("PlayerDeath");
+        AnalyticsResult result = AnalyticsEvent.Custom("Deaths", customParams);
+        Debug.Log("PlayerDeath " + result);
     }
     public void RaiseBossKillEvent()
     {
         defeatedBoss++;
         Dictionary<string, object> customParams = new Dictionary<string, object>();
         customParams.Add("Boss Kills", defeatedBoss);
-        AnalyticsEvent.Custom("Boss Kills", customParams);
-        Debug.Log("BossKill");
+        AnalyticsResult result = AnalyticsEvent.Custom("Boss Kills", customParams);
+        Debug.Log("BossKill " + result);
     }
 
     public void ToggleTimer(bool a)
@@ -88,8 +88,8 @@ public class LevelEventManager : MonoBehaviour
 
         runTime = 0;
         ToggleTimer(false);
-        AnalyticsEvent.Custom("RunTime Data", playTimes);
-        Debug.Log("RunFinished");
+        AnalyticsResult result = AnalyticsEvent.Custom("RunTime Data", playTimes);
+        Debug.Log("RunFinished " + result);
     }
 
     private void Update()
