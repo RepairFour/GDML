@@ -12,6 +12,8 @@ public class CharacterController2D : MonoBehaviour
 
 
     Vector3 velocity;
+
+
     public bool grounded;
     public bool knockedBack = false;
     public float forwardsVelocityMultiplier;
@@ -62,6 +64,8 @@ public class CharacterController2D : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             AudioHandler.instance.PlaySound("PlayerLand", 1);
+            lastGroundedTimer = 0;
+            startGroundedTimer = false;
         }
 
     }
@@ -85,9 +89,9 @@ public class CharacterController2D : MonoBehaviour
         {
             currentForwardsVelocityMultiplier = forwardsVelocityMultiplier;
         }     
-        else if(collision.CompareTag("Ground"))
+        else if(collision.CompareTag("Ground") && !Input.GetButton("Jump"))
 		{
-               startGroundedTimer = true;
+            startGroundedTimer = true;
         }
         
     }
@@ -135,33 +139,30 @@ public class CharacterController2D : MonoBehaviour
     }
     public void Jump()
     {
-        if(startGroundedTimer == true)
-		{
-            lastGroundedTimer += Time.deltaTime;
-            if(lastGroundedTimer < lastGroundedMaxTime)
-			{
-                if (grounded)
-                {
-                    rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
-                    AudioHandler.instance.PlaySound("PlayerJump", 1);
-                    grounded = false;
-                }
-            }
-			else
-			{
-                lastGroundedTimer = 0;
-                startGroundedTimer = false;
-            }
-		}
-        else if (grounded)
-         {
-            rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
-            AudioHandler.instance.PlaySound("PlayerJump",1);
-            //rb.AddForce(Vector3.up * jumpSpeed);
-            //Debug.Log("jumping");
-            //currentPosition.y = transform.position.y;
+        //if(startGroundedTimer == true)
+		//{
+            
+        if(lastGroundedTimer < lastGroundedMaxTime && grounded)
+        { 
+		    rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+            AudioHandler.instance.PlaySound("PlayerJump", 1);
             grounded = false;
         }
+			//else
+			//{
+            //    lastGroundedTimer = 0;
+            //    startGroundedTimer = false;
+            //}
+		//}
+        //else if (grounded)
+        // {
+        //    rb.velocity = new Vector2(rb.velocity.x, jumpSpeed);
+        //    AudioHandler.instance.PlaySound("PlayerJump",1);
+        //    //rb.AddForce(Vector3.up * jumpSpeed);
+        //    //Debug.Log("jumping");
+        //    //currentPosition.y = transform.position.y;
+        //    grounded = false;
+        //}
         
     }
 
@@ -178,6 +179,14 @@ public class CharacterController2D : MonoBehaviour
         yield return new WaitForSeconds(duration);
         knockedBack = false;
 
+    }
+
+    private void Update()
+    {
+        if(startGroundedTimer == true)
+        {
+            lastGroundedTimer += Time.deltaTime;
+        }
     }
 
 
