@@ -62,9 +62,10 @@ public class DragDropManager : MonoBehaviour
                     if (!slotBeingHovered.HasItem()) //successful drop
                     {
                         beingDragged.OnSuccessfulDrop();
-                        slotBeingHovered.AddItem(beingDragged);
+                        
                         beingDragged.parent.RemoveItem();
                         beingDragged.transform.SetParent(slotBeingHovered.transform);
+                        slotBeingHovered.AddItem(beingDragged);
                     }
                     else
                     {
@@ -77,9 +78,10 @@ public class DragDropManager : MonoBehaviour
                     if (!slotBeingHovered.HasItem() && beingDragged.container.containerType != ContainerType.WriteOnly) //successful drop
                     {
                         beingDragged.OnSuccessfulDrop();
-                        slotBeingHovered.AddItem(beingDragged);
+                        
                         beingDragged.parent.RemoveItem();
                         beingDragged.transform.SetParent(slotBeingHovered.transform);
+                        slotBeingHovered.AddItem(beingDragged);
                     }
                     else
                     {
