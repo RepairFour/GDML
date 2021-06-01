@@ -14,6 +14,7 @@ TagManager:
   - LeftBound
   - RightBound
   - Checkpoint
+  - PlayerWeapon
   layers:
   - Default
   - TransparentFX

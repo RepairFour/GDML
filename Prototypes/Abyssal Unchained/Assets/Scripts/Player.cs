@@ -12,6 +12,8 @@ public class Player : MonoBehaviour
 	float invincibilityTimer = 0;
 	bool takenDmg = false;
 	[SerializeField] Animator screenFlash;
+	private float weaponEnergy = 60; //half full
+
 	private void Awake()
 	{
 		if(instance == null)
@@ -71,4 +73,29 @@ public class Player : MonoBehaviour
         LevelEventManager.instance.RaiseDeathEvent();
         LevelEventManager.instance.RaiseRunFinishedEvent();
     }
+
+	public void ChargeWeaponEnergy(float amount)
+	{
+		weaponEnergy += amount;
+		if(weaponEnergy > 120)
+		{
+			weaponEnergy = 120;
+		}
+	}
+	public bool UseWeaponEnergy(float amount)
+	{
+		if (amount < weaponEnergy)
+		{
+			weaponEnergy -= amount;
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	public float WeaponEnergy()
+	{
+		return weaponEnergy;
+	}
 }

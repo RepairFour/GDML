@@ -5,6 +5,7 @@ using UnityEngine;
 public class Melee : MonoBehaviour
 {
     [SerializeField] int damage;
+    [SerializeField] int energyCharge;
     public void Attack(EnemyStats enemy)
     {
         enemy.TakeDamage(damage);
@@ -16,6 +17,7 @@ public class Melee : MonoBehaviour
         if (collision.gameObject.CompareTag("Enemy"))
         {
             Attack(collision.gameObject.GetComponent<EnemyStats>());
+            FindObjectOfType<Player>().ChargeWeaponEnergy(energyCharge);
         }
     }
 }
