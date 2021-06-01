@@ -17,6 +17,7 @@ public class BossNameUpdate : MonoBehaviour
 	}
 	public void UpdateName()
 	{
+		bossName.text = "";
 		if (ofBlood.GetComponentInChildren<SacrificeInfo>() != null)
 		{
 			bossName.text = ofBlood.GetComponentInChildren<SacrificeInfo>().bossNameFix;
