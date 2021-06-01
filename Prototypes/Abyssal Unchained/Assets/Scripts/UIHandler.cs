@@ -14,6 +14,7 @@ public class UIHandler : MonoBehaviour
 	public Canvas GameOver;
 	[SerializeField] Slider bossHealthSlider;
 	[SerializeField] GameObject WinScreen;
+	[SerializeField] GameObject pauseMenu;
 
     private void Awake()
 	{
@@ -94,5 +95,23 @@ public class UIHandler : MonoBehaviour
 	public void OpenURL(string url)
 	{
 		Application.OpenURL(url);
+	}
+
+	private void Update()
+	{
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			if(pauseMenu.activeInHierarchy)
+			{
+				pauseMenu.SetActive(false);
+				Time.timeScale = 1;
+			}
+			else
+			{
+				pauseMenu.SetActive(true);
+				Time.timeScale = 0;
+			}
+			
+		}
 	}
 }
