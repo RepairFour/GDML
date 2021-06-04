@@ -382,7 +382,7 @@ MonoBehaviour:
     serializedVersion: 2
     rgba: 4278190080
   m_fontSize: 15
-  m_fontSizeBase: 36
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 1
   m_fontSizeMin: 11
@@ -3142,7 +3142,10 @@ MonoBehaviour:
   description: The abyssal curese deepens its infestation. This abyssal creates venomous
     aftershocks after striking with it's puches or hitting the ground.
   bossNameFix: ', The Infested'
-  flavour: 
+  flavour: "\u201CFourteen students stepped into the monastery on that cold winter
+    night. Thirteen lied dead, the fourteenth vanished. The smell of ozone perforates
+    throughout the once sacred ground, it's master lies broken, cursing the stars
+    for taking one of his own.\u201D"
 --- !u!1001 &662157965
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3604,7 +3607,11 @@ MonoBehaviour:
   description: Light spills forth from his form. After performing a punch or kick
     it will release a wave of violent energy along it's path.
   bossNameFix: ', The Sun''s Wrath'
-  flavour: Flavour Text
+  flavour: "\u201CThe deep dark is said to delight in cruel irony. Bestowing the
+    overflowing powers of sol onto the same stolen boy was delightful for numerous
+    reasons. Perhaps if the era of the young one\u2019s master was still nigh, he
+    would have recognized his son easier as an avatar of false divinity, rather than
+    the hollow dark he initially became.\u201D"
 --- !u!1 &745341302
 GameObject:
   m_ObjectHideFlags: 0
@@ -4052,7 +4059,8 @@ MonoBehaviour:
   description: A eye floats behind the boss. Whenever the boss is NOT attacking,
     the eye will launch beams at the player.
   bossNameFix: 'Summoner '
-  flavour: flavour text
+  flavour: "\u201COne of thousands of The Legion\u2019s lost eyes. It\u2019s gaze
+    darts around wildly, especially when none observe it.\u201D "
 --- !u!1 &749838813
 GameObject:
   m_ObjectHideFlags: 0
@@ -5287,7 +5295,8 @@ MonoBehaviour:
   sacrifice: Golith's Blood
   description: Every third attack from the boss deals drastically increased damage.
   bossNameFix: 'Gladiator '
-  flavour: Flavour Text
+  flavour: "\u201CThe severed hand of a mighty Giant. The ground beneath quakes in
+    fear at its approach.\u201D"
 --- !u!1 &1098321623
 GameObject:
   m_ObjectHideFlags: 0
@@ -6795,7 +6804,9 @@ MonoBehaviour:
   description: 'Upon reaching this abyssal reaching 0 health. It will gain a second
     wind this time with a fury. '
   bossNameFix: ', The Undying'
-  flavour: Flavour Text
+  flavour: "\u201CThe infinite dark stared back to meet the young man\u2019s gaze.
+    He doesn\u2019t flinch and spits in its face. If the abyss could smile, in this
+    moment it would be one of malevolent joy preceding triumphant laughter.\u201D"
 --- !u!1001 &1444769831
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7798,7 +7809,8 @@ MonoBehaviour:
   description: Whenever the boss inflicts damage onto you. Gain a stack of 'Falling
     Guillotine' for 10 seconds. At 3 stacks you die.
   bossNameFix: 'Executioner '
-  flavour: Flavour Text
+  flavour: "\u201CThe hateful blade of an executioner, perpetually falling down.
+    It thirsts for life to satiate it\u2019s gnawing hunger.\u201D"
 --- !u!1 &1607469550 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8763063221711800925, guid: 28772ec516205754d8153a903c43e0d4,
