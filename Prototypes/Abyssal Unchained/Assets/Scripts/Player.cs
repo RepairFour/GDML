@@ -81,12 +81,14 @@ public class Player : MonoBehaviour
 		{
 			weaponEnergy = 120;
 		}
+		UIHandler.instance.UpdateWeaponEnergySlider((int)weaponEnergy);
 	}
 	public bool UseWeaponEnergy(float amount)
 	{
-		if (amount < weaponEnergy)
+		if (amount <= weaponEnergy)
 		{
 			weaponEnergy -= amount;
+			UIHandler.instance.UpdateWeaponEnergySlider((int)weaponEnergy);
 			return true;
 		}
 		else

@@ -15,6 +15,7 @@ public class UIHandler : MonoBehaviour
 	[SerializeField] Slider bossHealthSlider;
 	[SerializeField] GameObject WinScreen;
 	[SerializeField] GameObject pauseMenu;
+	[SerializeField] Slider weaponEnergySlider;
 
     private void Awake()
 	{
@@ -95,6 +96,11 @@ public class UIHandler : MonoBehaviour
 	public void OpenURL(string url)
 	{
 		Application.OpenURL(url);
+	}
+
+	public void UpdateWeaponEnergySlider(int x)
+	{
+		weaponEnergySlider.value = x;
 	}
 
 	private void Update()
