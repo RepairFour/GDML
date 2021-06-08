@@ -14,7 +14,11 @@ TagManager:
   - LeftBound
   - RightBound
   - Checkpoint
-  - PlayerWeapon
+  - TremorExplodeRight
+  - TremorExplodeLeft
+  - UpperBound
+  - LeftProjectileBounds
+  - RightProjectileBounds
   layers:
   - Default
   - TransparentFX
