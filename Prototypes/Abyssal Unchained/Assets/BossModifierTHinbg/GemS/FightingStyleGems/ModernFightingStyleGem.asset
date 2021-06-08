@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bf9bc479c3e1563449059fb8a1fe373a, type: 3}
+  m_Name: ModernFightingStyleGem
+  m_EditorClassIdentifier: 
+  namePartString: The Chosen One
+  startTrackToSweepKick: 0.5
+  sweepKickAtackSpeed: 0.5
+  sweepKickToRoundHouse: 0.5
+  roundHouseAttackSpeed: 0.5
+  chargeFlyingKneeTime: 0.5
+  flyingKneeAttackSpeed: 0.5
+  hangTime: 3
+  timeTillLeapAgain: 3
+  leapPower: {x: 600, y: 800}
+  tremorPower: {x: 20, y: 0}
+  tremor: {fileID: 453372421872560680, guid: a48e320089b674b4082865944fd9409e, type: 3}
