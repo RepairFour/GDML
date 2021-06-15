@@ -25582,7 +25582,7 @@ MonoBehaviour:
   flyingKneeCollider: {fileID: 1396802783}
   leftTremorSpawnPoint: {fileID: 999389084}
   rightTremorSpawnPoint: {fileID: 1145597207}
-  startTrackToSweepKick: 0.5
+  startTrackToSweepKick: 3
   sweepKickAtackSpeed: 0.5
   sweepKickToRoundHouse: 0.5
   roundHouseAttackSpeed: 0.5
@@ -25593,19 +25593,19 @@ MonoBehaviour:
   tremorPower: {x: 30, y: 0}
   tremorObject: {fileID: 453372421872560680, guid: a48e320089b674b4082865944fd9409e,
     type: 3}
-  timeTillLeapAfterTremor: 3
-  WaitToLeapTime: 3
+  timeTillLeapAfterTremor: 0.5
+  WaitToLeapTime: 0.5
   indicators:
   - {fileID: 3184788}
   - {fileID: 1756018785}
   - {fileID: 352977346}
   - {fileID: 1967192087}
   orderOfIndicators: []
-  dashSpeed: 100
+  dashSpeed: 85
   dash: {fileID: 7583895037771209223, guid: 8ba4d5520797b1f40852c968880cc4c1, type: 3}
   offScreenTarget: {x: 28, y: -4.45, z: 0}
   onScreenTarget: {x: 0, y: 0, z: 0}
-  indicatorFlashTime: 2
+  indicatorFlashTime: 1
   combo1Enum: 0
   combo2Enum: 0
   combo3Enum: 0
