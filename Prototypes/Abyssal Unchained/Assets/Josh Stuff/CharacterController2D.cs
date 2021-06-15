@@ -58,7 +58,7 @@ public class CharacterController2D : MonoBehaviour
 	   }
        else if(collision.gameObject.CompareTag("RightBound"))
 	   {
-            currentForwardsVelocityMultiplier = 0;
+          currentForwardsVelocityMultiplier = 0;
        }
 
         if (collision.gameObject.CompareTag("Ground"))
