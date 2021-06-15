@@ -37,17 +37,18 @@ public class AttackHandler : MonoBehaviour
                 playerAni.SetTrigger("Melee");
             }
         }
-        if (attack == 1)
-        {
-            if (!rangeAttack && !attacking)
-            {
-                var temp = Instantiate(rangedAttackPrefab, rangedAttackSpawnLocation.transform.position, rangedAttackPrefab.transform.rotation);
-                temp.GetComponent<Rigidbody2D>().AddForce(forceForRangedAttack);
-                temp.GetComponent<RangedBullet>().lifeTimer = 0;
-                rangeAttack = true;
-                rangedAttackInternalTimer = 0f;
-            } 
-        }
+        //make this a weapon
+        //if (attack == 1)
+        //{
+        //    if (!rangeAttack && !attacking)
+        //    {
+        //        var temp = Instantiate(rangedAttackPrefab, rangedAttackSpawnLocation.transform.position, rangedAttackPrefab.transform.rotation);
+        //        temp.GetComponent<Rigidbody2D>().AddForce(forceForRangedAttack);
+        //        temp.GetComponent<RangedBullet>().lifeTimer = 0;
+        //        rangeAttack = true;
+        //        rangedAttackInternalTimer = 0f;
+        //    } 
+        //}
 
     }
 
