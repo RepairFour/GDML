@@ -20,6 +20,7 @@ public class ShotgunBullet : MonoBehaviour
 		if(collision.gameObject.GetComponent<EnemyStats>() != null)
 		{
 			collision.gameObject.GetComponent<EnemyStats>().TakeDamage(damage);
+			Destroy(gameObject);
 		}
 	}
 }

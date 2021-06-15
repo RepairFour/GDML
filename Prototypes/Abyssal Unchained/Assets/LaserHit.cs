@@ -17,7 +17,10 @@ public class LaserHit : MonoBehaviour
             hitInfo.hitting = true;
             hitInfo.enemyHit = collision.GetComponent<EnemyStats>();
         }
-        else
+    }
+	private void OnTriggerExit2D(Collider2D collision)
+	{
+        if (collision.GetComponent<EnemyStats>() != null)
         {
             hitInfo.hitting = false;
             hitInfo.enemyHit = null;
