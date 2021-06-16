@@ -11,13 +11,16 @@ public class PlayerAbilities : MonoBehaviour
 		antimatterShell,
 		spellswordKeystone
 	}
-	[SerializeField] Ability chosenAbility;
+	public Ability chosenAbility;
 
 	public static Action antimatterShellDelegate = delegate { };
+	[HideInInspector]
+	public SpellswordKeystone spellswordKeyStone;
 
 	private void Start()
 	{
 		instance = this;
+		spellswordKeyStone = GetComponentInChildren<SpellswordKeystone>();
 	}
 
 	private void Update()

@@ -28,8 +28,10 @@ public class PlayerLaser : MonoBehaviour
 		{
             player.UseWeaponEnergy(energyRequired);
             on = true;
-		}
+            PlayerAbilities.instance.spellswordKeyStone.Activate();
+        }
         Fire();
+           
 	}
 
 

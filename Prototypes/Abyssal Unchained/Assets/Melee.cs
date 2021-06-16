@@ -8,7 +8,13 @@ public class Melee : MonoBehaviour
     [SerializeField] int energyCharge;
     public void Attack(EnemyStats enemy)
     {
-        enemy.TakeDamage(damage);
+        int dmgEnhancement = 0;
+        if(PlayerAbilities.instance.spellswordKeyStone.buffOn)
+		{
+            dmgEnhancement = PlayerAbilities.instance.spellswordKeyStone.dmgEnhancement;
+            PlayerAbilities.instance.spellswordKeyStone.buffOn = false;
+        }
+        enemy.TakeDamage(damage + dmgEnhancement);
     }
 
 
