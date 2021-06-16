@@ -10,7 +10,7 @@ public class Death : MonoBehaviour
 	{
 		if (collision.gameObject.CompareTag("Player")){
 			playerSpawner.gameObject.SetActive(true);
-			Player.instance.TakeDamage(1);
+			Player.instance.TakeTrueDamage(1);
 			Player.instance.respawning = true;
 		}
 	}
