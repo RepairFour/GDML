@@ -296,7 +296,10 @@ MonoBehaviour:
   description: With the power of water, wind, fire and earth. You can be sure to
     expect devestating punchs, kicks and elbows.
   bossNameFix: Keldaan
-  flavour: Flavour text
+  flavour: "\u201C\u2019I cast off my humanity to be reborn amidst the stars. This
+    is the Hidden Fourth, of which my predecessors tried their best to hide me from.
+    Now I reside on the border separating the unholy from divinity, this will be
+    my final test.\u2019\u201D"
 --- !u!1 &81993271
 GameObject:
   m_ObjectHideFlags: 0
@@ -5292,7 +5295,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   title: Titan's Grasp
-  sacrifice: Golith's Blood
+  sacrifice: Goliath's Blood
   description: Every third attack from the boss deals drastically increased damage.
   bossNameFix: 'Gladiator '
   flavour: "\u201CThe severed hand of a mighty Giant. The ground beneath quakes in
@@ -6000,7 +6003,9 @@ MonoBehaviour:
   description: Fights now with the power of snake, tiger and dragon. Quick open palm
     strikes are iconic to this style.
   bossNameFix: Vaden
-  flavour: Flavour text
+  flavour: "\u201CAs he annihilated those, he deemed his inferiors, Zenith never
+    flinched as he sundered their forms. The one instance of hesitation he felt,
+    was in the moment he met eyes with those of his horrified father.\u201D"
 --- !u!1 &1284579636 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 8763063221711800925, guid: 28772ec516205754d8153a903c43e0d4,
@@ -9055,7 +9060,10 @@ MonoBehaviour:
   description: Martial art designed to kill gods. Teleportaion and energy lasers
     are just the start.
   bossNameFix: Zenith
-  flavour: Flavour Text
+  flavour: "\u201CZenith spent millennia trying to rid himself of those plagued doubts
+    about his course, but nothing could drown out the gnawing whispers. He had travelled
+    and conquered countless worlds, but the one path he couldn\u2019t travel was
+    the line separating his humanity from his destiny.\u201D"
 --- !u!224 &1765763521 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 8763063221711800926, guid: 28772ec516205754d8153a903c43e0d4,
