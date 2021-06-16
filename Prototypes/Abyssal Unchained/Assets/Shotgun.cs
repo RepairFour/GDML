@@ -31,6 +31,7 @@ public class Shotgun : MonoBehaviour
             && Input.GetMouseButtonDown(1))
 		{
             firing = true;
+            PlayerAbilities.instance.spellswordKeyStone.Activate();
             cooldownTimer = cooldown;
             Player.instance.UseWeaponEnergy(energyRequired);            
 		}

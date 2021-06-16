@@ -13,6 +13,7 @@ public class Player : MonoBehaviour
 	bool takenDmg = false;
 	[SerializeField] Animator screenFlash;
 	private float weaponEnergy = 60; //half full
+	[SerializeField] AntimatterShell antimatterShell;
 
 	private void Awake()
 	{
@@ -24,6 +25,7 @@ public class Player : MonoBehaviour
 		{
 			Destroy(this);
 		}
+		antimatterShell = GetComponentInChildren<AntimatterShell>();
 	}
 
 	private void Update()
@@ -43,15 +45,37 @@ public class Player : MonoBehaviour
 		
 		if (!respawning && !takenDmg)
 		{
+			if (!antimatterShell.IsOn())
+			{
+				GetComponent<Animator>().SetTrigger("PlayerHit");
+				AudioHandler.instance.PlaySound("PlayerHurt", 1, true, 1);
+				takenDmg = true;
+				health -= amount;
+				UIHandler.instance.ReducePlayerHealthText();
+				screenFlash.SetTrigger("Trigger");
+				CheckDeath();
+			}
+			else
+			{
+				takenDmg = true; // to stop dmg going through shield 
+				antimatterShell.TurnOff();
+			}
+		}
+		
+	}
+
+	public void TakeTrueDamage(int amount)
+	{
+		if (!respawning)
+		{
 			GetComponent<Animator>().SetTrigger("PlayerHit");
-			AudioHandler.instance.PlaySound("PlayerHurt",1,true,1);
+			AudioHandler.instance.PlaySound("PlayerHurt", 1, true, 1);
 			takenDmg = true;
- 			health -= amount;
+			health -= amount;
 			UIHandler.instance.ReducePlayerHealthText();
 			screenFlash.SetTrigger("Trigger");
 			CheckDeath();
 		}
-		
 	}
 
     void CheckDeath()
