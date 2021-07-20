@@ -270,3 +270,5 @@ D:\Repair4\Prototypes\Untitled Hack and Slash\obj\Debug\Assembly-CSharp.csproj.C
 D:\Repair4\Prototypes\Untitled Hack and Slash\obj\Debug\Assembly-CSharp.csproj.CopyComplete
 D:\Repair4\Prototypes\Untitled Hack and Slash\obj\Debug\Assembly-CSharp.dll
 D:\Repair4\Prototypes\Untitled Hack and Slash\obj\Debug\Assembly-CSharp.pdb
+D:\Repair4\Prototypes\Untitled Hack and Slash\Temp\bin\Debug\Unity.InputSystem.dll
+D:\Repair4\Prototypes\Untitled Hack and Slash\Temp\bin\Debug\Unity.InputSystem.pdb

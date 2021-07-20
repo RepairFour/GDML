@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
+
+    public InputActionMap cameraControls;
    
     public float sensitivityX = 15F;
     public float sensitivityY = 15F;
@@ -27,6 +30,8 @@ public class CameraController : MonoBehaviour
 
     Quaternion originalRotation;
 
+   
+
     void Update()
     {
         
@@ -34,8 +39,10 @@ public class CameraController : MonoBehaviour
         rotAverageY = 0f;
         rotAverageX = 0f;
 
-        rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
-        rotationX += Input.GetAxis("Mouse X") * sensitivityX;
+        rotationY += cameraControls.FindAction("TrackCamera").ReadValue<Vector2>().y;
+        rotationX += cameraControls.FindAction("TrackCamera").ReadValue<Vector2>().x;
+        //rotationY += Input.GetAxis("Mouse Y") * sensitivityY;
+        //rotationX += Input.GetAxis("Mouse X") * sensitivityX;
 
         rotArrayY.Add(rotationY);
         rotArrayX.Add(rotationX);
@@ -69,7 +76,7 @@ public class CameraController : MonoBehaviour
 
         transform.localRotation = originalRotation * xQuaternion * yQuaternion;
 
-        if (Input.GetKey(KeyCode.Escape))
+        if (cameraControls.FindAction("ShowCursor").triggered)
         {
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
@@ -86,6 +93,7 @@ public class CameraController : MonoBehaviour
         originalRotation = transform.localRotation;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        cameraControls.Enable();
     }
 
     public static float ClampAngle(float angle, float min, float max)

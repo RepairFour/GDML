@@ -1,9 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class InputManager : MonoBehaviour
 {
+    public InputActionMap movementStuff;
+
+
+    public float movementGravity;
+
     public float moveSpeed = 10f;
     public float jumpSpeed = 100f;
     public float strafeSpeed = 10f;
@@ -14,6 +20,7 @@ public class InputManager : MonoBehaviour
     public Vector3 verticalVelocity; //current
     Vector3 forwardsVelocity;
     Vector3 strafeVelocity;
+    Vector3 currentMoveDirection;
 
     Vector3 totalVelocity;
 
@@ -25,6 +32,8 @@ public class InputManager : MonoBehaviour
     {
         cc = GetComponent<CharacterController>();
         rb = GetComponent<Rigidbody>();
+      
+        movementStuff.Enable();
     }
 
     private void Update()
@@ -33,22 +42,39 @@ public class InputManager : MonoBehaviour
         Vector3 fDirection = transform.forward;
         fDirection.y = 0;
         fDirection.Normalize();
+
+
+        //var keyboard = Keyboard.current;
+        var inputDirection = movementStuff.FindAction("MoveAction", true).ReadValue<Vector2>();
+        var moveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
+        moveDirection.Normalize();
+
+        currentMoveDirection.x = Mathf.MoveTowards(currentMoveDirection.x, moveDirection.x, movementGravity * Time.deltaTime);
+        currentMoveDirection.z = Mathf.MoveTowards(currentMoveDirection.z, moveDirection.z, movementGravity * Time.deltaTime);
+
+
+
+        Debug.Log("fDirection " + fDirection);
+
+        Debug.Log("moveDirection " + moveDirection);
+
+        forwardsVelocity = fDirection * currentMoveDirection.z;
+        Debug.Log("forwardsVelocity " + forwardsVelocity);
+
+        strafeVelocity = currentMoveDirection.x * transform.right;
+        Debug.Log("strafeVelocity " + strafeVelocity);
+        totalVelocity = (forwardsVelocity + strafeVelocity) * moveSpeed * Time.deltaTime;
+        
         
 
-        
-
-        forwardsVelocity = fDirection * Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime;
-        //forwardsVelocity.y = 0;
-        strafeVelocity = transform.right * Input.GetAxis("Horizontal") * strafeSpeed * Time.deltaTime;
-        //strafeVelocity.y = 0;
-
-        if (Input.GetKeyDown(KeyCode.Space) && gh.isGrounded)
+        if (movementStuff.FindAction("JumpAction").triggered && gh.isGrounded)
         {
             verticalVelocity = jumpSpeed * Vector3.up;
             //Mathf.Clamp(verticalVelocity.y, 0, 1);
             gh.isGrounded = false;
         }
-        totalVelocity = verticalVelocity + forwardsVelocity + strafeVelocity;
+        totalVelocity += verticalVelocity;
+        //Debug.Log(totalVelocity);
         
     }
 
@@ -72,7 +98,12 @@ public class InputManager : MonoBehaviour
         //verticalVelocity.y -= gravity * Time.deltaTime;
     }
 
-    
+    public void Move(InputAction.CallbackContext context)
+    {
+        //var moveDirection = 
+    }
+
+
 }
 
 
