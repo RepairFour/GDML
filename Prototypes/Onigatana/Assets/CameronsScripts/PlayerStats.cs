@@ -21,12 +21,30 @@ public class PlayerStats : MonoBehaviour
 		return false;
 	}
 
-	public void ModHealth(int amount)
+	public void Heal(int amount)
 	{
-		health += amount;
+		health += amount;		
+	}
+	public void Hurt(int dmg)
+	{
+		if (armour >= dmg / 2)
+		{
+			ModArmour(dmg / 2 * -1);
+			health -= dmg - (dmg / 2);
+		}
+		else
+		{
+			int dmgRemaining = dmg - armour;
+			armour = 0;
+			health -= dmgRemaining;
+		}
 	}
 	public void ModArmour(int amount)
 	{
 		armour += amount;
+		if(armour < 0)
+		{
+			armour = 0;
+		}
 	}
 }
