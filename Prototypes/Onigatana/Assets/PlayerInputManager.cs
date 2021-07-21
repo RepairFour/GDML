@@ -32,9 +32,6 @@ public class PlayerInputManager : MonoBehaviour
 
         moveDirection = new Vector3(currentInput.x, 0, currentInput.y);
 
-        //if (movementMap.FindAction("Jump").triggered)
-        //{
-        //    jump = true;
-        //}
+       
     }
 }
