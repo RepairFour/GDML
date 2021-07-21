@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f919c17625242341aa18a15cf62cba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputGravity: 2.5
+  inputGravity: 4
   movementMap:
     m_Name: Movement Map
     m_Id: 46b8ae02-ef22-4815-b285-a9dea13ef71c
@@ -1035,7 +1035,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 349fefd620ac2cd4eb8a1a64935630a0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
