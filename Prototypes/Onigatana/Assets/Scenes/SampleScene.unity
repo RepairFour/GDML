@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f919c17625242341aa18a15cf62cba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputGravity: 4
+  inputGravity: 6
   movementMap:
     m_Name: Movement Map
     m_Id: 46b8ae02-ef22-4815-b285-a9dea13ef71c
@@ -678,8 +678,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gh: {fileID: 941644205}
   moveSpeed: 20
-  jumpSpeed: 20
-  gravityScale: 65
+  jumpSpeed: 10
+  gravityScale: 35
 --- !u!136 &941644203
 CapsuleCollider:
   m_ObjectHideFlags: 0
