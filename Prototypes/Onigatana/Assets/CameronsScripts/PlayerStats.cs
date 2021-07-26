@@ -2,17 +2,30 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(BloodFuryState))]
 public class PlayerStats : MonoBehaviour
 {
 	[SerializeField] int maxHealth;
 	public int health { get; private set; }
 	public int armour { get; private set; }
+	public int bloodMeter { get; private set; }
+	[SerializeField] int bloodSoftCap;
+	[SerializeField] int bloodHardCap;
+	BloodFuryState bloodFuryState;
 
+	float attackTimer = 0;
+	float attackTimerMax = 10;
+
+	float drainTimer = 0;
+	float drainTimerMax = 0.25f;
 	private void Start()
 	{
 		health = maxHealth;
+		bloodFuryState = GetComponent<BloodFuryState>();
+		FillBloodMeter(150);
 	}
-	public bool isDead()
+	///////health stuff/////////
+	public bool IsDead()
 	{
         if(health <= 0)
 		{
@@ -20,7 +33,6 @@ public class PlayerStats : MonoBehaviour
 		}
 		return false;
 	}
-
 	public void Heal(int amount)
 	{
 		health += amount;		
@@ -45,6 +57,44 @@ public class PlayerStats : MonoBehaviour
 		if(armour < 0)
 		{
 			armour = 0;
+		}
+	}
+
+	//////blood stuff//////////
+	
+	public void FillBloodMeter(int amount)
+	{
+		bloodMeter += amount;
+		//if > than 100 enter blood fury state
+		if(amount >= bloodSoftCap && !bloodFuryState.active)
+		{
+			bloodFuryState.EnterState();
+		}
+	}
+	public void DrainBloodMeter(int amount)
+	{
+		bloodMeter -= amount;
+		if(bloodMeter < 0)
+		{
+			bloodMeter = 0;
+		}
+		if(bloodMeter < bloodSoftCap && bloodFuryState.active)
+		{
+			bloodFuryState.ExitState();
+		}
+	}
+	public void Update()
+	{
+		attackTimer += Time.deltaTime;
+		if (attackTimer > attackTimerMax)
+		{
+			//TODO: reset timer upon attacking an enemy
+			drainTimer += Time.deltaTime;
+			if (drainTimer > drainTimerMax)
+			{
+				drainTimer = 0;
+				DrainBloodMeter(5);
+			}
 		}
 	}
 }
