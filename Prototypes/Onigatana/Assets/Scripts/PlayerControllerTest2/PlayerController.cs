@@ -29,12 +29,15 @@ public class PlayerController : MonoBehaviour
     [Header("Movement controls")]
    
     public PlayerMap playerMap;
+
     public float moveSpeed;
     public float moveAccleration;
     public float moveDecceleration;
+
     public float airAccleration;
     public float airDecceleration;
     public float airControl;
+
     public float strafeAcceleration;
     public float strafeSpeed;
     public float jumpSpeed;
@@ -212,13 +215,13 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        yspeed = playerVelocity.y;
-        playerVelocity.y = 0;
+        yspeed = playerVelocity.y; // Capture our y velocityy
+        playerVelocity.y = 0; // set it to 0
 
-        speed = playerVelocity.magnitude;
-        playerVelocity.Normalize();
+        speed = playerVelocity.magnitude; // we find out how fast we were going
+        playerVelocity.Normalize(); //Normalise it for direction vector
 
-        dot = Vector3.Dot(playerVelocity, wishdir);
+        dot = Vector3.Dot(playerVelocity, wishdir); //float between -1 and 1 
 
         k *= airControl * dot * dot * Time.deltaTime;
 
@@ -259,7 +262,7 @@ public class PlayerController : MonoBehaviour
         // Debug.Log("Ground Move");
         desiredDirection = transform.TransformDirection(desiredDirection);
         desiredDirection.Normalize();
-        moveDirectionNormal = desiredDirection;
+        //moveDirectionNormal = desiredDirection;
 
         var desiredspeed = desiredDirection.magnitude;
         desiredspeed *= moveSpeed;
