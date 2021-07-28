@@ -1,58 +1,90 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
 public class Controller : MonoBehaviour
 {
-    public float friction;
+    public float forwardSpeed;
 
-    public float moveSpeed;
-    public float moveAcceleration;
-    public float moveDecceleration;
+    public float dashSpeed;
+    public float dashTime;
+    
+    public float strafeSpeed;
+    public float airSpeed;
 
     public float jumpSpeed;
-    public float gravity = 20f;
+    public float gravity;
+    public Transform cameraTransform;
+    public LayerMask layerMask;
+    
 
-    public PlayerMap input;
-    ButtonControl jump;
-
-    Vector3 movementDirection;
-    Vector3 currentVelocity;
-
-    //Camera
     float rotationX;
     float rotationY;
 
-    public Transform cameraTransform;
+    [SerializeField] bool queueJump;
 
-    bool jumpQueued = false;
+    [SerializeField]Vector3 moveDirection;
+    [SerializeField] Vector3 inputDirection;
+
+    [SerializeField]Vector3 currentVelocity;
+    [SerializeField] float speed;
+    [SerializeField] bool grounded;
+    [SerializeField] bool dashing;
+    [SerializeField] float dashingTimer;
+
+    PlayerMap input;
 
     CharacterController cc;
-    
-    
-    // Start is called before the first frame update
-    void Start()
+
+    private ButtonControl jump;
+
+    private void Start()
     {
-        currentVelocity = Vector3.zero;
-        cc = GetComponent<CharacterController>();
         input = new PlayerMap();
         input.Enable();
+        cc = GetComponent<CharacterController>();
         jump = (ButtonControl)input.Player.Jump.controls[0];
     }
 
-    // Update is called once per frame
-    void Update()
+    void GetMoveDirection()
     {
+        inputDirection = input.Player.Move.ReadValue<Vector2>();
+        moveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
+        moveDirection = transform.TransformDirection(moveDirection);
+    }
+
+    void GroundMove()
+    {
+        GetMoveDirection();
+        currentVelocity = moveDirection * forwardSpeed;
+
+        if (dashing && Mathf.Abs(inputDirection.y) > 0)
+        {
+            currentVelocity = dashSpeed * transform.forward;
+        }
+
+        //currentVelocity.y -= gravity * Time.deltaTime;
+        if (queueJump)
+        {
+            currentVelocity.y = jumpSpeed;
+            queueJump = false;
+            grounded = false;
+        }
+    }
+
+    private void Update()
+    {
+        var horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
+        speed = horizontalVelocity.magnitude;
         var mouseVector = input.Player.Mouse.ReadValue<Vector2>();
-        var inputDirection = input.Player.Move.ReadValue<Vector2>();
-        movementDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
 
         rotationX -= mouseVector.y;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().y;
         rotationY += mouseVector.x;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().x;
 
         //Debug.Log(rotationX + " " + rotationY);
-
+        
         if (rotationX < -90)
         {
             rotationX = -90;
@@ -64,124 +96,103 @@ public class Controller : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         cameraTransform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
-
         QueueJump();
-
-        GroundMove();
-
+        CheckDash();
+        DashTimer();
+        CheckGrounded();
+        if (grounded)
+        {
+            GroundMove();
+        }
+        else if (!grounded || queueJump)
+        {
+            AirMove();
+        }
+        
         cc.Move(currentVelocity * Time.deltaTime);
+        
     }
 
-    void SetMovementDirection()
+    private void AirMove()
     {
-        var temp = input.Player.Move.ReadValue<Vector2>();
-        movementDirection = new Vector3(temp.x, 0, temp.y);
+        float yspeed = currentVelocity.y;
+        GetMoveDirection();
+
+        
+        if (dashing && Mathf.Abs(inputDirection.y) > 0)
+        {
+            currentVelocity = dashSpeed * transform.forward;
+            return;
+        }
+
+        /* Input is read in on the x and y axis and stored in the variable inputDirection
+         * it is converted to x and z and then stored in moveDirection which is then transform
+         * into the objects world space axis. Input direction is used here to make sure the 
+         * player is strafing in the air. If they are they go faster. This emulates strafe jumping 
+         * to a certain extent */
+        if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
+        {
+            currentVelocity = moveDirection * (forwardSpeed + strafeSpeed);
+            currentVelocity.y = yspeed;
+            currentVelocity.y -= gravity * Time.deltaTime;
+            return;
+        }
+
+        currentVelocity = moveDirection * forwardSpeed;
+        currentVelocity.y = yspeed;
+        currentVelocity.y -= gravity * Time.deltaTime;
     }
 
-    private void ApplyFriction(float t)
-    {
-        Vector3 vec = currentVelocity;
-        float speed;
-        float newspeed;
-        float control;
-        float drop;
-
-        vec.y = 0.0f;
-        speed = vec.magnitude;
-        drop = 0.0f;
-
-        if (cc.isGrounded)
-        {
-            control = speed < moveDecceleration ? moveDecceleration : speed;
-            drop = control * friction * Time.deltaTime * t;
-        }
-
-        newspeed = speed - drop;
-        //playerFriction = newspeed;
-
-        if (newspeed < 0)
-        {
-            newspeed = 0;
-        }
-        if (newspeed > 0)
-        {
-            newspeed /= speed;
-        }
-        currentVelocity.x *= newspeed;
-        currentVelocity.z *= newspeed;
-
-    }
     private void QueueJump()
     {
         if (input.Player.Jump.triggered /*jump.wasPressedThisFrame*/ &&
-            !jumpQueued)
+            !queueJump)
         {
-            jumpQueued = true;
+            queueJump = true;
         }
 
         if (jump.wasReleasedThisFrame)
         {
-            jumpQueued = false;
+            queueJump = false;
+
         }
     }
 
-    private void GroundMove()
+    void CheckGrounded()
     {
-        Vector3 desiredDirection;
+        RaycastHit hit;
+        Ray ray = new Ray(transform.position, transform.up * -1);
+        Debug.DrawRay(transform.position, transform.up * -1, Color.red);
 
-        //DO not apply friction if the player is queueing up the next jump
-        if (!jumpQueued)
-        {
-            ApplyFriction(1.0f);
+        if (Physics.Raycast(ray,out hit, 1.1f, layerMask)){
+            grounded = true;
+            Debug.Log(hit.collider.name);
         }
-        else
-        {
-            ApplyFriction(0);
-        }
-
-        SetMovementDirection();
-
-        desiredDirection = movementDirection;
-        // Debug.Log("Ground Move");
-        desiredDirection = transform.TransformDirection(desiredDirection);
-        desiredDirection.Normalize();
-        //moveDirectionNormal = desiredDirection;
-
-        var desiredspeed = desiredDirection.magnitude;
-        desiredspeed *= moveSpeed;
-
-        Accelerate(desiredDirection, desiredspeed, moveAcceleration);
-
-        //reset the gravity velocity
-        currentVelocity.y = -gravity * Time.deltaTime;
-
-        if (jumpQueued)
-        {
-            currentVelocity.y = jumpSpeed;
-            jumpQueued = false;
-        }
-
     }
 
-    private void Accelerate(Vector3 wishdirection, float wishspeed, float accelleration)
+    void CheckDash()
     {
-        float addspeed;
-        float accelspeed;
-        float currentspeed;
-
-        currentspeed = Vector3.Dot(currentVelocity, wishdirection);
-        addspeed = wishspeed - currentspeed;
-        if (addspeed <= 0)
+        if (dashing)
         {
             return;
         }
-        accelspeed = accelleration * Time.deltaTime * wishspeed;
-        if (accelspeed > addspeed)
+        if (input.Player.Dash.triggered)
         {
-            accelspeed = addspeed;
+            dashing = true;
         }
-        currentVelocity.x += accelspeed * wishdirection.x;
-        currentVelocity.z += accelspeed * wishdirection.z;
+    }
 
+    void DashTimer()
+    {
+        if (!dashing)
+        {
+            return;
+        }
+        dashingTimer += Time.deltaTime;
+        if(dashingTimer >= dashTime)
+        {
+            dashing = false;
+            dashingTimer = 0f;
+        }
     }
 }

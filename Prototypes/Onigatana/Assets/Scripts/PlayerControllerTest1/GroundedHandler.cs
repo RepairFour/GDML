@@ -13,7 +13,7 @@ public class GroundedHandler : MonoBehaviour
         grounded = true;
     }
 
-    private void OnCollisionEnter(Collision other)
+    private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Ground")
         {
