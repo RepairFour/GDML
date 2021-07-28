@@ -151,7 +151,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""413966f2-52c2-4a32-8441-a68ea686c48f"",
-                    ""path"": ""<Keyboard>/ctrl"",
+                    ""path"": ""<Keyboard>/shift"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
