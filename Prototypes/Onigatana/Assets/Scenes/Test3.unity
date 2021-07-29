@@ -448,31 +448,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4edc66025d1cbc43b5ba3ce2755e6c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwardSpeed: 20
   maxSpeed: 20
-  maxStrafeSpeed: 50
-  currentSpeed: 0
+  maxStrafeSpeed: 40
   accelleration: 50
-  deccelleration: 50
-  airAccelleration: 100
+  deccelleration: 75
+  strafeAcceleration: 10
   dashSpeed: 200
   dashTime: 0.1
-  strafeSpeed: 20
-  strafeAcceleration: 5
-  jumpSpeed: 10
-  gravity: 35
+  jumpSpeed: 15
+  gravity: 50
+  groundedTime: 0.5
   cameraTransform: {fileID: 1823858685}
   layerMask:
     serializedVersion: 2
     m_Bits: 512
-  eightWayDash: 1
-  applyAccelleration: 1
   queueJump: 0
   currentMoveDirection: {x: 0, y: 0, z: 0}
   lastMoveDirection: {x: 0, y: 0, z: 0}
   inputDirection: {x: 0, y: 0, z: 0}
   currentVelocity: {x: 0, y: 0, z: 0}
-  speed: 0
+  currentSpeed: 0
   grounded: 0
   dashing: 0
   dashingTimer: 0

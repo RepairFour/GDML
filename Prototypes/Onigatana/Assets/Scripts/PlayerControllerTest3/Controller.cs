@@ -17,12 +17,15 @@ public class Controller : MonoBehaviour
 
     public float jumpSpeed;
     public float gravity;
+    public float groundedTime;
 
     public Transform cameraTransform;
     public LayerMask layerMask;
 
     float rotationX;
     float rotationY;
+
+    float groundedTimer;
 
     [Header("Debugging Variables")]
     [SerializeField] bool queueJump;
@@ -62,12 +65,13 @@ public class Controller : MonoBehaviour
     {
         GetMoveDirection();
 
-        if (Mathf.Abs(inputDirection.x) > 0.5 || Math.Abs(inputDirection.y) > 0.5)
+        if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
             Accelerate();
             currentVelocity = currentMoveDirection * currentSpeed;
         }
-        else
+
+        else 
         {
             lastMoveDirection = currentVelocity;
             lastMoveDirection.Normalize();
@@ -86,6 +90,7 @@ public class Controller : MonoBehaviour
             currentVelocity.y = jumpSpeed;
             queueJump = false;
             grounded = false;
+            groundedTimer = 0;
         }
     }
 
@@ -93,6 +98,11 @@ public class Controller : MonoBehaviour
 
     private void Update()
     {
+        if (grounded)
+        {
+            groundedTimer += Time.deltaTime;
+        }
+
         var horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
         var mouseVector = input.Player.Mouse.ReadValue<Vector2>();
 
@@ -112,15 +122,17 @@ public class Controller : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         cameraTransform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
+
         QueueJump();
         CheckDash();
         DashTimer();
         CheckGrounded();
+
         if (grounded)
         {
             GroundMove();
         }
-        else if (!grounded || queueJump)
+        if (!grounded || queueJump)
         {
             AirMove();
         }
@@ -205,6 +217,7 @@ public class Controller : MonoBehaviour
         else
         {
             grounded = false;
+            groundedTimer = 0;
         }
     }
 
@@ -239,12 +252,14 @@ public class Controller : MonoBehaviour
         if (currentSpeed < maxSpeed)
         {
             currentSpeed += accelleration * Time.deltaTime;
-            if (currentSpeed >= maxSpeed)
-            {
-                currentSpeed = maxSpeed;
-            }
         }
-        
+
+        if (currentSpeed >= maxSpeed && groundedTimer >= groundedTime)
+        {
+            currentSpeed = maxSpeed;
+        }
+
+
     }
     void StrafeAccelerate()
     {
