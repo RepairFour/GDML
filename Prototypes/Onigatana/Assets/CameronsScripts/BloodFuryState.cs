@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BloodFuryState : MonoBehaviour
 {
+	[HideInInspector]
 	public bool active = false;
     public void EnterState()
 	{
