@@ -18,8 +18,8 @@ public class Controller : MonoBehaviour
     public float gravity;
     public Transform cameraTransform;
     public LayerMask layerMask;
+    public bool eightWayDash;
     
-
     float rotationX;
     float rotationY;
 
@@ -60,9 +60,24 @@ public class Controller : MonoBehaviour
         GetMoveDirection();
         currentVelocity = moveDirection * forwardSpeed;
 
-        if (dashing && Mathf.Abs(inputDirection.y) > 0)
+        if (eightWayDash)
         {
-            currentVelocity = dashSpeed * transform.forward;
+            if (dashing)
+            {
+                currentVelocity = dashSpeed * moveDirection;
+            }
+        }
+        else
+        {
+            if (dashing && Mathf.Abs(inputDirection.y) > 0)
+            {
+                currentVelocity = dashSpeed * transform.forward;
+            }
+            if (dashing && inputDirection.y < 0)
+            {
+                currentVelocity = dashSpeed * (transform.forward * -1);
+
+            }
         }
 
         //currentVelocity.y -= gravity * Time.deltaTime;
@@ -118,11 +133,28 @@ public class Controller : MonoBehaviour
         float yspeed = currentVelocity.y;
         GetMoveDirection();
 
-        
-        if (dashing && Mathf.Abs(inputDirection.y) > 0)
+
+        if (eightWayDash)
         {
-            currentVelocity = dashSpeed * transform.forward;
-            return;
+            if (dashing)
+            {
+                currentVelocity = dashSpeed * moveDirection;
+                return;
+            }
+
+        }
+        else
+        {
+            if (dashing && inputDirection.y > 0)
+            {
+                currentVelocity = dashSpeed * transform.forward;
+                return;
+            }
+            if (dashing && inputDirection.y < 0)
+            {
+                currentVelocity = dashSpeed * (transform.forward * -1);
+                return;
+            }
         }
 
         /* Input is read in on the x and y axis and stored in the variable inputDirection
