@@ -449,6 +449,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 20
+  maxJumpStrafeSpeed: 40
   maxStrafeSpeed: 40
   accelleration: 50
   deccelleration: 75

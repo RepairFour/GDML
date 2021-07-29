@@ -7,6 +7,7 @@ using UnityEngine.InputSystem.Controls;
 public class Controller : MonoBehaviour
 {
     public float maxSpeed;
+    public float maxJumpStrafeSpeed;
     public float maxStrafeSpeed;
     public float accelleration;
     public float deccelleration;
@@ -67,9 +68,18 @@ public class Controller : MonoBehaviour
 
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
-            Accelerate();
+            if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
+            {
+                StrafeAccelerate();
+            }
+            else
+            {
+                Accelerate();
+            }
             currentVelocity = currentMoveDirection * currentSpeed;
+            
         }
+
 
         else 
         {
@@ -160,7 +170,7 @@ public class Controller : MonoBehaviour
         if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
         {
 
-            StrafeAccelerate();
+            JumpStrafeAccelerate();
             currentVelocity = currentMoveDirection * currentSpeed;
             currentVelocity.y = yspeed;
             currentVelocity.y -= gravity * Time.deltaTime;
@@ -261,17 +271,28 @@ public class Controller : MonoBehaviour
 
 
     }
-    void StrafeAccelerate()
+    void JumpStrafeAccelerate()
     {
-        if(currentSpeed < maxStrafeSpeed)
+        if(currentSpeed < maxJumpStrafeSpeed)
         {
             currentSpeed += strafeAcceleration * Time.deltaTime;
+            if (currentSpeed >= maxJumpStrafeSpeed)
+            {
+                currentSpeed = maxJumpStrafeSpeed;
+            }
+        }
+       
+    }
+    void StrafeAccelerate()
+    {
+        if (currentSpeed < maxStrafeSpeed)
+        {
+            currentSpeed += accelleration * Time.deltaTime;
             if (currentSpeed >= maxStrafeSpeed)
             {
                 currentSpeed = maxStrafeSpeed;
             }
         }
-       
     }
 
     private void Decellerate()
