@@ -449,16 +449,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 20
-  dashSpeed: 100
-  dashTime: 0.5
-  strafeSpeed: 30
-  airSpeed: 20
-  jumpSpeed: 20
-  gravity: 50
+  accelleration: 100
+  deccelleration: 50
+  dashSpeed: 1000
+  dashTime: 0.1
+  strafeSpeed: 10
+  strafeAcceleration: 50
+  jumpSpeed: 10
+  gravity: 35
   cameraTransform: {fileID: 1823858685}
   layerMask:
     serializedVersion: 2
     m_Bits: 512
+  eightWayDash: 1
   queueJump: 0
   moveDirection: {x: 0, y: 0, z: 0}
   inputDirection: {x: 0, y: 0, z: 0}

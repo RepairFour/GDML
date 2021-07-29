@@ -7,12 +7,14 @@ using UnityEngine.InputSystem.Controls;
 public class Controller : MonoBehaviour
 {
     public float forwardSpeed;
+    public float accelleration;
+    public float deccelleration;
 
     public float dashSpeed;
     public float dashTime;
     
     public float strafeSpeed;
-    public float airSpeed;
+    public float strafeAcceleration;
 
     public float jumpSpeed;
     public float gravity;
@@ -58,7 +60,19 @@ public class Controller : MonoBehaviour
     void GroundMove()
     {
         GetMoveDirection();
-        currentVelocity = moveDirection * forwardSpeed;
+
+        if (Mathf.Abs(inputDirection.x) > 0 || Math.Abs(inputDirection.y) > 0)
+        {
+            currentVelocity += moveDirection * accelleration * Time.deltaTime;
+        }
+
+        
+
+        if(currentVelocity.magnitude >= forwardSpeed)
+        {
+            currentVelocity = moveDirection * forwardSpeed;
+        }
+
 
         if (eightWayDash)
         {
@@ -76,10 +90,19 @@ public class Controller : MonoBehaviour
             if (dashing && inputDirection.y < 0)
             {
                 currentVelocity = dashSpeed * (transform.forward * -1);
-
             }
         }
 
+        
+        if (speed > 0.01 && !queueJump)
+        {
+            var decellerationDirection = currentVelocity;
+            decellerationDirection.Normalize();
+            currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
+        }
+        
+
+        
         //currentVelocity.y -= gravity * Time.deltaTime;
         if (queueJump)
         {
@@ -164,15 +187,37 @@ public class Controller : MonoBehaviour
          * to a certain extent */
         if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
         {
-            currentVelocity = moveDirection * (forwardSpeed + strafeSpeed);
+            currentVelocity += moveDirection * strafeAcceleration * Time.deltaTime;
+            if(currentVelocity.magnitude > strafeSpeed + forwardSpeed)
+            {
+                currentVelocity = moveDirection * (forwardSpeed + strafeSpeed);
+            }
             currentVelocity.y = yspeed;
             currentVelocity.y -= gravity * Time.deltaTime;
             return;
         }
 
-        currentVelocity = moveDirection * forwardSpeed;
+        if (Mathf.Abs(inputDirection.y) > 0 || Mathf.Abs(inputDirection.x) > 0)
+        {
+            currentVelocity += moveDirection * accelleration * Time.deltaTime;
+        }
+
+        if (currentVelocity.magnitude >= forwardSpeed)
+        {
+            currentVelocity = moveDirection * forwardSpeed;
+        }
+
+        //If the speed is greater then 0 decclerate
+        if (speed > 0.001)
+        {
+            var decellerationDirection = currentVelocity;
+            decellerationDirection.Normalize();
+            currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
+        }
         currentVelocity.y = yspeed;
         currentVelocity.y -= gravity * Time.deltaTime;
+        //currentVelocity = moveDirection * forwardSpeed;
+
     }
 
     private void QueueJump()
@@ -186,7 +231,6 @@ public class Controller : MonoBehaviour
         if (jump.wasReleasedThisFrame)
         {
             queueJump = false;
-
         }
     }
 
@@ -199,6 +243,10 @@ public class Controller : MonoBehaviour
         if (Physics.Raycast(ray,out hit, 1.1f, layerMask)){
             grounded = true;
             Debug.Log(hit.collider.name);
+        }
+        else
+        {
+            grounded = false;
         }
     }
 
