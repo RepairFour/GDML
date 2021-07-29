@@ -450,10 +450,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 20
   maxJumpStrafeSpeed: 40
-  maxStrafeSpeed: 40
+  maxStrafeSpeed: 25
   accelleration: 50
   deccelleration: 75
   strafeAcceleration: 10
+  strafeJumpDecelleration: 10
   dashSpeed: 200
   dashTime: 0.1
   jumpSpeed: 15

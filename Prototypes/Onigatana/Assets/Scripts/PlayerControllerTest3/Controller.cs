@@ -12,6 +12,7 @@ public class Controller : MonoBehaviour
     public float accelleration;
     public float deccelleration;
     public float strafeAcceleration;
+    public float strafeJumpDecelleration;
 
     public float dashSpeed;
     public float dashTime;
@@ -263,10 +264,15 @@ public class Controller : MonoBehaviour
         {
             currentSpeed += accelleration * Time.deltaTime;
         }
+       
 
         if (currentSpeed >= maxSpeed && groundedTimer >= groundedTime)
         {
-            currentSpeed = maxSpeed;
+            currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed, strafeJumpDecelleration * Time.deltaTime);
+            if(Mathf.Abs(maxSpeed - currentSpeed) < 0.01)
+            {
+                currentSpeed = maxSpeed;
+            }
         }
 
 
@@ -288,7 +294,12 @@ public class Controller : MonoBehaviour
         if (currentSpeed < maxStrafeSpeed)
         {
             currentSpeed += accelleration * Time.deltaTime;
-            if (currentSpeed >= maxStrafeSpeed)
+            
+        }
+        if (currentSpeed >= maxStrafeSpeed && groundedTimer >= groundedTime)
+        {
+            currentSpeed = Mathf.Lerp(currentSpeed, maxStrafeSpeed, strafeJumpDecelleration * Time.deltaTime);
+            if (Mathf.Abs(maxStrafeSpeed - currentSpeed) < 0.01)
             {
                 currentSpeed = maxStrafeSpeed;
             }
