@@ -449,13 +449,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   forwardSpeed: 20
-  accelleration: 100
+  maxSpeed: 20
+  maxStrafeSpeed: 50
+  currentSpeed: 0
+  accelleration: 50
   deccelleration: 50
   airAccelleration: 100
-  dashSpeed: 1000
+  dashSpeed: 200
   dashTime: 0.1
-  strafeSpeed: 10
-  strafeAcceleration: 10
+  strafeSpeed: 20
+  strafeAcceleration: 5
   jumpSpeed: 10
   gravity: 35
   cameraTransform: {fileID: 1823858685}
@@ -465,7 +468,8 @@ MonoBehaviour:
   eightWayDash: 1
   applyAccelleration: 1
   queueJump: 0
-  moveDirection: {x: 0, y: 0, z: 0}
+  currentMoveDirection: {x: 0, y: 0, z: 0}
+  lastMoveDirection: {x: 0, y: 0, z: 0}
   inputDirection: {x: 0, y: 0, z: 0}
   currentVelocity: {x: 0, y: 0, z: 0}
   speed: 0

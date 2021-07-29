@@ -7,6 +7,10 @@ using UnityEngine.InputSystem.Controls;
 public class Controller : MonoBehaviour
 {
     public float forwardSpeed;
+
+    public float maxSpeed;
+    public float maxStrafeSpeed;
+    [SerializeField]float currentSpeed;
     public float accelleration;
     public float deccelleration;
 
@@ -14,7 +18,7 @@ public class Controller : MonoBehaviour
 
     public float dashSpeed;
     public float dashTime;
-    
+
     public float strafeSpeed;
     public float strafeAcceleration;
 
@@ -29,10 +33,11 @@ public class Controller : MonoBehaviour
 
     [SerializeField] bool queueJump;
 
-    [SerializeField]Vector3 moveDirection;
+    [SerializeField] Vector3 currentMoveDirection;
+    [SerializeField] Vector3 lastMoveDirection;
     [SerializeField] Vector3 inputDirection;
 
-    [SerializeField]Vector3 currentVelocity;
+    [SerializeField] Vector3 currentVelocity;
     [SerializeField] float speed;
     [SerializeField] bool grounded;
     [SerializeField] bool dashing;
@@ -55,39 +60,42 @@ public class Controller : MonoBehaviour
     void GetMoveDirection()
     {
         inputDirection = input.Player.Move.ReadValue<Vector2>();
-        moveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
-        moveDirection = transform.TransformDirection(moveDirection);
+        currentMoveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
+        currentMoveDirection = transform.TransformDirection(currentMoveDirection);
     }
 
     void GroundMove()
     {
         GetMoveDirection();
 
-        if (Mathf.Abs(inputDirection.x) > 0 || Math.Abs(inputDirection.y) > 0)
+        if (Mathf.Abs(inputDirection.x) > 0.5 || Math.Abs(inputDirection.y) > 0.5)
         {
             if (applyAccelleration)
             {
-                currentVelocity += moveDirection * accelleration * Time.deltaTime;
+                Accelerate();
+                currentVelocity = currentMoveDirection * currentSpeed;
             }
             else
             {
-                currentVelocity = moveDirection * forwardSpeed;
+                currentVelocity = currentMoveDirection * forwardSpeed;
             }
         }
-
-        
-
-        if(currentVelocity.magnitude >= forwardSpeed)
+        else
         {
-            currentVelocity = moveDirection * forwardSpeed;
+            if (applyAccelleration)
+            {
+                lastMoveDirection = currentVelocity;
+                lastMoveDirection.Normalize();
+                Decellerate();
+                currentVelocity = lastMoveDirection * currentSpeed;
+            }
         }
-
 
         if (eightWayDash)
         {
             if (dashing)
             {
-                currentVelocity = dashSpeed * moveDirection;
+                currentVelocity = dashSpeed * currentMoveDirection;
             }
         }
         else
@@ -102,19 +110,6 @@ public class Controller : MonoBehaviour
             }
         }
 
-
-        if (applyAccelleration)
-        {
-            if (speed > 0.01 && !queueJump)
-            {
-                var decellerationDirection = currentVelocity;
-                decellerationDirection.Normalize();
-                currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
-            }
-        }
-        
-
-        
         //currentVelocity.y -= gravity * Time.deltaTime;
         if (queueJump)
         {
@@ -123,6 +118,8 @@ public class Controller : MonoBehaviour
             grounded = false;
         }
     }
+
+
 
     private void Update()
     {
@@ -134,7 +131,7 @@ public class Controller : MonoBehaviour
         rotationY += mouseVector.x;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().x;
 
         //Debug.Log(rotationX + " " + rotationY);
-        
+
         if (rotationX < -90)
         {
             rotationX = -90;
@@ -158,9 +155,9 @@ public class Controller : MonoBehaviour
         {
             AirMove();
         }
-        
+
         cc.Move(currentVelocity * Time.deltaTime);
-        
+
     }
 
     private void AirMove()
@@ -173,7 +170,7 @@ public class Controller : MonoBehaviour
         {
             if (dashing)
             {
-                currentVelocity = dashSpeed * moveDirection;
+                currentVelocity = dashSpeed * currentMoveDirection;
                 return;
             }
 
@@ -201,15 +198,12 @@ public class Controller : MonoBehaviour
         {
             if (applyAccelleration)
             {
-                currentVelocity += moveDirection * strafeAcceleration * Time.deltaTime;
-                if (currentVelocity.magnitude > strafeSpeed + forwardSpeed)
-                {
-                    currentVelocity = moveDirection * (forwardSpeed + strafeSpeed);
-                }
+                StrafeAccelerate();
+                currentVelocity = currentMoveDirection * currentSpeed;
             }
             else
             {
-                currentVelocity = moveDirection * (forwardSpeed + strafeSpeed);
+                currentVelocity = currentMoveDirection * (forwardSpeed + strafeSpeed);
             }
             currentVelocity.y = yspeed;
             currentVelocity.y -= gravity * Time.deltaTime;
@@ -220,33 +214,28 @@ public class Controller : MonoBehaviour
         {
             if (applyAccelleration)
             {
-                currentVelocity += moveDirection * airAccelleration * Time.deltaTime;
+                Accelerate();
+                currentVelocity = currentMoveDirection * currentSpeed;
             }
             else
             {
-                currentVelocity = moveDirection * forwardSpeed;
+                currentVelocity = currentMoveDirection * forwardSpeed;
             }
         }
 
-        if (currentVelocity.magnitude >= forwardSpeed)
+        else
         {
-            currentVelocity = moveDirection * forwardSpeed;
-        }
-
-        //If the speed is greater then 0 decclerate
-        if (applyAccelleration)
-        {
-            if (speed > 0.001)
+            if (applyAccelleration)
             {
-                var decellerationDirection = currentVelocity;
-                decellerationDirection.Normalize();
-                currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
+                lastMoveDirection = currentVelocity;
+                lastMoveDirection.y = 0;
+                lastMoveDirection.Normalize();
+                Decellerate();
+                currentVelocity = lastMoveDirection * currentSpeed;
             }
         }
         currentVelocity.y = yspeed;
         currentVelocity.y -= gravity * Time.deltaTime;
-        //currentVelocity = moveDirection * forwardSpeed;
-
     }
 
     private void QueueJump()
@@ -269,7 +258,8 @@ public class Controller : MonoBehaviour
         Ray ray = new Ray(transform.position, transform.up * -1);
         Debug.DrawRay(transform.position, transform.up * -1, Color.red);
 
-        if (Physics.Raycast(ray,out hit, 1.1f, layerMask)){
+        if (Physics.Raycast(ray, out hit, 1.1f, layerMask))
+        {
             grounded = true;
             Debug.Log(hit.collider.name);
         }
@@ -298,10 +288,48 @@ public class Controller : MonoBehaviour
             return;
         }
         dashingTimer += Time.deltaTime;
-        if(dashingTimer >= dashTime)
+        if (dashingTimer >= dashTime)
         {
             dashing = false;
             dashingTimer = 0f;
         }
+    }
+
+    void Accelerate()
+    {
+        if (currentSpeed < maxSpeed)
+        {
+            currentSpeed += accelleration * Time.deltaTime;
+            if (currentSpeed >= maxSpeed)
+            {
+                currentSpeed = maxSpeed;
+            }
+        }
+        
+    }
+    void StrafeAccelerate()
+    {
+        if(currentSpeed < maxStrafeSpeed)
+        {
+            currentSpeed += strafeAcceleration * Time.deltaTime;
+            if (currentSpeed >= maxStrafeSpeed)
+            {
+                currentSpeed = maxStrafeSpeed;
+            }
+        }
+       
+    }
+
+    private void Decellerate()
+    {
+        if (currentSpeed > 0)
+        {
+            currentSpeed -= deccelleration * Time.deltaTime;
+            if (currentSpeed <= 0)
+            {
+                currentSpeed = 0;
+            }
+        }
+        
     }
 }

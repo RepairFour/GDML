@@ -65,7 +65,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                     ""id"": ""b316ff1b-8503-4c39-a6ba-b6f1f13b3df2"",
                     ""path"": ""2DVector"",
                     ""interactions"": """",
-                    ""processors"": """",
+                    ""processors"": ""AxisDeadzone"",
                     ""groups"": """",
                     ""action"": ""Move"",
                     ""isComposite"": true,
