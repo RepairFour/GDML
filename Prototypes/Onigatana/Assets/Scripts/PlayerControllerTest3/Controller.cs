@@ -6,31 +6,25 @@ using UnityEngine.InputSystem.Controls;
 
 public class Controller : MonoBehaviour
 {
-    public float forwardSpeed;
-
     public float maxSpeed;
     public float maxStrafeSpeed;
-    [SerializeField]float currentSpeed;
     public float accelleration;
     public float deccelleration;
-
-    public float airAccelleration;
+    public float strafeAcceleration;
 
     public float dashSpeed;
     public float dashTime;
 
-    public float strafeSpeed;
-    public float strafeAcceleration;
-
     public float jumpSpeed;
     public float gravity;
+
     public Transform cameraTransform;
     public LayerMask layerMask;
-    public bool eightWayDash;
-    public bool applyAccelleration;
+
     float rotationX;
     float rotationY;
 
+    [Header("Debugging Variables")]
     [SerializeField] bool queueJump;
 
     [SerializeField] Vector3 currentMoveDirection;
@@ -38,7 +32,7 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 inputDirection;
 
     [SerializeField] Vector3 currentVelocity;
-    [SerializeField] float speed;
+    [SerializeField] float currentSpeed;
     [SerializeField] bool grounded;
     [SerializeField] bool dashing;
     [SerializeField] float dashingTimer;
@@ -70,47 +64,23 @@ public class Controller : MonoBehaviour
 
         if (Mathf.Abs(inputDirection.x) > 0.5 || Math.Abs(inputDirection.y) > 0.5)
         {
-            if (applyAccelleration)
-            {
-                Accelerate();
-                currentVelocity = currentMoveDirection * currentSpeed;
-            }
-            else
-            {
-                currentVelocity = currentMoveDirection * forwardSpeed;
-            }
+            Accelerate();
+            currentVelocity = currentMoveDirection * currentSpeed;
         }
         else
         {
-            if (applyAccelleration)
-            {
-                lastMoveDirection = currentVelocity;
-                lastMoveDirection.Normalize();
-                Decellerate();
-                currentVelocity = lastMoveDirection * currentSpeed;
-            }
+            lastMoveDirection = currentVelocity;
+            lastMoveDirection.Normalize();
+            Decellerate();
+            currentVelocity = lastMoveDirection * currentSpeed;
+            
         }
 
-        if (eightWayDash)
+        if (dashing)
         {
-            if (dashing)
-            {
-                currentVelocity = dashSpeed * currentMoveDirection;
-            }
-        }
-        else
-        {
-            if (dashing && Mathf.Abs(inputDirection.y) > 0)
-            {
-                currentVelocity = dashSpeed * transform.forward;
-            }
-            if (dashing && inputDirection.y < 0)
-            {
-                currentVelocity = dashSpeed * (transform.forward * -1);
-            }
+            currentVelocity = dashSpeed * currentMoveDirection;
         }
 
-        //currentVelocity.y -= gravity * Time.deltaTime;
         if (queueJump)
         {
             currentVelocity.y = jumpSpeed;
@@ -124,7 +94,6 @@ public class Controller : MonoBehaviour
     private void Update()
     {
         var horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
-        speed = horizontalVelocity.magnitude;
         var mouseVector = input.Player.Mouse.ReadValue<Vector2>();
 
         rotationX -= mouseVector.y;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().y;
@@ -165,28 +134,10 @@ public class Controller : MonoBehaviour
         float yspeed = currentVelocity.y;
         GetMoveDirection();
 
-
-        if (eightWayDash)
+        if (dashing)
         {
-            if (dashing)
-            {
-                currentVelocity = dashSpeed * currentMoveDirection;
-                return;
-            }
-
-        }
-        else
-        {
-            if (dashing && inputDirection.y > 0)
-            {
-                currentVelocity = dashSpeed * transform.forward;
-                return;
-            }
-            if (dashing && inputDirection.y < 0)
-            {
-                currentVelocity = dashSpeed * (transform.forward * -1);
-                return;
-            }
+            currentVelocity = dashSpeed * currentMoveDirection;
+            return;
         }
 
         /* Input is read in on the x and y axis and stored in the variable inputDirection
@@ -196,15 +147,9 @@ public class Controller : MonoBehaviour
          * to a certain extent */
         if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
         {
-            if (applyAccelleration)
-            {
-                StrafeAccelerate();
-                currentVelocity = currentMoveDirection * currentSpeed;
-            }
-            else
-            {
-                currentVelocity = currentMoveDirection * (forwardSpeed + strafeSpeed);
-            }
+
+            StrafeAccelerate();
+            currentVelocity = currentMoveDirection * currentSpeed;
             currentVelocity.y = yspeed;
             currentVelocity.y -= gravity * Time.deltaTime;
             return;
@@ -212,27 +157,21 @@ public class Controller : MonoBehaviour
 
         if (Mathf.Abs(inputDirection.y) > 0 || Mathf.Abs(inputDirection.x) > 0)
         {
-            if (applyAccelleration)
-            {
-                Accelerate();
-                currentVelocity = currentMoveDirection * currentSpeed;
-            }
-            else
-            {
-                currentVelocity = currentMoveDirection * forwardSpeed;
-            }
+           
+            Accelerate();
+            currentVelocity = currentMoveDirection * currentSpeed;
+            
         }
 
         else
         {
-            if (applyAccelleration)
-            {
-                lastMoveDirection = currentVelocity;
-                lastMoveDirection.y = 0;
-                lastMoveDirection.Normalize();
-                Decellerate();
-                currentVelocity = lastMoveDirection * currentSpeed;
-            }
+            
+            lastMoveDirection = currentVelocity;
+            lastMoveDirection.y = 0;
+            lastMoveDirection.Normalize();
+            Decellerate();
+            currentVelocity = lastMoveDirection * currentSpeed;
+            
         }
         currentVelocity.y = yspeed;
         currentVelocity.y -= gravity * Time.deltaTime;
