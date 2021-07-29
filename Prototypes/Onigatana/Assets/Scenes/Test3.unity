@@ -451,10 +451,11 @@ MonoBehaviour:
   forwardSpeed: 20
   accelleration: 100
   deccelleration: 50
+  airAccelleration: 100
   dashSpeed: 1000
   dashTime: 0.1
   strafeSpeed: 10
-  strafeAcceleration: 50
+  strafeAcceleration: 10
   jumpSpeed: 10
   gravity: 35
   cameraTransform: {fileID: 1823858685}
@@ -462,6 +463,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   eightWayDash: 1
+  applyAccelleration: 1
   queueJump: 0
   moveDirection: {x: 0, y: 0, z: 0}
   inputDirection: {x: 0, y: 0, z: 0}
@@ -2793,7 +2795,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823858682}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 330733466}

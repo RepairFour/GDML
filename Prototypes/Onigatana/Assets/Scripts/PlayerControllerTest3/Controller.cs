@@ -10,6 +10,8 @@ public class Controller : MonoBehaviour
     public float accelleration;
     public float deccelleration;
 
+    public float airAccelleration;
+
     public float dashSpeed;
     public float dashTime;
     
@@ -21,7 +23,7 @@ public class Controller : MonoBehaviour
     public Transform cameraTransform;
     public LayerMask layerMask;
     public bool eightWayDash;
-    
+    public bool applyAccelleration;
     float rotationX;
     float rotationY;
 
@@ -63,7 +65,14 @@ public class Controller : MonoBehaviour
 
         if (Mathf.Abs(inputDirection.x) > 0 || Math.Abs(inputDirection.y) > 0)
         {
-            currentVelocity += moveDirection * accelleration * Time.deltaTime;
+            if (applyAccelleration)
+            {
+                currentVelocity += moveDirection * accelleration * Time.deltaTime;
+            }
+            else
+            {
+                currentVelocity = moveDirection * forwardSpeed;
+            }
         }
 
         
@@ -93,12 +102,15 @@ public class Controller : MonoBehaviour
             }
         }
 
-        
-        if (speed > 0.01 && !queueJump)
+
+        if (applyAccelleration)
         {
-            var decellerationDirection = currentVelocity;
-            decellerationDirection.Normalize();
-            currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
+            if (speed > 0.01 && !queueJump)
+            {
+                var decellerationDirection = currentVelocity;
+                decellerationDirection.Normalize();
+                currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
+            }
         }
         
 
@@ -187,8 +199,15 @@ public class Controller : MonoBehaviour
          * to a certain extent */
         if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
         {
-            currentVelocity += moveDirection * strafeAcceleration * Time.deltaTime;
-            if(currentVelocity.magnitude > strafeSpeed + forwardSpeed)
+            if (applyAccelleration)
+            {
+                currentVelocity += moveDirection * strafeAcceleration * Time.deltaTime;
+                if (currentVelocity.magnitude > strafeSpeed + forwardSpeed)
+                {
+                    currentVelocity = moveDirection * (forwardSpeed + strafeSpeed);
+                }
+            }
+            else
             {
                 currentVelocity = moveDirection * (forwardSpeed + strafeSpeed);
             }
@@ -199,7 +218,14 @@ public class Controller : MonoBehaviour
 
         if (Mathf.Abs(inputDirection.y) > 0 || Mathf.Abs(inputDirection.x) > 0)
         {
-            currentVelocity += moveDirection * accelleration * Time.deltaTime;
+            if (applyAccelleration)
+            {
+                currentVelocity += moveDirection * airAccelleration * Time.deltaTime;
+            }
+            else
+            {
+                currentVelocity = moveDirection * forwardSpeed;
+            }
         }
 
         if (currentVelocity.magnitude >= forwardSpeed)
@@ -208,11 +234,14 @@ public class Controller : MonoBehaviour
         }
 
         //If the speed is greater then 0 decclerate
-        if (speed > 0.001)
+        if (applyAccelleration)
         {
-            var decellerationDirection = currentVelocity;
-            decellerationDirection.Normalize();
-            currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
+            if (speed > 0.001)
+            {
+                var decellerationDirection = currentVelocity;
+                decellerationDirection.Normalize();
+                currentVelocity -= decellerationDirection * deccelleration * Time.deltaTime;
+            }
         }
         currentVelocity.y = yspeed;
         currentVelocity.y -= gravity * Time.deltaTime;
