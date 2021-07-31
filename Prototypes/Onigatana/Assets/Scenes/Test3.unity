@@ -448,18 +448,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4edc66025d1cbc43b5ba3ce2755e6c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 20
-  maxJumpStrafeSpeed: 40
-  maxStrafeSpeed: 25
-  accelleration: 50
-  deccelleration: 75
+  maxSpeed: 25
+  maxJumpStrafeSpeed: 45
+  maxStrafeSpeed: 30
+  accelleration: 75
+  deccelleration: 100
   strafeAcceleration: 10
   strafeJumpDecelleration: 10
   dashSpeed: 200
   dashTime: 0.1
   jumpSpeed: 15
   gravity: 50
-  groundedTime: 0.5
+  groundedTime: 0.15
   cameraTransform: {fileID: 1823858685}
   layerMask:
     serializedVersion: 2
