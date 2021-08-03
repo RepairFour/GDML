@@ -10,11 +10,15 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] LayerMask layerhit;
     [SerializeField] int dmg;
     [SerializeField] bool showHitBox;
+    [SerializeField] Animator weaponSlash;
+    [SerializeField] float attackCD;
+    float attackCDTimer;
     // Start is called before the first frame update
     void Start()
     {
         inputs = new PlayerMap();
         inputs.Enable();
+        attackCDTimer = attackCD;
     }
 
     // Update is called once per frame
@@ -24,12 +28,12 @@ public class PlayerAttack : MonoBehaviour
         {
             ExtDebug.DrawBoxCastBox(transform.position, halfExtents, gameObject.transform.rotation, gameObject.transform.forward, distance, Color.blue);
         }
-        
-        if (inputs.Player.Attack.triggered)
+
+        if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
 		{
             Debug.Log("Attacking");
-            
-          
+            weaponSlash.SetTrigger("Attack");
+            attackCDTimer = 0;
             RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward,gameObject.transform.rotation, distance, layerhit);
             
             if (hits != null && hits.Length > 0)
@@ -44,6 +48,10 @@ public class PlayerAttack : MonoBehaviour
 				}
 			}
 		}
+		else
+		{
+            attackCDTimer += Time.deltaTime;
+        }
     }
 
     public static class ExtDebug

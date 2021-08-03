@@ -15,6 +15,19 @@ public class EnemyStats : MonoBehaviour
 	{
         Health -= dmg;
         Debug.Log($"OUCHHHHHH! I took {dmg} damage");
+        if(isDead())
+		{
+            Destroy(gameObject);
+		}
+	}
+
+    private bool isDead()
+	{
+        if(Health <= 0)
+		{
+            return true;
+		}
+        return false;
 	}
 
    
