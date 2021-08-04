@@ -1,17 +1,30 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+[ExecuteInEditMode]
 public class PlayerAttack : MonoBehaviour
 {
     PlayerMap inputs;
+    [Header("Main Hitbox")]
     [SerializeField]Vector3 halfExtents;
     [SerializeField] float distance;
     [SerializeField] LayerMask layerhit;
     [SerializeField] int dmg;
+
+    [Header("Secondary Hitbox")]
+    [SerializeField] Vector3 halfExtentsSecondary;
+    [SerializeField] float distanceSecondary;
+    [SerializeField] LayerMask layerhitSecondary;
+    [SerializeField] int dmgSecondary;
+
+    [Header("Misc")]
     [SerializeField] bool showHitBox;
     [SerializeField] Animator weaponSlash;
-    [SerializeField] float attackCD;
+    [SerializeField][Min(0)] float attackCD;
+
+    List<EnemyStats> enemiesHit;
+
+    //[SerializeField] float hitBoxRotation;
     float attackCDTimer;
     // Start is called before the first frame update
     void Start()
@@ -19,42 +32,73 @@ public class PlayerAttack : MonoBehaviour
         inputs = new PlayerMap();
         inputs.Enable();
         attackCDTimer = attackCD;
+        enemiesHit = new List<EnemyStats>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        
         if (showHitBox)
         {
             ExtDebug.DrawBoxCastBox(transform.position, halfExtents, gameObject.transform.rotation, gameObject.transform.forward, distance, Color.blue);
+            ExtDebug.DrawBoxCastBox(transform.position, halfExtentsSecondary, gameObject.transform.rotation, gameObject.transform.forward, distanceSecondary, Color.red);
         }
 
         if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
 		{
+            gameObject.transform.rotation = Camera.main.transform.rotation;
             Debug.Log("Attacking");
             weaponSlash.SetTrigger("Attack");
             attackCDTimer = 0;
-            RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward,gameObject.transform.rotation, distance, layerhit);
-            
-            if (hits != null && hits.Length > 0)
-			{
-                foreach(var hit in hits)
-				{
-                    EnemyStats enemy = hit.collider.gameObject.GetComponent<EnemyStats>();
-                    if (enemy != null)
-					{
-                        enemy.Hurt(dmg);
-					}
-				}
-			}
-		}
+            RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward, gameObject.transform.rotation, distance, layerhit);
+            RaycastHit[] hitsSecondary = Physics.BoxCastAll(transform.position, halfExtentsSecondary, gameObject.transform.forward, gameObject.transform.rotation, distanceSecondary, layerhitSecondary);
+
+            //hit the enemies hitting the secondary hitbox first
+            enemiesHit.Clear();
+            HitEnemies(hitsSecondary, dmgSecondary);
+            HitEnemies(hits, dmg);           
+
+        }
 		else
 		{
             attackCDTimer += Time.deltaTime;
         }
     }
 
-    public static class ExtDebug
+    private void HitEnemies(RaycastHit[] hits , int dmg)
+	{
+        if (hits != null && hits.Length > 0)
+        {
+            foreach (var hit in hits)
+            {
+                EnemyStats enemy = hit.collider.gameObject.GetComponent<EnemyStats>();
+                if (enemy != null)
+                {
+                    foreach(var e in enemiesHit)
+					{
+                        if (enemy.gameObject == e.gameObject)//another hitbox has it this enemy already
+						{
+                            return;
+						}
+					}
+                    RaycastHit ray;
+                    if(Physics.Raycast(transform.position, enemy.transform.position - transform.position, out ray)) // to stop hitting through walls
+					{
+                        if(ray.collider.GetComponent<EnemyStats>())
+						{
+                            enemy.Hurt(dmg);
+                            enemiesHit.Add(enemy);
+                        }
+					}
+                    
+                }
+            }
+        }
+    }
+
+	#region BoxCastDraw
+	public static class ExtDebug
     {
         //Draws just the box at where it is currently hitting.
         public static void DrawBoxCastOnHit(Vector3 origin, Vector3 halfExtents, Quaternion orientation, Vector3 direction, float hitInfoDistance, Color color)
@@ -163,4 +207,6 @@ public class PlayerAttack : MonoBehaviour
             return pivot + rotation * direction;
         }
     }
+
+	#endregion
 }
