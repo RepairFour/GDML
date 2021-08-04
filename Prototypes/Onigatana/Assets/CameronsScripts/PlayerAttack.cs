@@ -21,6 +21,8 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] bool showHitBox;
     [SerializeField] Animator weaponSlash;
     [SerializeField][Min(0)] float attackCD;
+    [SerializeField] LayerMask layerToIgnore;
+    [SerializeField] GameObject nme; // to be removed
 
     List<EnemyStats> enemiesHit;
 
@@ -43,6 +45,7 @@ public class PlayerAttack : MonoBehaviour
         {
             ExtDebug.DrawBoxCastBox(transform.position, halfExtents, gameObject.transform.rotation, gameObject.transform.forward, distance, Color.blue);
             ExtDebug.DrawBoxCastBox(transform.position, halfExtentsSecondary, gameObject.transform.rotation, gameObject.transform.forward, distanceSecondary, Color.red);
+            Debug.DrawRay(transform.position, nme.transform.position - transform.position, Color.green);
         }
 
         if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
@@ -83,8 +86,9 @@ public class PlayerAttack : MonoBehaviour
 						}
 					}
                     RaycastHit ray;
-                    if(Physics.Raycast(transform.position, enemy.transform.position - transform.position, out ray)) // to stop hitting through walls
+                    if(Physics.Raycast(transform.position, enemy.transform.position - transform.position, out ray, 10000 , ~layerToIgnore)) // to stop hitting through walls
 					{
+                        
                         if(ray.collider.GetComponent<EnemyStats>())
 						{
                             enemy.Hurt(dmg);
