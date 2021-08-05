@@ -34,6 +34,8 @@ public class Controller : MonoBehaviour
     public float hookShotThrowSpeed;
     [Tooltip("Gives a small boost of speed at the end of a hookshot")]
     public float momentumExtraSpeed = 7f;
+    [Tooltip("How quickly momentum drops off once hookshot is done")]
+    public float momentumDrag = 3f;
 
     [Header ("Transforms")]
     public Transform cameraTransform;
@@ -66,6 +68,7 @@ public class Controller : MonoBehaviour
 
     [SerializeField] Vector3 hookHitPoint;
     [SerializeField] Vector3 momentum;
+    
 
     PlayerMap input;
 
@@ -193,7 +196,7 @@ public class Controller : MonoBehaviour
 
         if(momentum.magnitude >= 0f)
         {
-            float momentumDrag = 3f;
+            
             momentum -= momentum * momentumDrag * Time.deltaTime;
             if (momentum.magnitude < .01f)
             {
