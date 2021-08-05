@@ -495,8 +495,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   hookShotDistance: 50
-  hookShotSpeed: 50
-  hookShotThrowSpeed: 50
+  hookShotSpeed: 75
+  hookShotThrowSpeed: 200
   momentumExtraSpeed: 1.5
   cameraTransform: {fileID: 1823858685}
   hookShotTransform: {fileID: 88582437}

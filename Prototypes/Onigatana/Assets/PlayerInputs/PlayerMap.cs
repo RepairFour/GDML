@@ -170,7 +170,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ec4630b0-8ab7-4c20-a773-8520151e2efa"",
-                    ""path"": ""<Keyboard>/q"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
