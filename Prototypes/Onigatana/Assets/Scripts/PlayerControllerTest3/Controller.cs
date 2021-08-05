@@ -72,11 +72,14 @@ public class Controller : MonoBehaviour
     [SerializeField] bool hookShotFiring;
     [SerializeField] bool hookShotMove;
     [SerializeField] Vector3 hookShotDirection;
+    [SerializeField] Vector3 desiredDirection;
     [SerializeField] float hookShotSize;
     [SerializeField] Vector3 hookHitPoint;
     [SerializeField] Vector3 momentum;
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
+    [SerializeField] Vector3 cachedDirection;
+    bool currentVelocitycached = false;
 
 
     PlayerMap input;
@@ -267,6 +270,16 @@ public class Controller : MonoBehaviour
     private void HookShotDirection()
     {
         hookShotDirection = (hookHitPoint - transform.position).normalized;
+
+        if (!currentVelocitycached)
+        {
+            cachedDirection = currentVelocity;
+            currentVelocitycached = true;
+        }
+
+        desiredDirection.x = Mathf.Lerp(cachedDirection.x, hookShotDirection.x, Time.deltaTime);
+        desiredDirection.y = hookShotDirection.y;
+        desiredDirection.z = Mathf.Lerp(cachedDirection.z, hookShotDirection.z, Time.deltaTime);
     }
     private void CancelHookShot()
     {
@@ -275,12 +288,18 @@ public class Controller : MonoBehaviour
         hookShotSize = 0;
         hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
         hookShotTransform.gameObject.SetActive(false);
+        cachedDirection = Vector3.zero;
+        currentVelocitycached = false;
 
     }
     private void HookShotMove()
     {
         HookShotDirection();
-        currentVelocity = hookShotSpeed * hookShotDirection;
+
+        
+        
+        
+        currentVelocity = (desiredDirection + (hookShotDirection * hookShotSpeed));
         hookShotTransform.LookAt(hookHitPoint);
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
