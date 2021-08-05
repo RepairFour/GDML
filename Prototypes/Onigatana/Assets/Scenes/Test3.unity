@@ -488,6 +488,8 @@ MonoBehaviour:
   strafeJumpDecelleration: 10
   dashSpeed: 200
   dashTime: 0.1
+  maxDashAmount: 2
+  dashCooldown: 1
   jumpSpeed: 17
   gravity: 50
   groundedTime: 0
@@ -498,6 +500,8 @@ MonoBehaviour:
   hookShotSpeed: 75
   hookShotThrowSpeed: 200
   momentumExtraSpeed: 1.5
+  momentumDrag: 3
+  hookCooldown: 0.5
   cameraTransform: {fileID: 1823858685}
   hookShotTransform: {fileID: 88582437}
   queueJump: 0
@@ -509,6 +513,8 @@ MonoBehaviour:
   grounded: 0
   dashing: 0
   dashingTimer: 0
+  dashCooldownTimer: 0
+  numberOfDashesCurrent: 0
   hookShoting: 0
   hookShotFiring: 0
   hookShotMove: 0
@@ -516,6 +522,8 @@ MonoBehaviour:
   hookShotSize: 0
   hookHitPoint: {x: 0, y: 0, z: 0}
   momentum: {x: 0, y: 0, z: 0}
+  hookCooldownTimer: 0
+  hookOnCooldown: 0
 --- !u!4 &330733466
 Transform:
   m_ObjectHideFlags: 0
