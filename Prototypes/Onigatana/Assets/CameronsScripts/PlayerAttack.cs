@@ -78,21 +78,24 @@ public class PlayerAttack : MonoBehaviour
                 EnemyStats enemy = hit.collider.gameObject.GetComponent<EnemyStats>();
                 if (enemy != null)
                 {
-                    foreach(var e in enemiesHit)
-					{
-                        if (enemy.gameObject == e.gameObject)//another hitbox has it this enemy already
-						{
-                            return;
-						}
-					}
                     RaycastHit ray;
                     if(Physics.Raycast(transform.position, enemy.transform.position - transform.position, out ray, 10000 , ~layerToIgnore)) // to stop hitting through walls
 					{
-                        
                         if(ray.collider.GetComponent<EnemyStats>())
 						{
-                            enemy.Hurt(dmg);
-                            enemiesHit.Add(enemy);
+                            bool alreadyHit = false;
+                            foreach (var e in enemiesHit)
+                            {
+                                if (enemy.gameObject == e.gameObject)//another hitbox has it this enemy already
+                                {
+                                    alreadyHit = true;
+                                }
+                            }
+                            if (!alreadyHit)
+                            {
+                                enemy.Hurt(dmg);
+                                enemiesHit.Add(enemy);
+                            }
                         }
 					}
                     
