@@ -497,7 +497,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   hookShotDistance: 50
-  hookShotSpeed: 75
+  hookShotSpeed: 25
   hookShotThrowSpeed: 200
   momentumExtraSpeed: 1.5
   momentumDrag: 3
@@ -519,11 +519,13 @@ MonoBehaviour:
   hookShotFiring: 0
   hookShotMove: 0
   hookShotDirection: {x: 0, y: 0, z: 0}
+  desiredDirection: {x: 0, y: 0, z: 0}
   hookShotSize: 0
   hookHitPoint: {x: 0, y: 0, z: 0}
   momentum: {x: 0, y: 0, z: 0}
   hookCooldownTimer: 0
   hookOnCooldown: 0
+  cachedDirection: {x: 0, y: 0, z: 0}
 --- !u!4 &330733466
 Transform:
   m_ObjectHideFlags: 0
