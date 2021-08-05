@@ -18,6 +18,8 @@ public class Controller : MonoBehaviour
     [Header ("Dash Variables")]
     public float dashSpeed;
     public float dashTime;
+    public int maxDashAmount;
+    public float dashCooldown;
 
     [Header("Jump Variables")]
     public float jumpSpeed;
@@ -36,6 +38,8 @@ public class Controller : MonoBehaviour
     public float momentumExtraSpeed = 7f;
     [Tooltip("How quickly momentum drops off once hookshot is done")]
     public float momentumDrag = 3f;
+   
+    public float hookCooldown;
 
     [Header ("Transforms")]
     public Transform cameraTransform;
@@ -58,17 +62,22 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 currentVelocity;
     [SerializeField] float currentSpeed;
     [SerializeField] bool grounded;
+
     [SerializeField] bool dashing;
     [SerializeField] float dashingTimer;
+    [SerializeField] float dashCooldownTimer;
+    [SerializeField] int numberOfDashesCurrent;
+
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
     [SerializeField] bool hookShotMove;
     [SerializeField] Vector3 hookShotDirection;
     [SerializeField] float hookShotSize;
-
     [SerializeField] Vector3 hookHitPoint;
     [SerializeField] Vector3 momentum;
-    
+    [SerializeField] float hookCooldownTimer;
+    [SerializeField] bool hookOnCooldown;
+
 
     PlayerMap input;
 
@@ -83,7 +92,8 @@ public class Controller : MonoBehaviour
         input = new PlayerMap();
         input.Enable();
         cc = GetComponent<CharacterController>();
-        
+        numberOfDashesCurrent = maxDashAmount;
+
         jump = (ButtonControl)input.Player.Jump.controls[0];
         hook = (ButtonControl)input.Player.Hook.controls[0];
     }
@@ -171,17 +181,21 @@ public class Controller : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         cameraTransform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
-        CheckGrappleHook();
+        if (!hookOnCooldown)
+        {
+            CheckGrappleHook();
+        }
+
         QueueJump();
         CheckDash();
-        DashTimer();
+        HandleCooldownFunctions();
         CheckGrounded();
+
         if (hookShotFiring)
         {
             FiringHookShot();
         }
 
-        
         if (grounded)
         {
             GroundMove();
@@ -273,6 +287,7 @@ public class Controller : MonoBehaviour
             momentum.y = 0;
             currentVelocity.y = 0;
             CancelHookShot();
+            hookOnCooldown = true;
         }
         if (hook.wasReleasedThisFrame)
         {
@@ -281,6 +296,7 @@ public class Controller : MonoBehaviour
             momentum.y = 0;
             currentVelocity.y = 0;
             CancelHookShot();
+            hookOnCooldown = true;
         }
            
         
@@ -377,9 +393,10 @@ public class Controller : MonoBehaviour
         {
             return;
         }
-        if (input.Player.Dash.triggered)
+        if (input.Player.Dash.triggered && numberOfDashesCurrent > 0)
         {
             dashing = true;
+            numberOfDashesCurrent--;
         }
     }
 
@@ -458,9 +475,36 @@ public class Controller : MonoBehaviour
         
     }
 
-    private void GrapplingAccellerate()
+    private void HandleCooldownFunctions()
     {
+        DashTimer();
+        DashCooldowns();
+        HookShotCooldowns();
+    }
 
+    private void DashCooldowns()
+    {
+        if(numberOfDashesCurrent < maxDashAmount)
+        {
+            dashCooldownTimer += Time.deltaTime;
+            if(dashCooldownTimer >= dashCooldown)
+            {
+                numberOfDashesCurrent++;
+                dashCooldownTimer = 0;
+            }
+        }
+    }
 
+    private void HookShotCooldowns()
+    {
+        if (hookOnCooldown)
+        {
+            hookCooldownTimer += Time.deltaTime;
+            if(hookCooldownTimer >= hookCooldown)
+            {
+                hookOnCooldown = false;
+                hookCooldownTimer = 0;
+            }
+        }
     }
 }
