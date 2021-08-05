@@ -96,6 +96,8 @@ public class Controller : MonoBehaviour
 
         jump = (ButtonControl)input.Player.Jump.controls[0];
         hook = (ButtonControl)input.Player.Hook.controls[0];
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void GetMoveDirection()
