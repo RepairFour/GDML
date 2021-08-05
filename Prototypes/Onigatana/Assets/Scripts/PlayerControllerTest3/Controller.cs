@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.Controls;
 
 public class Controller : MonoBehaviour
 {
+    [Header ("Character Movement Values")]
     public float maxSpeed;
     public float maxJumpStrafeSpeed;
     public float maxStrafeSpeed;
@@ -14,15 +15,31 @@ public class Controller : MonoBehaviour
     public float strafeAcceleration;
     public float strafeJumpDecelleration;
 
+    [Header ("Dash Variables")]
     public float dashSpeed;
     public float dashTime;
 
+    [Header("Jump Variables")]
     public float jumpSpeed;
     public float gravity;
     public float groundedTime;
-
-    public Transform cameraTransform;
     public LayerMask layerMask;
+
+    [Header ("Hookshot Variables")]
+    [Tooltip("Range of the hookshot")]
+    public float hookShotDistance;
+    [Tooltip("How fast you travel when hookshoting")]
+    public float hookShotSpeed;
+    [Tooltip("How fast the grapple flys out to attach to an object")]
+    public float hookShotThrowSpeed;
+    [Tooltip("Gives a small boost of speed at the end of a hookshot")]
+    public float momentumExtraSpeed = 7f;
+
+    [Header ("Transforms")]
+    public Transform cameraTransform;
+    public Transform hookShotTransform;
+
+    
 
     float rotationX;
     float rotationY;
@@ -41,19 +58,31 @@ public class Controller : MonoBehaviour
     [SerializeField] bool grounded;
     [SerializeField] bool dashing;
     [SerializeField] float dashingTimer;
+    [SerializeField] bool hookShoting;
+    [SerializeField] bool hookShotFiring;
+    [SerializeField] bool hookShotMove;
+    [SerializeField] Vector3 hookShotDirection;
+    [SerializeField] float hookShotSize;
+
+    [SerializeField] Vector3 hookHitPoint;
+    [SerializeField] Vector3 momentum;
 
     PlayerMap input;
 
     CharacterController cc;
+    
 
     private ButtonControl jump;
+    private ButtonControl hook;
 
     private void Start()
     {
         input = new PlayerMap();
         input.Enable();
         cc = GetComponent<CharacterController>();
+        
         jump = (ButtonControl)input.Player.Jump.controls[0];
+        hook = (ButtonControl)input.Player.Hook.controls[0];
     }
 
     void GetMoveDirection()
@@ -66,6 +95,11 @@ public class Controller : MonoBehaviour
     void GroundMove()
     {
         GetMoveDirection();
+        if (hookShotMove)
+        {
+            HookShotMove();
+            return;
+        }
 
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
@@ -134,11 +168,17 @@ public class Controller : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         cameraTransform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
+        CheckGrappleHook();
         QueueJump();
         CheckDash();
         DashTimer();
         CheckGrounded();
+        if (hookShotFiring)
+        {
+            FiringHookShot();
+        }
 
+        
         if (grounded)
         {
             GroundMove();
@@ -147,9 +187,100 @@ public class Controller : MonoBehaviour
         {
             AirMove();
         }
+        currentVelocity += momentum;
 
         cc.Move(currentVelocity * Time.deltaTime);
 
+        if(momentum.magnitude >= 0f)
+        {
+            float momentumDrag = 3f;
+            momentum -= momentum * momentumDrag * Time.deltaTime;
+            if (momentum.magnitude < .01f)
+            {
+                momentum = Vector3.zero;
+            }
+        }
+
+    }
+
+    private void CheckGrappleHook()
+    {
+        if (input.Player.Hook.triggered)
+        {
+            CheckHookShotHit();
+        }
+    }
+
+    private void FiringHookShot()
+    {
+        hookShotTransform.gameObject.SetActive(true);
+        hookShotTransform.LookAt(hookHitPoint);
+        hookShotSize += hookShotThrowSpeed * Time.deltaTime;
+        hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
+
+        if(hookShotSize >= Vector3.Distance(transform.position, hookHitPoint))
+        {
+            hookShotMove = true;
+            hookShotFiring = false;
+        }
+        if (hook.wasReleasedThisFrame)
+        {
+
+            //momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
+            //momentum.y = 0;
+            //currentVelocity.y = 0;
+            CancelHookShot();
+        }
+    }
+    private void CheckHookShotHit()
+    {
+        if(Physics.Raycast(hookShotTransform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
+        {
+            hookHitPoint = hit.point;
+            Debug.Log(hit.collider.name);
+            hookShotFiring = true;
+            HookShotDirection();
+            hookShotSize = 0f;
+            hookShotTransform.LookAt(hookHitPoint);
+        }
+    }
+
+    private void HookShotDirection()
+    {
+        hookShotDirection = (hookHitPoint - transform.position).normalized;
+    }
+    private void CancelHookShot()
+    {
+        hookShotMove = false;
+        hookShotFiring = false;
+        hookShotSize = 0;
+        hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
+        hookShotTransform.gameObject.SetActive(false);
+
+    }
+    private void HookShotMove()
+    {
+        HookShotDirection();
+        currentVelocity = hookShotSpeed * hookShotDirection;
+        hookShotTransform.LookAt(hookHitPoint);
+        if (Vector3.Distance(hookHitPoint, transform.position) < 2)
+        {
+
+            momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
+            momentum.y = 0;
+            currentVelocity.y = 0;
+            CancelHookShot();
+        }
+        if (hook.wasReleasedThisFrame)
+        {
+
+            momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
+            momentum.y = 0;
+            currentVelocity.y = 0;
+            CancelHookShot();
+        }
+           
+        
     }
 
     private void AirMove()
@@ -163,6 +294,11 @@ public class Controller : MonoBehaviour
             return;
         }
 
+        if (hookShotMove)
+        {
+            HookShotMove();
+            return;
+        }
         /* Input is read in on the x and y axis and stored in the variable inputDirection
          * it is converted to x and z and then stored in moveDirection which is then transform
          * into the objects world space axis. Input direction is used here to make sure the 
@@ -317,5 +453,11 @@ public class Controller : MonoBehaviour
             }
         }
         
+    }
+
+    private void GrapplingAccellerate()
+    {
+
+
     }
 }
