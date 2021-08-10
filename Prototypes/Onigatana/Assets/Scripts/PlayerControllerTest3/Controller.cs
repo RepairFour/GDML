@@ -85,6 +85,7 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 momentum;
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
+    [SerializeField] bool hookShotCancelled;
 
 
     PlayerMap input;
@@ -285,31 +286,31 @@ public class Controller : MonoBehaviour
         hookShotTransform.gameObject.SetActive(false);
 
     }
+
+    private void CancelHookShotMomentum()
+    {
+        momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
+        momentum.y = 0;
+        currentVelocity.y = 0;
+        CancelHookShot();
+        hookOnCooldown = true;
+        hookShotCancelled = false;
+    }
     private void HookShotMove()
     {
         HookShotDirection();
         currentVelocity = hookShotSpeed * hookShotDirection;
         hookShotTransform.LookAt(hookHitPoint);
+        
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
 
-            momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
-            momentum.y = 0;
-            currentVelocity.y = 0;
-            CancelHookShot();
-            hookOnCooldown = true;
+            CancelHookShotMomentum();
         }
         if (hook.wasReleasedThisFrame)
         {
-
-            momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
-            momentum.y = 0;
-            currentVelocity.y = 0;
-            CancelHookShot();
-            hookOnCooldown = true;
+            CancelHookShotMomentum();
         }
-           
-        
     }
 
     private void AirMove()
@@ -317,9 +318,12 @@ public class Controller : MonoBehaviour
         float yspeed = currentVelocity.y;
         GetMoveDirection();
 
+        
+
         if (dashing)
         {
             currentVelocity = dashSpeed * currentMoveDirection;
+            CancelHookShot();
             return;
         }
 
@@ -328,6 +332,8 @@ public class Controller : MonoBehaviour
             HookShotMove();
             return;
         }
+
+
         /* Input is read in on the x and y axis and stored in the variable inputDirection
          * it is converted to x and z and then stored in moveDirection which is then transform
          * into the objects world space axis. Input direction is used here to make sure the 
@@ -406,7 +412,9 @@ public class Controller : MonoBehaviour
         if (input.Player.Dash.triggered && numberOfDashesCurrent > 0)
         {
             dashing = true;
+            //hookShotCancelled = true;
             numberOfDashesCurrent--;
+
         }
     }
 
