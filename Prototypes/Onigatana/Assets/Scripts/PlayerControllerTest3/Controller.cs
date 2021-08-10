@@ -43,6 +43,7 @@ public class Controller : MonoBehaviour
     public float addedSlideMomentum;
     public float slideHeight;
     public float normalHeight;
+    public float slideDeccelerate;
    
     
 
@@ -88,6 +89,7 @@ public class Controller : MonoBehaviour
     [SerializeField] bool slideQueued;
     [SerializeField] bool sliding;
     [SerializeField] float slideMomentum;
+    [SerializeField] bool calculatedSlideSpeed;
 
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
@@ -98,7 +100,7 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 momentum;
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
-
+    bool crouch;
     PlayerMap input;
 
     CharacterController cc;
@@ -149,27 +151,13 @@ public class Controller : MonoBehaviour
         }
         if (dashing)
         {
-            if (sliding)
-            {
-                currentVelocity = (dashSpeed + slideMomentum) * currentMoveDirection;
-                dashing = false;
-            }
-            else
-            {
-                currentVelocity = dashSpeed * currentMoveDirection;
-            }
             
+            
+            currentVelocity = dashSpeed * currentMoveDirection;
             return;
         }
         
-        if (sliding)
-        {
-            cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
-            cc.height = slideHeight;
-            currentVelocity = currentMoveDirection * (currentSpeed + slideMomentum);
-            CheckMomentumSpeed();
-            return;
-        }
+        
 
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
@@ -180,6 +168,12 @@ public class Controller : MonoBehaviour
             else
             {
                 Accelerate();
+            }
+            if (sliding)
+            {
+
+                currentSpeed = currentSpeed + slideMomentum;
+                CheckMomentumSpeed();
             }
             currentVelocity = currentMoveDirection * currentSpeed;
             
@@ -259,6 +253,12 @@ public class Controller : MonoBehaviour
         currentVelocity += momentum;
 
         cc.Move(currentVelocity * Time.deltaTime);
+
+        if (sliding)
+        {
+            cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
+            cc.height = slideHeight;
+        }
 
         if(momentum.magnitude >= 0f)
         {
@@ -344,7 +344,6 @@ public class Controller : MonoBehaviour
         
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
-
             CancelHookShotMomentum();
         }
         if (hook.wasReleasedThisFrame)
@@ -424,9 +423,12 @@ public class Controller : MonoBehaviour
     }
     private void QueueSlide()
     {
-        if (slide.isPressed && !sliding)
+        if (slide.wasPressedThisFrame && !slideQueued)
         {
-            slideQueued = true;
+            if(inputDirection.magnitude > 0)
+            {
+                slideQueued = true;
+            }
         }
         if (slide.wasReleasedThisFrame)
         {
@@ -502,6 +504,19 @@ public class Controller : MonoBehaviour
 
     void Accelerate()
     {
+        //if (sliding)
+        //{
+        //    if (currentSpeed < maxSpeed + addedSlideMomentum)
+        //    {
+        //        currentSpeed += (accelleration + slideMomentum) * Time.deltaTime;
+        //    }
+        //    if(currentSpeed >= (maxSpeed + addedSlideMomentum))
+        //    {
+        //        currentSpeed = maxSpeed + addedSlideMomentum;
+        //    }
+        //    return;
+        //}
+        
         if (currentSpeed < maxSpeed)
         {
             currentSpeed += accelleration * Time.deltaTime;
@@ -516,6 +531,7 @@ public class Controller : MonoBehaviour
                 currentSpeed = maxSpeed;
             }
         }
+        
 
 
     }
@@ -562,17 +578,25 @@ public class Controller : MonoBehaviour
     }
     private void HandleMomentumSpeed ()
     {
-        slideMomentum = addedSlideMomentum;
+        if (inputDirection.magnitude > 0)
+        {
+            slideMomentum = addedSlideMomentum;
+        }
+        else
+        {
+            slideMomentum = 0;
+        }
     }
     private void CheckMomentumSpeed()
     {
-        slideMomentum -= 100 * Time.deltaTime;
+        slideMomentum -= slideDeccelerate * Time.deltaTime;
         if(slideMomentum <= 0)
         {
             sliding = false;
             //Handle what happens when exit slide
             cameraTransform.localPosition = new Vector3(0, height, 0);
             cc.height = normalHeight;
+            calculatedSlideSpeed = false;
         }
     }
 
