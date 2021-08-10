@@ -479,6 +479,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4edc66025d1cbc43b5ba3ce2755e6c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  height: 1
+  slideCameraHeight: 0.5
   xSensitivity: 20
   ySensitivity: 20
   yMin: -70
@@ -500,6 +502,9 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 512
+  addedSlideMomentum: 100
+  slideHeight: 1
+  normalHeight: 2
   hookShotDistance: 50
   hookShotSpeed: 75
   hookShotThrowSpeed: 200
@@ -519,6 +524,9 @@ MonoBehaviour:
   dashingTimer: 0
   dashCooldownTimer: 0
   numberOfDashesCurrent: 0
+  slideQueued: 0
+  sliding: 0
+  slideMomentum: 0
   hookShoting: 0
   hookShotFiring: 0
   hookShotMove: 0
@@ -536,7 +544,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 330733463}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.58, z: 0}
+  m_LocalPosition: {x: 0, y: 100, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1823858685}
