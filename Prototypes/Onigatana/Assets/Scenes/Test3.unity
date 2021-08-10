@@ -480,7 +480,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   height: 1
-  slideCameraHeight: 0.5
+  slideCameraHeight: 0.25
   xSensitivity: 20
   ySensitivity: 20
   yMin: -70
@@ -502,9 +502,10 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 512
-  addedSlideMomentum: 100
-  slideHeight: 1
+  addedSlideMomentum: 10
+  slideHeight: 2
   normalHeight: 2
+  slideDeccelerate: 10
   hookShotDistance: 50
   hookShotSpeed: 75
   hookShotThrowSpeed: 200
@@ -527,6 +528,7 @@ MonoBehaviour:
   slideQueued: 0
   sliding: 0
   slideMomentum: 0
+  calculatedSlideSpeed: 0
   hookShoting: 0
   hookShotFiring: 0
   hookShotMove: 0
