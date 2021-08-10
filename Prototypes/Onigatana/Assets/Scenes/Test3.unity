@@ -479,6 +479,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4edc66025d1cbc43b5ba3ce2755e6c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  xSensitivity: 20
+  ySensitivity: 20
+  yMin: -70
+  yMax: 70
   maxSpeed: 20
   maxJumpStrafeSpeed: 50
   maxStrafeSpeed: 25

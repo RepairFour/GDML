@@ -6,6 +6,14 @@ using UnityEngine.InputSystem.Controls;
 
 public class Controller : MonoBehaviour
 {
+    [Header("Mouse sensitivity values")]
+    public float xSensitivity;
+    public float ySensitivity;
+    
+    public float yMin;
+    public float yMax;
+    
+
     [Header ("Character Movement Values")]
     public float maxSpeed;
     public float maxJumpStrafeSpeed;
@@ -166,18 +174,18 @@ public class Controller : MonoBehaviour
         var horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
         var mouseVector = input.Player.Mouse.ReadValue<Vector2>();
 
-        rotationX -= mouseVector.y;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().y;
-        rotationY += mouseVector.x;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().x;
+        rotationX -= mouseVector.y * Time.deltaTime * xSensitivity;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().y;
+        rotationY += mouseVector.x * Time.deltaTime * ySensitivity;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().x;
 
         //Debug.Log(rotationX + " " + rotationY);
 
-        if (rotationX < -90)
+        if (rotationX < yMin)
         {
-            rotationX = -90;
+            rotationX = yMin;
         }
-        else if (rotationX > 90)
+        else if (rotationX > yMax)
         {
-            rotationX = 90;
+            rotationX = yMax;
         }
 
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
