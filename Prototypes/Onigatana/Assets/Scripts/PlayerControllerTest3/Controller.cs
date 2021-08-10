@@ -6,6 +6,10 @@ using UnityEngine.InputSystem.Controls;
 
 public class Controller : MonoBehaviour
 {
+    [Header("Camera Variables")]
+    public float height = 1f;
+    public float slideCameraHeight = 0.5f;
+
     [Header("Mouse sensitivity values")]
     public float xSensitivity;
     public float ySensitivity;
@@ -35,6 +39,13 @@ public class Controller : MonoBehaviour
     public float groundedTime;
     public LayerMask layerMask;
 
+    [Header("Slide Variables")]
+    public float addedSlideMomentum;
+    public float slideHeight;
+    public float normalHeight;
+   
+    
+
     [Header ("Hookshot Variables")]
     [Tooltip("Range of the hookshot")]
     public float hookShotDistance;
@@ -52,8 +63,6 @@ public class Controller : MonoBehaviour
     [Header ("Transforms")]
     public Transform cameraTransform;
     public Transform hookShotTransform;
-
-    
 
     float rotationX;
     float rotationY;
@@ -76,6 +85,10 @@ public class Controller : MonoBehaviour
     [SerializeField] float dashCooldownTimer;
     [SerializeField] int numberOfDashesCurrent;
 
+    [SerializeField] bool slideQueued;
+    [SerializeField] bool sliding;
+    [SerializeField] float slideMomentum;
+
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
     [SerializeField] bool hookShotMove;
@@ -85,15 +98,13 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 momentum;
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
-    [SerializeField] bool hookShotCancelled;
-
 
     PlayerMap input;
 
     CharacterController cc;
-    
 
     private ButtonControl jump;
+    private ButtonControl slide;
     private ButtonControl hook;
 
     private void Start()
@@ -105,8 +116,13 @@ public class Controller : MonoBehaviour
 
         jump = (ButtonControl)input.Player.Jump.controls[0];
         hook = (ButtonControl)input.Player.Hook.controls[0];
+        slide = (ButtonControl)input.Player.Slide.controls[0];
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        cameraTransform.localPosition = new Vector3(0,height,0);
+        cc.height = normalHeight;
+        cc.gameObject.transform.position = new Vector3(0, normalHeight, 0);
     }
 
     void GetMoveDirection()
@@ -119,9 +135,39 @@ public class Controller : MonoBehaviour
     void GroundMove()
     {
         GetMoveDirection();
+        if (slideQueued)
+        {
+            HandleMomentumSpeed();
+            sliding = true;
+            slideQueued = false;
+        }
+
         if (hookShotMove)
         {
             HookShotMove();
+            return;
+        }
+        if (dashing)
+        {
+            if (sliding)
+            {
+                currentVelocity = (dashSpeed + slideMomentum) * currentMoveDirection;
+                dashing = false;
+            }
+            else
+            {
+                currentVelocity = dashSpeed * currentMoveDirection;
+            }
+            
+            return;
+        }
+        
+        if (sliding)
+        {
+            cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
+            cc.height = slideHeight;
+            currentVelocity = currentMoveDirection * (currentSpeed + slideMomentum);
+            CheckMomentumSpeed();
             return;
         }
 
@@ -149,11 +195,6 @@ public class Controller : MonoBehaviour
             
         }
 
-        if (dashing)
-        {
-            currentVelocity = dashSpeed * currentMoveDirection;
-        }
-
         if (queueJump)
         {
             currentVelocity.y = jumpSpeed;
@@ -162,7 +203,6 @@ public class Controller : MonoBehaviour
             groundedTimer = 0;
         }
     }
-
 
 
     private void Update()
@@ -196,11 +236,12 @@ public class Controller : MonoBehaviour
         {
             CheckGrappleHook();
         }
-
+        CheckGrounded();
         QueueJump();
+        QueueSlide();
         CheckDash();
         HandleCooldownFunctions();
-        CheckGrounded();
+        
 
         if (hookShotFiring)
         {
@@ -294,7 +335,6 @@ public class Controller : MonoBehaviour
         currentVelocity.y = 0;
         CancelHookShot();
         hookOnCooldown = true;
-        hookShotCancelled = false;
     }
     private void HookShotMove()
     {
@@ -317,8 +357,6 @@ public class Controller : MonoBehaviour
     {
         float yspeed = currentVelocity.y;
         GetMoveDirection();
-
-        
 
         if (dashing)
         {
@@ -384,17 +422,47 @@ public class Controller : MonoBehaviour
             queueJump = false;
         }
     }
+    private void QueueSlide()
+    {
+        if (slide.isPressed && !sliding)
+        {
+            slideQueued = true;
+        }
+        if (slide.wasReleasedThisFrame)
+        {
+            slideQueued = false;
+            sliding = false;
+            cameraTransform.localPosition = new Vector3(0, height, 0);
+            cc.height = normalHeight;
+            var charaterPosition = gameObject.transform.position;
+            charaterPosition.y = cc.height;
+            gameObject.transform.position = charaterPosition;
+
+        }
+    }
 
     void CheckGrounded()
     {
+        
         RaycastHit hit;
+        
         Ray ray = new Ray(transform.position, transform.up * -1);
         Debug.DrawRay(transform.position, transform.up * -1, Color.red);
 
-        if (Physics.Raycast(ray, out hit, 1.1f, layerMask))
+
+                                          //Half characters height + 0.1
+        if (Physics.Raycast(ray, out hit, cc.height/2 + 0.1f, layerMask))
         {
             grounded = true;
             Debug.Log(hit.collider.name);
+            
+            if(hit.distance < cc.height/2)
+            {
+                //var characterPosition = transform.position;
+                //characterPosition.y = cc.height;
+                //transform.position = characterPosition;
+                cc.Move(Vector3.up * 2 * Time.deltaTime);
+            }
         }
         else
         {
@@ -491,6 +559,21 @@ public class Controller : MonoBehaviour
             }
         }
         
+    }
+    private void HandleMomentumSpeed ()
+    {
+        slideMomentum = addedSlideMomentum;
+    }
+    private void CheckMomentumSpeed()
+    {
+        slideMomentum -= 100 * Time.deltaTime;
+        if(slideMomentum <= 0)
+        {
+            sliding = false;
+            //Handle what happens when exit slide
+            cameraTransform.localPosition = new Vector3(0, height, 0);
+            cc.height = normalHeight;
+        }
     }
 
     private void HandleCooldownFunctions()
