@@ -225,11 +225,11 @@ public class Controller : MonoBehaviour
         direction.Normalize();
         hookShotHand.position += hookShotThrowSpeed * direction * Time.deltaTime;
         
-        //hookShotTransform.LookAt(hookHitPoint);
-        hookShotSize = Vector3.Distance(hookShotHand.position, transform.position);
+        hookShotTransform.LookAt(hookHitPoint);
+        hookShotSize = Vector3.Distance(hookShotHand.position, hookShotTransform.position);
         //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
         //
-        if(hookShotSize >= Vector3.Distance(transform.position, hookHitPoint))
+        if(hookShotSize >= Vector3.Distance(hookShotTransform.position, hookHitPoint))
         {
             hookShotMove = true;
             hookShotFiring = false;
@@ -246,7 +246,7 @@ public class Controller : MonoBehaviour
     }
     private void CheckHookShotHit()
     {
-        if(Physics.Raycast(hookShotTransform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
+        if(Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
         {
             hookHitPoint = hit.point;
             Debug.Log(hit.collider.name);
