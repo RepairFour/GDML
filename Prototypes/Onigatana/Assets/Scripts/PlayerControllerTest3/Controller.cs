@@ -6,8 +6,9 @@ using UnityEngine.InputSystem.Controls;
 
 public class Controller : MonoBehaviour
 {
+    #region Inspector Variables
     [Header("Camera Variables")]
-    public float height = 1f;
+    public float cameraHeight = 1f;
     public float slideCameraHeight = 0.5f;
 
     [Header("Mouse sensitivity values")]
@@ -17,7 +18,6 @@ public class Controller : MonoBehaviour
     public float yMin;
     public float yMax;
     
-
     [Header ("Character Movement Values")]
     public float maxSpeed;
     public float maxJumpStrafeSpeed;
@@ -44,8 +44,7 @@ public class Controller : MonoBehaviour
     public float slideHeight;
     public float normalHeight;
     public float slideDeccelerate;
-   
-    
+    public float minSlideTime;
 
     [Header ("Hookshot Variables")]
     [Tooltip("Range of the hookshot")]
@@ -64,7 +63,9 @@ public class Controller : MonoBehaviour
     [Header ("Transforms")]
     public Transform cameraTransform;
     public Transform hookShotTransform;
-
+    #endregion
+    
+    #region Debugging and Private Variables
     float rotationX;
     float rotationY;
 
@@ -89,7 +90,7 @@ public class Controller : MonoBehaviour
     [SerializeField] bool slideQueued;
     [SerializeField] bool sliding;
     [SerializeField] float slideMomentum;
-    [SerializeField] bool calculatedSlideSpeed;
+    [SerializeField] float slidingTimer;
 
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
@@ -108,7 +109,9 @@ public class Controller : MonoBehaviour
     private ButtonControl jump;
     private ButtonControl slide;
     private ButtonControl hook;
+    #endregion
 
+    #region UnityFunctions
     private void Start()
     {
         input = new PlayerMap();
@@ -122,82 +125,10 @@ public class Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        cameraTransform.localPosition = new Vector3(0,height,0);
+        cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
         cc.gameObject.transform.position = new Vector3(0, normalHeight, 0);
     }
-
-    void GetMoveDirection()
-    {
-        inputDirection = input.Player.Move.ReadValue<Vector2>();
-        currentMoveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
-        currentMoveDirection = transform.TransformDirection(currentMoveDirection);
-    }
-
-    void GroundMove()
-    {
-        GetMoveDirection();
-        if (slideQueued)
-        {
-            HandleMomentumSpeed();
-            sliding = true;
-            slideQueued = false;
-        }
-
-        if (hookShotMove)
-        {
-            HookShotMove();
-            return;
-        }
-        if (dashing)
-        {
-            
-            
-            currentVelocity = dashSpeed * currentMoveDirection;
-            return;
-        }
-        
-        
-
-        if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
-        {
-            if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
-            {
-                StrafeAccelerate();
-            }
-            else
-            {
-                Accelerate();
-            }
-            if (sliding)
-            {
-
-                currentSpeed = currentSpeed + slideMomentum;
-                CheckMomentumSpeed();
-            }
-            currentVelocity = currentMoveDirection * currentSpeed;
-            
-        }
-
-
-        else 
-        {
-            lastMoveDirection = currentVelocity;
-            lastMoveDirection.Normalize();
-            Decellerate();
-            currentVelocity = lastMoveDirection * currentSpeed;
-            
-        }
-
-        if (queueJump)
-        {
-            currentVelocity.y = jumpSpeed;
-            queueJump = false;
-            grounded = false;
-            groundedTimer = 0;
-        }
-    }
-
 
     private void Update()
     {
@@ -269,9 +200,10 @@ public class Controller : MonoBehaviour
                 momentum = Vector3.zero;
             }
         }
-
     }
+    #endregion
 
+    #region HookShot Functions
     private void CheckGrappleHook()
     {
         if (input.Player.Hook.triggered)
@@ -294,10 +226,6 @@ public class Controller : MonoBehaviour
         }
         if (hook.wasReleasedThisFrame)
         {
-
-            //momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
-            //momentum.y = 0;
-            //currentVelocity.y = 0;
             CancelHookShot();
         }
     }
@@ -350,6 +278,15 @@ public class Controller : MonoBehaviour
         {
             CancelHookShotMomentum();
         }
+    }
+    #endregion
+
+    #region Movement Functions
+    void GetMoveDirection()
+    {
+        inputDirection = input.Player.Move.ReadValue<Vector2>();
+        currentMoveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
+        currentMoveDirection = transform.TransformDirection(currentMoveDirection);
     }
 
     private void AirMove()
@@ -408,6 +345,70 @@ public class Controller : MonoBehaviour
         currentVelocity.y -= gravity * Time.deltaTime;
     }
 
+    void GroundMove()
+    {
+        GetMoveDirection();
+        if (slideQueued)
+        {
+            HandleMomentumSpeed();
+            sliding = true;
+            slideQueued = false;
+        }
+
+        if (hookShotMove)
+        {
+            HookShotMove();
+            return;
+        }
+        if (dashing)
+        {
+            currentVelocity = dashSpeed * currentMoveDirection;
+            return;
+        }
+
+
+
+        if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
+        {
+            if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
+            {
+                StrafeAccelerate();
+            }
+            else
+            {
+                Accelerate();
+            }
+            if (sliding)
+            {
+                slidingTimer += Time.deltaTime;
+                currentSpeed = currentSpeed + slideMomentum;
+                CheckMomentumSpeed();
+            }
+            currentVelocity = currentMoveDirection * currentSpeed;
+
+        }
+
+
+        else
+        {
+            lastMoveDirection = currentVelocity;
+            lastMoveDirection.Normalize();
+            Decellerate();
+            currentVelocity = lastMoveDirection * currentSpeed;
+
+        }
+
+        if (queueJump)
+        {
+            currentVelocity.y = jumpSpeed;
+            queueJump = false;
+            grounded = false;
+            groundedTimer = 0;
+        }
+    }
+    #endregion
+
+    #region Queue Functions
     private void QueueJump()
     {
         if (input.Player.Jump.triggered /*jump.wasPressedThisFrame*/ &&
@@ -430,19 +431,23 @@ public class Controller : MonoBehaviour
                 slideQueued = true;
             }
         }
-        if (slide.wasReleasedThisFrame)
+        if ((slide.wasReleasedThisFrame && slidingTimer > minSlideTime)
+            || (!slide.isPressed && slidingTimer > minSlideTime))
         {
             slideQueued = false;
             sliding = false;
-            cameraTransform.localPosition = new Vector3(0, height, 0);
+            cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
             cc.height = normalHeight;
             var charaterPosition = gameObject.transform.position;
             charaterPosition.y = cc.height;
             gameObject.transform.position = charaterPosition;
+            slidingTimer = 0f;
 
         }
     }
+    #endregion
 
+    #region Grounded
     void CheckGrounded()
     {
         
@@ -472,7 +477,9 @@ public class Controller : MonoBehaviour
             groundedTimer = 0;
         }
     }
+    #endregion
 
+    #region Dash Functions
     void CheckDash()
     {
         if (dashing)
@@ -501,28 +508,16 @@ public class Controller : MonoBehaviour
             dashingTimer = 0f;
         }
     }
+    #endregion
 
+    #region Acceleration and Decelleration Functions
     void Accelerate()
     {
-        //if (sliding)
-        //{
-        //    if (currentSpeed < maxSpeed + addedSlideMomentum)
-        //    {
-        //        currentSpeed += (accelleration + slideMomentum) * Time.deltaTime;
-        //    }
-        //    if(currentSpeed >= (maxSpeed + addedSlideMomentum))
-        //    {
-        //        currentSpeed = maxSpeed + addedSlideMomentum;
-        //    }
-        //    return;
-        //}
-        
         if (currentSpeed < maxSpeed)
         {
             currentSpeed += accelleration * Time.deltaTime;
         }
        
-
         if (currentSpeed >= maxSpeed && groundedTimer >= groundedTime)
         {
             currentSpeed = Mathf.Lerp(currentSpeed, maxSpeed, strafeJumpDecelleration * Time.deltaTime);
@@ -531,9 +526,6 @@ public class Controller : MonoBehaviour
                 currentSpeed = maxSpeed;
             }
         }
-        
-
-
     }
     void JumpStrafeAccelerate()
     {
@@ -576,6 +568,9 @@ public class Controller : MonoBehaviour
         }
         
     }
+    #endregion
+
+    #region SlideFunctions
     private void HandleMomentumSpeed ()
     {
         if (inputDirection.magnitude > 0)
@@ -594,12 +589,13 @@ public class Controller : MonoBehaviour
         {
             sliding = false;
             //Handle what happens when exit slide
-            cameraTransform.localPosition = new Vector3(0, height, 0);
+            cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
             cc.height = normalHeight;
-            calculatedSlideSpeed = false;
         }
     }
+    #endregion
 
+    #region Cooldown Functions
     private void HandleCooldownFunctions()
     {
         DashTimer();
@@ -632,4 +628,5 @@ public class Controller : MonoBehaviour
             }
         }
     }
+    #endregion
 }

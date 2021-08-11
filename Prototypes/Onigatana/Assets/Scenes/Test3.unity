@@ -479,7 +479,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e4edc66025d1cbc43b5ba3ce2755e6c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  height: 1
+  cameraHeight: 1
   slideCameraHeight: 0.25
   xSensitivity: 20
   ySensitivity: 20
@@ -506,6 +506,7 @@ MonoBehaviour:
   slideHeight: 2
   normalHeight: 2
   slideDeccelerate: 10
+  minSlideTime: 0.25
   hookShotDistance: 50
   hookShotSpeed: 75
   hookShotThrowSpeed: 200
@@ -528,7 +529,7 @@ MonoBehaviour:
   slideQueued: 0
   sliding: 0
   slideMomentum: 0
-  calculatedSlideSpeed: 0
+  slidingTimer: 0
   hookShoting: 0
   hookShotFiring: 0
   hookShotMove: 0
