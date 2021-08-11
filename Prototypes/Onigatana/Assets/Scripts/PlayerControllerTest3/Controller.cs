@@ -56,6 +56,7 @@ public class Controller : MonoBehaviour
     public float hookShotThrowSpeed;
     [Tooltip("Gives a small boost of speed at the end of a hookshot")]
     public float momentumExtraSpeed = 7f;
+    public float yMomentumScalarValue;
     [Tooltip("How quickly momentum drops off once hookshot is done")]
     public float momentumDrag = 3f;
     public Transform hookShotHand;
@@ -277,7 +278,7 @@ public class Controller : MonoBehaviour
     {
         momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
         momentum.y = 0;
-        //currentVelocity.y = 0;
+        currentVelocity.y /= yMomentumScalarValue;
         CancelHookShot();
         hookOnCooldown = true;
     }
@@ -465,6 +466,7 @@ public class Controller : MonoBehaviour
             charaterPosition.y = cc.height;
             gameObject.transform.position = charaterPosition;
             slidingTimer = 0f;
+            slideMomentum = 0f;
 
         }
     }
@@ -611,6 +613,7 @@ public class Controller : MonoBehaviour
         if(slideMomentum <= 0)
         {
             sliding = false;
+            slidingTimer = 0f;
             //Handle what happens when exit slide
             cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
             cc.height = normalHeight;
