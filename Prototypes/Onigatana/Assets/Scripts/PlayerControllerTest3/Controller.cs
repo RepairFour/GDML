@@ -20,6 +20,7 @@ public class Controller : MonoBehaviour
     
     [Header ("Character Movement Values")]
     public float maxSpeed;
+    public float globalMaxSpeed;
     public float maxJumpStrafeSpeed;
     public float maxStrafeSpeed;
     public float accelleration;
@@ -220,19 +221,19 @@ public class Controller : MonoBehaviour
     private void FiringHookShot()
     {
         hookShotTransform.gameObject.SetActive(true);
-        var direction = hookHitPoint - hookShotTransform.position;
+        var direction = hookHitPoint - hookShotHand.position;
         direction.Normalize();
         hookShotHand.position += hookShotThrowSpeed * direction * Time.deltaTime;
         
         //hookShotTransform.LookAt(hookHitPoint);
-        hookShotSize += hookShotThrowSpeed * Time.deltaTime;
+        hookShotSize = Vector3.Distance(hookShotHand.position, transform.position);
         //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
         //
         if(hookShotSize >= Vector3.Distance(transform.position, hookHitPoint))
         {
             hookShotMove = true;
             hookShotFiring = false;
-            hookShotHand.position = hookHitPoint;
+            //hookShotHand.position = hookHitPoint;
         }
         
         lr.SetPosition(0, hookShotTransform.position);
@@ -400,6 +401,10 @@ public class Controller : MonoBehaviour
             {
                 slidingTimer += Time.deltaTime;
                 currentSpeed = currentSpeed + slideMomentum;
+                if(currentSpeed > globalMaxSpeed)
+                {
+                    currentSpeed = globalMaxSpeed;
+                }
                 CheckMomentumSpeed();
             }
             currentVelocity = currentMoveDirection * currentSpeed;

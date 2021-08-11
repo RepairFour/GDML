@@ -491,6 +491,7 @@ MonoBehaviour:
   yMin: -70
   yMax: 70
   maxSpeed: 20
+  globalMaxSpeed: 100
   maxJumpStrafeSpeed: 50
   maxStrafeSpeed: 25
   accelleration: 50
