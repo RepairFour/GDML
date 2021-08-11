@@ -57,12 +57,14 @@ public class Controller : MonoBehaviour
     public float momentumExtraSpeed = 7f;
     [Tooltip("How quickly momentum drops off once hookshot is done")]
     public float momentumDrag = 3f;
+    public Transform hookShotHand;
    
     public float hookCooldown;
 
     [Header ("Transforms")]
     public Transform cameraTransform;
     public Transform hookShotTransform;
+    LineRenderer lr;
     #endregion
     
     #region Debugging and Private Variables
@@ -128,6 +130,9 @@ public class Controller : MonoBehaviour
         cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
         cc.gameObject.transform.position = new Vector3(0, normalHeight, 0);
+
+        lr = hookShotTransform.gameObject.GetComponent<LineRenderer>();
+        
     }
 
     private void Update()
@@ -215,15 +220,24 @@ public class Controller : MonoBehaviour
     private void FiringHookShot()
     {
         hookShotTransform.gameObject.SetActive(true);
-        hookShotTransform.LookAt(hookHitPoint);
+        var direction = hookHitPoint - hookShotTransform.position;
+        direction.Normalize();
+        hookShotHand.position += hookShotThrowSpeed * direction * Time.deltaTime;
+        
+        //hookShotTransform.LookAt(hookHitPoint);
         hookShotSize += hookShotThrowSpeed * Time.deltaTime;
-        hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
-
+        //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
+        //
         if(hookShotSize >= Vector3.Distance(transform.position, hookHitPoint))
         {
             hookShotMove = true;
             hookShotFiring = false;
+            hookShotHand.position = hookHitPoint;
         }
+        
+        lr.SetPosition(0, hookShotTransform.position);
+        lr.SetPosition(1, hookShotHand.position);
+        
         if (hook.wasReleasedThisFrame)
         {
             CancelHookShot();
@@ -251,8 +265,10 @@ public class Controller : MonoBehaviour
         hookShotMove = false;
         hookShotFiring = false;
         hookShotSize = 0;
-        hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
+        //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
+        hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
+        //lr.positionCount = 0;
 
     }
 
@@ -260,7 +276,7 @@ public class Controller : MonoBehaviour
     {
         momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
         momentum.y = 0;
-        currentVelocity.y = 0;
+        //currentVelocity.y = 0;
         CancelHookShot();
         hookOnCooldown = true;
     }
@@ -269,7 +285,9 @@ public class Controller : MonoBehaviour
         HookShotDirection();
         currentVelocity = hookShotSpeed * hookShotDirection;
         hookShotTransform.LookAt(hookHitPoint);
-        
+        lr.SetPosition(0, hookShotTransform.position);
+        lr.SetPosition(1, hookShotHand.position);
+
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
             CancelHookShotMomentum();
