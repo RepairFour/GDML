@@ -515,7 +515,7 @@ MonoBehaviour:
   minSlideTime: 0.25
   hookShotDistance: 50
   hookShotSpeed: 75
-  hookShotThrowSpeed: 200
+  hookShotThrowSpeed: 500
   momentumExtraSpeed: 1.5
   momentumDrag: 3
   hookShotHand: {fileID: 925619487}
