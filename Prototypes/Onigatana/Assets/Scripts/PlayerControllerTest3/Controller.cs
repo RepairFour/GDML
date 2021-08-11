@@ -276,9 +276,9 @@ public class Controller : MonoBehaviour
 
     private void CancelHookShotMomentum()
     {
-        momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
-        momentum.y = 0;
-        currentVelocity.y /= yMomentumScalarValue;
+        hookShotDirection.Normalize();
+        momentum = hookShotDirection * momentumExtraSpeed;
+        //momentum.y /= 7;
         CancelHookShot();
         hookOnCooldown = true;
     }
@@ -293,10 +293,13 @@ public class Controller : MonoBehaviour
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
             CancelHookShotMomentum();
+            currentVelocity.y = 1 * yMomentumScalarValue;
         }
         if (hook.wasReleasedThisFrame)
         {
             CancelHookShotMomentum();
+            currentVelocity.y = 0;
+            momentum.y = 0;
         }
     }
     #endregion

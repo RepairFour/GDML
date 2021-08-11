@@ -511,12 +511,13 @@ MonoBehaviour:
   addedSlideMomentum: 10
   slideHeight: 2
   normalHeight: 2
-  slideDeccelerate: 10
-  minSlideTime: 0.25
+  slideDeccelerate: 25
+  minSlideTime: 0.5
   hookShotDistance: 50
   hookShotSpeed: 75
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 1.5
+  yMomentumScalarValue: 3
   momentumDrag: 3
   hookShotHand: {fileID: 925619487}
   hookCooldown: 0.5
