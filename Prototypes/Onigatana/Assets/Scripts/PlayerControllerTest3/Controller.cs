@@ -319,12 +319,17 @@ public class Controller : MonoBehaviour
     }
     Vector3 GetSlideMoveDirection()
     {
+        
         var inputS = input.Player.Move.ReadValue<Vector2>();
-        var slideDirection = new Vector3(inputS.x, 0, 0);
-        slideDirection = transform.TransformDirection(slideDirection);
-        return slideDirection * slideDirectionalScalar;
+        if (Mathf.Abs(inputS.y) > 0)
+        {
+            var slideDirection = new Vector3(inputS.x, 0, 0);
+            slideDirection = transform.TransformDirection(slideDirection);
+            return slideDirection * slideDirectionalScalar;
+        }
+        return Vector3.zero;
+        
     }
-
 
     private void AirMove()
     {
