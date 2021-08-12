@@ -41,9 +41,10 @@ public class Controller : MonoBehaviour
     public LayerMask layerMask;
 
     [Header("Slide Variables")]
-    public float addedSlideMomentum;
+    public float maxSlideMomentum;
     public float slideHeight;
     public float normalHeight;
+    public float slideAccelerate;
     public float slideDeccelerate;
     public float minSlideTime;
 
@@ -56,7 +57,6 @@ public class Controller : MonoBehaviour
     public float hookShotThrowSpeed;
     [Tooltip("Gives a small boost of speed at the end of a hookshot")]
     public float momentumExtraSpeed = 7f;
-    public float yMomentumScalarValue;
     [Tooltip("How quickly momentum drops off once hookshot is done")]
     public float momentumDrag = 3f;
     public Transform hookShotHand;
@@ -95,6 +95,7 @@ public class Controller : MonoBehaviour
     [SerializeField] bool sliding;
     [SerializeField] float slideMomentum;
     [SerializeField] float slidingTimer;
+    [SerializeField] bool maxSlideSpeedHit;
 
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
@@ -277,8 +278,10 @@ public class Controller : MonoBehaviour
     private void CancelHookShotMomentum()
     {
         hookShotDirection.Normalize();
-        momentum = hookShotDirection * momentumExtraSpeed;
-        //momentum.y /= 7;
+        momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
+        momentum.y = 0;
+        //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
+        currentVelocity.y = 0;
         CancelHookShot();
         hookOnCooldown = true;
     }
@@ -293,13 +296,13 @@ public class Controller : MonoBehaviour
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
             CancelHookShotMomentum();
-            currentVelocity.y = 1 * yMomentumScalarValue;
+            //currentVelocity.y = yMomentumScalarValue;
         }
         if (hook.wasReleasedThisFrame)
         {
             CancelHookShotMomentum();
-            currentVelocity.y = 0;
-            momentum.y = 0;
+            //currentVelocity.y = 0;
+            //momentum.y = 0;
         }
     }
     #endregion
@@ -373,7 +376,6 @@ public class Controller : MonoBehaviour
         GetMoveDirection();
         if (slideQueued)
         {
-            HandleMomentumSpeed();
             sliding = true;
             slideQueued = false;
         }
@@ -388,8 +390,7 @@ public class Controller : MonoBehaviour
             currentVelocity = dashSpeed * currentMoveDirection;
             return;
         }
-
-
+        
 
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
@@ -401,21 +402,9 @@ public class Controller : MonoBehaviour
             {
                 Accelerate();
             }
-            if (sliding)
-            {
-                slidingTimer += Time.deltaTime;
-                currentSpeed = currentSpeed + slideMomentum;
-                if(currentSpeed > globalMaxSpeed)
-                {
-                    currentSpeed = globalMaxSpeed;
-                }
-                CheckMomentumSpeed();
-            }
+
             currentVelocity = currentMoveDirection * currentSpeed;
-
         }
-
-
         else
         {
             lastMoveDirection = currentVelocity;
@@ -423,6 +412,19 @@ public class Controller : MonoBehaviour
             Decellerate();
             currentVelocity = lastMoveDirection * currentSpeed;
 
+        }
+
+        if (sliding)
+        {
+            HandleMomentumSpeed();
+            slidingTimer += Time.deltaTime;
+            currentSpeed = currentSpeed + slideMomentum;
+            if (currentSpeed > globalMaxSpeed)
+            {
+                currentSpeed = globalMaxSpeed;
+            }
+            //CheckMomentumSpeed();
+            return;
         }
 
         if (queueJump)
@@ -470,6 +472,7 @@ public class Controller : MonoBehaviour
             gameObject.transform.position = charaterPosition;
             slidingTimer = 0f;
             slideMomentum = 0f;
+            maxSlideSpeedHit = false;
 
         }
     }
@@ -603,7 +606,31 @@ public class Controller : MonoBehaviour
     {
         if (inputDirection.magnitude > 0)
         {
-            slideMomentum = addedSlideMomentum;
+            if (!maxSlideSpeedHit)
+            {
+                slideMomentum += slideAccelerate * Time.deltaTime;
+                if(slideMomentum >= maxSlideMomentum)
+                {
+                    slideMomentum = maxSlideMomentum;
+                    maxSlideSpeedHit = true;
+                    slideMomentum = 0;
+                }
+            }
+            else
+            {
+                currentSpeed -= slideDeccelerate * Time.deltaTime;
+                if(currentSpeed <= maxSpeed)
+                {
+                    currentSpeed = maxSpeed;
+                    slideMomentum = 0;
+                    maxSlideSpeedHit = false;
+                    sliding = false;
+                    cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+                    cc.height = normalHeight;
+
+                }
+            }
+            
         }
         else
         {
@@ -612,14 +639,15 @@ public class Controller : MonoBehaviour
     }
     private void CheckMomentumSpeed()
     {
-        slideMomentum -= slideDeccelerate * Time.deltaTime;
+        //slideMomentum -= slideDeccelerate * Time.deltaTime;
         if(slideMomentum <= 0)
         {
-            sliding = false;
-            slidingTimer = 0f;
-            //Handle what happens when exit slide
-            cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
-            cc.height = normalHeight;
+            //sliding = false;
+            //slidingTimer = 0f;
+            ////Handle what happens when exit slide
+            //cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+            //cc.height = normalHeight;
+            
         }
     }
     #endregion
