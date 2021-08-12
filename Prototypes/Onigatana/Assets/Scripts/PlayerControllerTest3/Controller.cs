@@ -48,6 +48,7 @@ public class Controller : MonoBehaviour
     public float slideAccelerate;
     public float slideDeccelerate;
     public float minSlideTime;
+    public float slideCooldown;
 
     [Header ("Hookshot Variables")]
     [Tooltip("Range of the hookshot")]
@@ -97,6 +98,8 @@ public class Controller : MonoBehaviour
     [SerializeField] float slideMomentum;
     [SerializeField] float slidingTimer;
     [SerializeField] bool maxSlideSpeedHit;
+    [SerializeField] bool slideOnCooldown;
+    [SerializeField] float slideCooldownTimer;
 
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
@@ -483,7 +486,7 @@ public class Controller : MonoBehaviour
     }
     private void QueueSlide()
     {
-        if (slide.wasPressedThisFrame && !slideQueued)
+        if (slide.wasPressedThisFrame && !slideQueued && !slideOnCooldown)
         {
             if(inputDirection.magnitude > 0)
             {
@@ -587,12 +590,17 @@ public class Controller : MonoBehaviour
         if(currentSpeed < maxJumpStrafeSpeed)
         {
             currentSpeed += strafeAcceleration * Time.deltaTime;
-            if (currentSpeed >= maxJumpStrafeSpeed)
+            
+        }
+        if (currentSpeed >= maxJumpStrafeSpeed)
+        {
+            currentSpeed -= strafeJumpDecelleration;
+            if (currentSpeed - maxJumpStrafeSpeed <= 0.1)
             {
                 currentSpeed = maxJumpStrafeSpeed;
             }
         }
-       
+
     }
     void StrafeAccelerate()
     {
@@ -670,6 +678,7 @@ public class Controller : MonoBehaviour
         cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
         slidingTimer = 0f;
+        slideOnCooldown = true;
     }
     void CancelSlideForHookShot()
     {
@@ -689,6 +698,7 @@ public class Controller : MonoBehaviour
         DashTimer();
         DashCooldowns();
         HookShotCooldowns();
+        SlideCooldown();
     }
 
     private void DashCooldowns()
@@ -713,6 +723,19 @@ public class Controller : MonoBehaviour
             {
                 hookOnCooldown = false;
                 hookCooldownTimer = 0;
+            }
+        }
+    }
+
+    private void SlideCooldown()
+    {
+        if (slideOnCooldown)
+        {
+            slideCooldownTimer += Time.deltaTime;
+            if(slideCooldownTimer >= slideCooldown)
+            {
+                slideOnCooldown = false;
+                slideCooldownTimer = 0;
             }
         }
     }
