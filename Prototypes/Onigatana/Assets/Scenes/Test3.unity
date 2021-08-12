@@ -624,6 +624,7 @@ MonoBehaviour:
   hookCooldown: 0.5
   cameraTransform: {fileID: 1823858685}
   hookShotTransform: {fileID: 88582437}
+  crossHair: {fileID: 1255653565}
   queueJump: 0
   currentMoveDirection: {x: 0, y: 0, z: 0}
   lastMoveDirection: {x: 0, y: 0, z: 0}

@@ -1,8 +1,7 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
+using UnityEngine.UI;
 
 public class Controller : MonoBehaviour
 {
@@ -69,6 +68,9 @@ public class Controller : MonoBehaviour
     public Transform cameraTransform;
     public Transform hookShotTransform;
     LineRenderer lr;
+
+    [Header("UI Variables")]
+    public Image crossHair;
     #endregion
     
     #region Debugging and Private Variables
@@ -217,10 +219,20 @@ public class Controller : MonoBehaviour
     #region HookShot Functions
     private void CheckGrappleHook()
     {
+        if (Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
+        {
+            crossHair.gameObject.SetActive(true);
+        }
+        else
+        {
+            crossHair.gameObject.SetActive(false);
+        }
+
         if (input.Player.Hook.triggered)
         {
             CheckHookShotHit();
         }
+        
     }
 
     private void FiringHookShot()
@@ -260,6 +272,7 @@ public class Controller : MonoBehaviour
             hookShotSize = 0f;
             hookShotTransform.LookAt(hookHitPoint);
         }
+        
     }
 
     private void HookShotDirection()
