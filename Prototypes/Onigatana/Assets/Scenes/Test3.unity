@@ -491,7 +491,7 @@ MonoBehaviour:
   yMin: -70
   yMax: 70
   maxSpeed: 20
-  globalMaxSpeed: 100
+  globalMaxSpeed: 150
   maxJumpStrafeSpeed: 50
   maxStrafeSpeed: 25
   accelleration: 50
@@ -508,16 +508,16 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 512
-  addedSlideMomentum: 10
+  maxSlideMomentum: 50
   slideHeight: 2
   normalHeight: 2
-  slideDeccelerate: 25
+  slideAccelerate: 100
+  slideDeccelerate: 50
   minSlideTime: 0.5
   hookShotDistance: 50
   hookShotSpeed: 75
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 1.5
-  yMomentumScalarValue: 3
   momentumDrag: 3
   hookShotHand: {fileID: 925619487}
   hookCooldown: 0.5
@@ -538,6 +538,7 @@ MonoBehaviour:
   sliding: 0
   slideMomentum: 0
   slidingTimer: 0
+  maxSlideSpeedHit: 0
   hookShoting: 0
   hookShotFiring: 0
   hookShotMove: 0
