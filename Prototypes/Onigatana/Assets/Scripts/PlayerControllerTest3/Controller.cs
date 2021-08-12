@@ -42,6 +42,7 @@ public class Controller : MonoBehaviour
 
     [Header("Slide Variables")]
     public float maxSlideMomentum;
+    public float slideDirectionalScalar;
     public float slideHeight;
     public float normalHeight;
     public float slideAccelerate;
@@ -313,6 +314,14 @@ public class Controller : MonoBehaviour
         currentMoveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
         currentMoveDirection = transform.TransformDirection(currentMoveDirection);
     }
+    Vector3 GetSlideMoveDirection()
+    {
+        var inputS = input.Player.Move.ReadValue<Vector2>();
+        var slideDirection = new Vector3(inputS.x, 0, 0);
+        slideDirection = transform.TransformDirection(slideDirection);
+        return slideDirection * slideDirectionalScalar;
+    }
+
 
     private void AirMove()
     {
@@ -321,7 +330,7 @@ public class Controller : MonoBehaviour
 
         if (dashing)
         {
-            currentVelocity = dashSpeed * currentMoveDirection;
+            HandleDash();
             CancelHookShot();
             return;
         }
@@ -342,9 +351,8 @@ public class Controller : MonoBehaviour
         {
 
             JumpStrafeAccelerate();
-            currentVelocity = currentMoveDirection * currentSpeed;
-            currentVelocity.y = yspeed;
-            currentVelocity.y -= gravity * Time.deltaTime;
+            HandleVelocity();
+            HandleGravity(yspeed);
             return;
         }
 
@@ -358,18 +366,10 @@ public class Controller : MonoBehaviour
 
         else
         {
-            
-            lastMoveDirection = currentVelocity;
-            lastMoveDirection.y = 0;
-            lastMoveDirection.Normalize();
             Decellerate();
-            currentVelocity = lastMoveDirection * currentSpeed;
-            
         }
-        currentVelocity.y = yspeed;
-        currentVelocity.y -= gravity * Time.deltaTime;
+        HandleGravity(yspeed);
     }
-
     void GroundMove()
     {
         if (slideQueued)
@@ -377,7 +377,7 @@ public class Controller : MonoBehaviour
             sliding = true;
             slideQueued = false;
         }
-       
+
         if (hookShotMove)
         {
             CancelSlideForHookShot();
@@ -388,23 +388,24 @@ public class Controller : MonoBehaviour
         if (sliding)
         {
             HandleMomentumSpeed();
+            
             slidingTimer += Time.deltaTime;
             currentSpeed = currentSpeed + slideMomentum;
+            
             if (currentSpeed > globalMaxSpeed)
             {
                 currentSpeed = globalMaxSpeed;
             }
-            //CheckMomentumSpeed();
-            currentVelocity = currentMoveDirection * currentSpeed;
-            //currentVelocity.y = 0;
-
+            
+            HandleSlideVelocity();
+            HandleJump();
             return;
         }
         GetMoveDirection();
         
         if (dashing)
         {
-            currentVelocity = dashSpeed * currentMoveDirection;
+            HandleDash();
             return;
         }
        
@@ -419,7 +420,7 @@ public class Controller : MonoBehaviour
                 Accelerate();
             }
 
-            currentVelocity = currentMoveDirection * currentSpeed;
+            HandleVelocity();
         }
         else
         {
@@ -429,14 +430,40 @@ public class Controller : MonoBehaviour
             currentVelocity = lastMoveDirection * currentSpeed;
 
         }
+        HandleJump();
+    }
 
+    void HandleJump()
+    {
         if (queueJump)
         {
             currentVelocity.y = jumpSpeed;
             queueJump = false;
             grounded = false;
             groundedTimer = 0;
+            CancelSlideForHookShot();
         }
+    }
+
+    void HandleDash()
+    {
+        currentVelocity = dashSpeed * currentMoveDirection;
+    }
+
+    void HandleVelocity()
+    {
+        currentVelocity = currentMoveDirection * currentSpeed;
+    }
+
+    void HandleSlideVelocity()
+    {
+        currentVelocity = (currentMoveDirection + GetSlideMoveDirection()) * currentSpeed;
+    }
+
+    void HandleGravity(float speed)
+    {
+        currentVelocity.y = speed;
+        currentVelocity.y -= gravity * Time.deltaTime;
     }
     #endregion
 
@@ -586,6 +613,10 @@ public class Controller : MonoBehaviour
 
     private void Decellerate()
     {
+        lastMoveDirection = currentVelocity;
+        lastMoveDirection.y = 0;
+        lastMoveDirection.Normalize();
+
         if (currentSpeed > 0)
         {
             currentSpeed -= deccelleration * Time.deltaTime;
@@ -594,7 +625,8 @@ public class Controller : MonoBehaviour
                 currentSpeed = 0;
             }
         }
-        
+        currentVelocity = lastMoveDirection * currentSpeed;
+
     }
     #endregion
 
