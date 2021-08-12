@@ -373,25 +373,40 @@ public class Controller : MonoBehaviour
 
     void GroundMove()
     {
-        GetMoveDirection();
         if (slideQueued)
         {
             sliding = true;
             slideQueued = false;
         }
-
+       
         if (hookShotMove)
         {
             HookShotMove();
             return;
         }
+
+        if (sliding)
+        {
+            HandleMomentumSpeed();
+            slidingTimer += Time.deltaTime;
+            currentSpeed = currentSpeed + slideMomentum;
+            if (currentSpeed > globalMaxSpeed)
+            {
+                currentSpeed = globalMaxSpeed;
+            }
+            //CheckMomentumSpeed();
+            currentVelocity = currentMoveDirection * currentSpeed;
+
+            return;
+        }
+        GetMoveDirection();
+        
         if (dashing)
         {
             currentVelocity = dashSpeed * currentMoveDirection;
             return;
         }
-        
-
+       
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
             if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
@@ -414,18 +429,7 @@ public class Controller : MonoBehaviour
 
         }
 
-        if (sliding)
-        {
-            HandleMomentumSpeed();
-            slidingTimer += Time.deltaTime;
-            currentSpeed = currentSpeed + slideMomentum;
-            if (currentSpeed > globalMaxSpeed)
-            {
-                currentSpeed = globalMaxSpeed;
-            }
-            //CheckMomentumSpeed();
-            return;
-        }
+        
 
         if (queueJump)
         {
