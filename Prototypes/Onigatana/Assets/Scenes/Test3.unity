@@ -486,12 +486,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cameraHeight: 1
   slideCameraHeight: 0.25
-  xSensitivity: 20
-  ySensitivity: 20
+  xSensitivity: 50
+  ySensitivity: 50
   yMin: -70
   yMax: 70
   maxSpeed: 20
-  globalMaxSpeed: 150
+  globalMaxSpeed: 75
   maxJumpStrafeSpeed: 50
   maxStrafeSpeed: 25
   accelleration: 50
@@ -504,17 +504,17 @@ MonoBehaviour:
   dashCooldown: 1
   jumpSpeed: 17
   gravity: 50
-  groundedTime: 0
+  groundedTime: 0.1
   layerMask:
     serializedVersion: 2
     m_Bits: 512
   maxSlideMomentum: 50
   slideHeight: 2
   normalHeight: 2
-  slideAccelerate: 100
-  slideDeccelerate: 50
-  minSlideTime: 0.5
-  hookShotDistance: 50
+  slideAccelerate: 50
+  slideDeccelerate: 225
+  minSlideTime: 0.35
+  hookShotDistance: 60
   hookShotSpeed: 75
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 1.5
@@ -8266,7 +8266,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1823858682}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: -0.061658274, w: 0.9980973}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -8274,7 +8274,7 @@ Transform:
   - {fileID: 88582437}
   m_Father: {fileID: 330733466}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -7.07}
 --- !u!114 &1823858686
 MonoBehaviour:
   m_ObjectHideFlags: 0
