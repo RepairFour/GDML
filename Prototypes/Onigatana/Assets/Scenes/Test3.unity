@@ -509,6 +509,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 512
   maxSlideMomentum: 50
+  slideDirectionalScalar: 1
   slideHeight: 2
   normalHeight: 2
   slideAccelerate: 50
