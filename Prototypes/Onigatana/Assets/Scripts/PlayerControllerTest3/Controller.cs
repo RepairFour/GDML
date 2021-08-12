@@ -145,7 +145,6 @@ public class Controller : MonoBehaviour
             groundedTimer += Time.deltaTime;
         }
 
-        var horizontalVelocity = new Vector3(currentVelocity.x, 0, currentVelocity.z);
         var mouseVector = input.Player.Mouse.ReadValue<Vector2>();
 
         rotationX -= mouseVector.y * Time.deltaTime * xSensitivity;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().y;
@@ -185,7 +184,7 @@ public class Controller : MonoBehaviour
         {
             GroundMove();
         }
-        if (!grounded || queueJump)
+        if (!grounded /*|| queueJump*/)
         {
             AirMove();
         }
@@ -381,6 +380,7 @@ public class Controller : MonoBehaviour
        
         if (hookShotMove)
         {
+            CancelSlideForHookShot();
             HookShotMove();
             return;
         }
@@ -396,6 +396,7 @@ public class Controller : MonoBehaviour
             }
             //CheckMomentumSpeed();
             currentVelocity = currentMoveDirection * currentSpeed;
+            //currentVelocity.y = 0;
 
             return;
         }
@@ -428,8 +429,6 @@ public class Controller : MonoBehaviour
             currentVelocity = lastMoveDirection * currentSpeed;
 
         }
-
-        
 
         if (queueJump)
         {
@@ -468,17 +467,11 @@ public class Controller : MonoBehaviour
             || (!slide.isPressed && slidingTimer > minSlideTime))
         {
             slideQueued = false;
-            sliding = false;
-            cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
-            cc.height = normalHeight;
-            var charaterPosition = gameObject.transform.position;
-            charaterPosition.y = cc.height;
-            gameObject.transform.position = charaterPosition;
             slidingTimer = 0f;
             slideMomentum = 0f;
-            maxSlideSpeedHit = false;
-
+            maxSlideSpeedHit = true;
         }
+        
     }
     #endregion
 
@@ -608,7 +601,7 @@ public class Controller : MonoBehaviour
     #region SlideFunctions
     private void HandleMomentumSpeed ()
     {
-        if (inputDirection.magnitude > 0)
+        if (sliding)
         {
             if (!maxSlideSpeedHit)
             {
@@ -625,13 +618,7 @@ public class Controller : MonoBehaviour
                 currentSpeed -= slideDeccelerate * Time.deltaTime;
                 if(currentSpeed <= maxSpeed)
                 {
-                    currentSpeed = maxSpeed;
-                    slideMomentum = 0;
-                    maxSlideSpeedHit = false;
-                    sliding = false;
-                    cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
-                    cc.height = normalHeight;
-
+                    CancelSlide();
                 }
             }
             
@@ -641,19 +628,27 @@ public class Controller : MonoBehaviour
             slideMomentum = 0;
         }
     }
-    private void CheckMomentumSpeed()
+
+    void CancelSlide()
     {
-        //slideMomentum -= slideDeccelerate * Time.deltaTime;
-        if(slideMomentum <= 0)
-        {
-            //sliding = false;
-            //slidingTimer = 0f;
-            ////Handle what happens when exit slide
-            //cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
-            //cc.height = normalHeight;
-            
-        }
+        currentSpeed = maxSpeed;
+        slideMomentum = 0;
+        maxSlideSpeedHit = false;
+        sliding = false;
+        cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+        cc.height = normalHeight;
+        slidingTimer = 0f;
     }
+    void CancelSlideForHookShot()
+    {
+        slideMomentum = 0;
+        maxSlideSpeedHit = false;
+        sliding = false;
+        cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+        cc.height = normalHeight;
+        slidingTimer = 0f;
+    }
+
     #endregion
 
     #region Cooldown Functions
