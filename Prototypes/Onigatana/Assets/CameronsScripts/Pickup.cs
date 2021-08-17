@@ -12,12 +12,14 @@ public class Pickup : MonoBehaviour
 	}
 	[SerializeField] PickupType pickupType;
 	[SerializeField] int value;
-	private void OnCollisionEnter(Collision collision)
+	
+
+	private void OnTriggerEnter(Collider other)
 	{
-		PlayerStats playerStats = collision.gameObject.GetComponent<PlayerStats>();
+		PlayerStats playerStats = other.gameObject.GetComponent<PlayerStats>();
 		if (playerStats != null)
 		{
-			switch(pickupType)
+			switch (pickupType)
 			{
 				case PickupType.health:
 					playerStats.Heal(value);
