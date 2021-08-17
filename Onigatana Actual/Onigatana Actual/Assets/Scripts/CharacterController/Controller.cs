@@ -391,6 +391,7 @@ public class Controller : MonoBehaviour
            
             Accelerate();
             currentVelocity = currentMoveDirection * currentSpeed;
+            //currentVelocity.y = 0;
             
         }
 
@@ -461,6 +462,7 @@ public class Controller : MonoBehaviour
 
         }
         HandleJump();
+        //HandleGravity(0);
     }
 
     void HandleJump()
@@ -555,6 +557,7 @@ public class Controller : MonoBehaviour
             {
                 grounded = true;
                 Debug.Log(hit.Length);
+                
                 //if (c.distance < cc.height / 2)
                 //{
                 //    cc.Move(Vector3.up * 2 * Time.deltaTime);
