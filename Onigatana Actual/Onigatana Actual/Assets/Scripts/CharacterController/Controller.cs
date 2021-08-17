@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
@@ -112,6 +113,8 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 momentum;
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
+
+    [SerializeField] RaycastHit[] hit;
     bool crouch;
     PlayerMap input;
 
@@ -144,8 +147,14 @@ public class Controller : MonoBehaviour
         
     }
 
+    private void FixedUpdate()
+    {
+        CheckGrounded();
+    }
+
     private void Update()
     {
+        
         if (grounded)
         {
             groundedTimer += Time.deltaTime;
@@ -174,7 +183,7 @@ public class Controller : MonoBehaviour
         {
             CheckGrappleHook();
         }
-        CheckGrounded();
+       
         QueueJump();
         QueueSlide();
         CheckDash();
@@ -527,26 +536,49 @@ public class Controller : MonoBehaviour
     void CheckGrounded()
     {
         
-        RaycastHit hit;
+        
         
         Ray ray = new Ray(transform.position, transform.up * -1);
-        Debug.DrawRay(transform.position, transform.up * -1, Color.red);
+        //Debug.DrawRay(transform.position, transform.up * -1, Color.red);
+        //Half characters height + 0.1
 
+        //DrawBoxCast.DrawBoxCastBox(transform.position, new Vector3(0.5f, 0.25f, 0.5f), Quaternion.identity, transform.up * -1, cc.height / 2, Color.red);
 
-                                          //Half characters height + 0.1
-        if (Physics.Raycast(ray, out hit, cc.height/2 + 0.1f, layerMask))
+        hit = Physics.SphereCastAll(ray, 0.15f, cc.height / 2, layerMask);
+        //hit = Physics.BoxCastAll(transform.position, new Vector3(0.5f, 0.25f, 0.5f),
+        //    transform.up * -1, Quaternion.identity,
+        //    cc.height / 2, layerMask);
+        
+        if (hit.Length > 0)
         {
-            grounded = true;
-            Debug.Log(hit.collider.name);
-            
-            if(hit.distance < cc.height/2)
+            foreach (RaycastHit c in hit)
             {
-                //var characterPosition = transform.position;
-                //characterPosition.y = cc.height;
-                //transform.position = characterPosition;
-                cc.Move(Vector3.up * 2 * Time.deltaTime);
+                grounded = true;
+                Debug.Log(hit.Length);
+                //if (c.distance < cc.height / 2)
+                //{
+                //    cc.Move(Vector3.up * 2 * Time.deltaTime);
+                //}
             }
         }
+            
+            //grounded = true;
+            //Debug.Log(hit.collider.name);
+            //
+            //if (hit.distance < cc.height / 2)
+            //{
+            //    //var characterPosition = transform.position;
+            //    //characterPosition.y = cc.height;
+            //    //transform.position = characterPosition;
+            //    cc.Move(Vector3.up * 2 * Time.deltaTime);
+            //}
+
+    
+        
+        //if (Physics.Raycast(ray, out hit, cc.height/2 + 0.1f, layerMask))
+        //{
+        //    
+        //}
         else
         {
             grounded = false;
