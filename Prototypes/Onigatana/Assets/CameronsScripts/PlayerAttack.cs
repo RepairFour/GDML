@@ -48,24 +48,27 @@ public class PlayerAttack : MonoBehaviour
             Debug.DrawRay(transform.position, nme.transform.position - transform.position, Color.green);
         }
 
-        if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
-		{
-            gameObject.transform.rotation = Camera.main.transform.rotation;
-            Debug.Log("Attacking");
-            weaponSlash.SetTrigger("Attack");
-            attackCDTimer = 0;
-            RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward, gameObject.transform.rotation, distance, layerhit);
-            RaycastHit[] hitsSecondary = Physics.BoxCastAll(transform.position, halfExtentsSecondary, gameObject.transform.forward, gameObject.transform.rotation, distanceSecondary, layerhitSecondary);
+        if (Application.isPlaying)
+        {
+            if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
+            {
+                gameObject.transform.rotation = Camera.main.transform.rotation;
+                Debug.Log("Attacking");
+                weaponSlash.SetTrigger("Attack");
+                attackCDTimer = 0;
+                RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward, gameObject.transform.rotation, distance, layerhit);
+                RaycastHit[] hitsSecondary = Physics.BoxCastAll(transform.position, halfExtentsSecondary, gameObject.transform.forward, gameObject.transform.rotation, distanceSecondary, layerhitSecondary);
 
-            //hit the enemies hitting the secondary hitbox first
-            enemiesHit.Clear();
-            HitEnemies(hitsSecondary, dmgSecondary);
-            HitEnemies(hits, dmg);           
+                //hit the enemies hitting the secondary hitbox first
+                enemiesHit.Clear();
+                HitEnemies(hitsSecondary, dmgSecondary);
+                HitEnemies(hits, dmg);
 
-        }
-		else
-		{
-            attackCDTimer += Time.deltaTime;
+            }
+            else
+            {
+                attackCDTimer += Time.deltaTime;
+            }
         }
     }
 

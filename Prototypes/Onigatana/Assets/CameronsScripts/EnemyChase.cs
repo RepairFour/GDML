@@ -13,11 +13,15 @@ public class EnemyChase : MonoBehaviour
     bool finishedPatrol = false;
     bool chasePlayer = false;
 
+    EnemyAttack enemyAttack;
+    [SerializeField] float rangedDesiredDistance;
+
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerStats>();
         agent = GetComponent<NavMeshAgent>();
+        enemyAttack = GetComponent<EnemyAttack>();
     }
 
     // Update is called once per frame
@@ -52,7 +56,17 @@ public class EnemyChase : MonoBehaviour
         }
 		else // chase the player
 		{
-            agent.destination = player.transform.position;
+            enemyAttack.attackMode = true;
+            if (enemyAttack.melee)
+            {
+                agent.destination = player.transform.position;
+                
+            }
+			else
+			{
+                //the desired distance away from the player to shoot him
+                agent.destination = player.transform.position - ((player.transform.position - transform.position).normalized  * rangedDesiredDistance); 
+            }
         }
         
     }
