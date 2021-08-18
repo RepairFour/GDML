@@ -106,7 +106,12 @@ GameObject:
   - component: {fileID: 695064047465506036}
   - component: {fileID: 695064047465506038}
   - component: {fileID: 1107168495503103489}
+<<<<<<< Updated upstream
   m_Layer: 8
+=======
+  - component: {fileID: 945691312}
+  m_Layer: 0
+>>>>>>> Stashed changes
   m_Name: Character
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -234,6 +239,20 @@ MonoBehaviour:
   momentum: {x: 0, y: 0, z: 0}
   hookCooldownTimer: 0
   hookOnCooldown: 0
+--- !u!136 &945691312
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695064047465506041}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  m_Radius: 0.5
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &695064047634165591
 GameObject:
   m_ObjectHideFlags: 0
@@ -5515,7 +5534,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 9999
   field of view: 90
   orthographic: 0
   orthographic size: 5
