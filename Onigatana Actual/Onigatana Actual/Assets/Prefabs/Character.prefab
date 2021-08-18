@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 695064047351294877}
   - component: {fileID: 695064047351294876}
   - component: {fileID: 695064047351294875}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -106,9 +106,9 @@ GameObject:
   - component: {fileID: 695064047465506036}
   - component: {fileID: 695064047465506038}
   - component: {fileID: 1107168495503103489}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -185,7 +185,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   maxSlideMomentum: 50
-  slideDirectionalScalar: 1
+  slideDirectionalScalar: 0.5
   slideHeight: 2
   normalHeight: 2
   slideAccelerate: 50
@@ -197,12 +197,17 @@ MonoBehaviour:
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 1.5
   momentumDrag: 3
+  hookShotMask:
+    serializedVersion: 2
+    m_Bits: 247
   hookShotHand: {fileID: 695064047943345777}
   hookCooldown: 0.5
   cameraTransform: {fileID: 695064049159826579}
   hookShotTransform: {fileID: 695064047705561675}
   crossHair: {fileID: 695064047351294876}
   queueJump: 0
+  jumpingTimer: 0
+  minJumpingTimer: 0.01
   currentMoveDirection: {x: 0, y: 0, z: 0}
   lastMoveDirection: {x: 0, y: 0, z: 0}
   inputDirection: {x: 0, y: 0, z: 0}
@@ -241,7 +246,7 @@ GameObject:
   - component: {fileID: 695064047634165587}
   - component: {fileID: 695064047634165586}
   - component: {fileID: 695064047634165589}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -339,7 +344,7 @@ GameObject:
   m_Component:
   - component: {fileID: 695064047705561675}
   - component: {fileID: 695064047705561672}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GrappleSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -472,7 +477,7 @@ GameObject:
   - component: {fileID: 695064047943345740}
   - component: {fileID: 695064047943345743}
   - component: {fileID: 695064047943345742}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HookShotHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -567,7 +572,7 @@ GameObject:
   - component: {fileID: 695064048598916789}
   - component: {fileID: 695064048598916788}
   - component: {fileID: 695064048598916791}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Particle System
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5386,7 +5391,7 @@ GameObject:
   - component: {fileID: 695064048654545874}
   - component: {fileID: 695064048654545872}
   - component: {fileID: 695064048654545875}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5463,7 +5468,7 @@ GameObject:
   - component: {fileID: 695064049159826578}
   - component: {fileID: 695064049159826581}
   - component: {fileID: 695064049159826576}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Main Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -5635,6 +5640,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: de31d9066882da64ebff07e62b4c9f48, type: 3}
       propertyPath: m_Name
       value: katana
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: de31d9066882da64ebff07e62b4c9f48, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: de31d9066882da64ebff07e62b4c9f48, type: 3}
