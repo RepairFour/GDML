@@ -429,7 +429,14 @@ public class Controller : MonoBehaviour
     }
     void GroundMove()
     {
-        
+        if (currentMoveDirection.magnitude == 0 && !sliding)
+        {
+            Decellerate();
+            //momentumExtraSpeed = 0;
+            momentum = Vector3.zero;
+            slideMomentum = 0;
+        }
+
         if (slideQueued)
         {
             sliding = true;
