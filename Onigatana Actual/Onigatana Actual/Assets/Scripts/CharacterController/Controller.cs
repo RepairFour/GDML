@@ -224,6 +224,8 @@ public class Controller : MonoBehaviour
                 momentum = Vector3.zero;
             }
         }
+
+        
     }
     #endregion
 
@@ -419,6 +421,13 @@ public class Controller : MonoBehaviour
     }
     void GroundMove()
     {
+        if(currentMoveDirection.magnitude == 0)
+        {
+            Decellerate();
+            momentumExtraSpeed = 0;
+            slideMomentum = 0;
+        }
+
         if (slideQueued)
         {
             sliding = true;
@@ -477,6 +486,7 @@ public class Controller : MonoBehaviour
             currentVelocity = lastMoveDirection * currentSpeed;
 
         }
+        
         HandleJump();
         //HandleGravity(0);
     }
@@ -534,7 +544,7 @@ public class Controller : MonoBehaviour
     {
         if (slide.wasPressedThisFrame && !slideQueued && !slideOnCooldown)
         {
-            if(inputDirection.magnitude > 0)
+            if(currentSpeed >= maxSpeed)
             {
                 slideQueued = true;
             }
@@ -555,11 +565,12 @@ public class Controller : MonoBehaviour
     void CheckGrounded()
     {
         Ray ray = new Ray(transform.position, transform.up * -1);
-        if (jumpingTimer >= minJumpingTimer)
-        {
-            hit = Physics.SphereCastAll(ray, 0.1f, cc.height / 2, layerMask);
 
-            if (hit.Length > 0)
+        hit = Physics.SphereCastAll(ray, 0.1f, cc.height / 2 + 0.1f, layerMask);
+
+        if (hit.Length > 0)
+        {
+            if (jumpingTimer >= minJumpingTimer)
             {
                 foreach (RaycastHit c in hit)
                 {
@@ -567,14 +578,16 @@ public class Controller : MonoBehaviour
                     Debug.Log(hit.Length);
                     jumpingTimer = 0;
                 }
-                
             }
+            
         }
         else
         {
             grounded = false;
             groundedTimer = 0;
         }
+        
+        
 
         RaycastHit gHit;
         if (Physics.Raycast(ray, out gHit, cc.height / 2, layerMask))
