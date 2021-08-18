@@ -50,6 +50,7 @@ public class PlayerStats : MonoBehaviour
 			armour = 0;
 			health -= dmgRemaining;
 		}
+		Debug.Log(health);
 	}
 	public void ModArmour(int amount)
 	{
