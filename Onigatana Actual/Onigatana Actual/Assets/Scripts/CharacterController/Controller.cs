@@ -61,7 +61,9 @@ public class Controller : MonoBehaviour
     public float momentumExtraSpeed = 7f;
     [Tooltip("How quickly momentum drops off once hookshot is done")]
     public float momentumDrag = 3f;
+    public LayerMask hookShotMask;
     public Transform hookShotHand;
+
    
     public float hookCooldown;
 
@@ -82,6 +84,8 @@ public class Controller : MonoBehaviour
 
     [Header("Debugging Variables")]
     [SerializeField] bool queueJump;
+    [SerializeField] float jumpingTimer;
+    [SerializeField] float minJumpingTimer = 0.01f;
 
     [SerializeField] Vector3 currentMoveDirection;
     [SerializeField] Vector3 lastMoveDirection;
@@ -146,18 +150,16 @@ public class Controller : MonoBehaviour
         lr = hookShotTransform.gameObject.GetComponent<LineRenderer>();
         
     }
-
-    private void FixedUpdate()
-    {
-        CheckGrounded();
-    }
-
     private void Update()
     {
-        
+        CheckGrounded();
         if (grounded)
         {
             groundedTimer += Time.deltaTime;
+        }
+        else
+        {
+            jumpingTimer += Time.deltaTime;
         }
 
         var mouseVector = input.Player.Mouse.ReadValue<Vector2>();
@@ -228,9 +230,16 @@ public class Controller : MonoBehaviour
     #region HookShot Functions
     private void CheckGrappleHook()
     {
-        if (Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
+        if (Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance, hookShotMask))
         {
-            crossHair.gameObject.SetActive(true);
+            if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
+            {
+                crossHair.gameObject.SetActive(true);
+            }
+            else
+            {
+                crossHair.gameObject.SetActive(false);
+            }
         }
         else
         {
@@ -274,12 +283,19 @@ public class Controller : MonoBehaviour
     {
         if(Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
         {
-            hookHitPoint = hit.point;
-            Debug.Log(hit.collider.name);
-            hookShotFiring = true;
-            HookShotDirection();
-            hookShotSize = 0f;
-            hookShotTransform.LookAt(hookHitPoint);
+            if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
+            {
+                hookHitPoint = hit.point;
+                Debug.Log(hit.collider.name);
+                hookShotFiring = true;
+                HookShotDirection();
+                hookShotSize = 0f;
+                hookShotTransform.LookAt(hookHitPoint);
+            }
+            else
+            {
+                return;
+            }
         }
         
     }
@@ -470,6 +486,7 @@ public class Controller : MonoBehaviour
         if (queueJump)
         {
             currentVelocity.y = jumpSpeed;
+            jumpingTimer = 0;
             queueJump = false;
             grounded = false;
             groundedTimer = 0;
@@ -522,8 +539,8 @@ public class Controller : MonoBehaviour
                 slideQueued = true;
             }
         }
-        if ((slide.wasReleasedThisFrame && slidingTimer > minSlideTime)
-            || (!slide.isPressed && slidingTimer > minSlideTime))
+        
+        if (slidingTimer > minSlideTime)
         {
             slideQueued = false;
             slidingTimer = 0f;
@@ -537,55 +554,35 @@ public class Controller : MonoBehaviour
     #region Grounded
     void CheckGrounded()
     {
-        
-        
-        
         Ray ray = new Ray(transform.position, transform.up * -1);
-        //Debug.DrawRay(transform.position, transform.up * -1, Color.red);
-        //Half characters height + 0.1
-
-        //DrawBoxCast.DrawBoxCastBox(transform.position, new Vector3(0.5f, 0.25f, 0.5f), Quaternion.identity, transform.up * -1, cc.height / 2, Color.red);
-
-        hit = Physics.SphereCastAll(ray, 0.15f, cc.height / 2, layerMask);
-        //hit = Physics.BoxCastAll(transform.position, new Vector3(0.5f, 0.25f, 0.5f),
-        //    transform.up * -1, Quaternion.identity,
-        //    cc.height / 2, layerMask);
-        
-        if (hit.Length > 0)
+        if (jumpingTimer >= minJumpingTimer)
         {
-            foreach (RaycastHit c in hit)
+            hit = Physics.SphereCastAll(ray, 0.1f, cc.height / 2, layerMask);
+
+            if (hit.Length > 0)
             {
-                grounded = true;
-                Debug.Log(hit.Length);
+                foreach (RaycastHit c in hit)
+                {
+                    grounded = true;
+                    Debug.Log(hit.Length);
+                    jumpingTimer = 0;
+                }
                 
-                //if (c.distance < cc.height / 2)
-                //{
-                //    cc.Move(Vector3.up * 2 * Time.deltaTime);
-                //}
             }
         }
-            
-            //grounded = true;
-            //Debug.Log(hit.collider.name);
-            //
-            //if (hit.distance < cc.height / 2)
-            //{
-            //    //var characterPosition = transform.position;
-            //    //characterPosition.y = cc.height;
-            //    //transform.position = characterPosition;
-            //    cc.Move(Vector3.up * 2 * Time.deltaTime);
-            //}
-
-    
-        
-        //if (Physics.Raycast(ray, out hit, cc.height/2 + 0.1f, layerMask))
-        //{
-        //    
-        //}
         else
         {
             grounded = false;
             groundedTimer = 0;
+        }
+
+        RaycastHit gHit;
+        if (Physics.Raycast(ray, out gHit, cc.height / 2, layerMask))
+        {
+            if (gHit.distance < cc.height / 2)
+            {
+                cc.Move(Vector3.up * 2 * Time.deltaTime);
+            }
         }
     }
     #endregion
