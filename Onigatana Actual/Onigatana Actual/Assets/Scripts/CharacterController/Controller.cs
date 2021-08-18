@@ -546,7 +546,7 @@ public class Controller : MonoBehaviour
     {
         if (slide.wasPressedThisFrame && !slideQueued && !slideOnCooldown)
         {
-            if(currentSpeed >= 0)
+            if(currentSpeed > 0)
             {
                 slideQueued = true;
             }
