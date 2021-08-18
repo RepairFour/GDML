@@ -239,10 +239,18 @@ public class Controller : MonoBehaviour
     {
         if (Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance, hookShotMask))
         {
-            if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
+            if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
             {
-                crossHair.gameObject.SetActive(true);
+                if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
+                {
+                    crossHair.gameObject.SetActive(true);
+                }
+                else
+                {
+                    crossHair.gameObject.SetActive(false);
+                }
             }
+
             else
             {
                 crossHair.gameObject.SetActive(false);
@@ -290,14 +298,22 @@ public class Controller : MonoBehaviour
     {
         if(Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
         {
-            if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
+
+            if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
             {
-                hookHitPoint = hit.point;
-                Debug.Log(hit.collider.name);
-                hookShotFiring = true;
-                HookShotDirection();
-                hookShotSize = 0f;
-                hookShotTransform.LookAt(hookHitPoint);
+                if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
+                {
+                    hookHitPoint = hit.point;
+                    Debug.Log(hit.collider.name);
+                    hookShotFiring = true;
+                    HookShotDirection();
+                    hookShotSize = 0f;
+                    hookShotTransform.LookAt(hookHitPoint);
+                }
+                else
+                {
+                    return;
+                }
             }
             else
             {
