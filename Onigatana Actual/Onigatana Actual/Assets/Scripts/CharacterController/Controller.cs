@@ -373,6 +373,14 @@ public class Controller : MonoBehaviour
 
     private void AirMove()
     {
+        if (currentMoveDirection.magnitude == 0)
+        {
+            AirDecellerate();
+            //momentumExtraSpeed = 0;
+            momentum = Vector3.zero;
+            slideMomentum = 0;
+        }
+
         float yspeed = currentVelocity.y;
         GetMoveDirection();
 
@@ -421,14 +429,7 @@ public class Controller : MonoBehaviour
     }
     void GroundMove()
     {
-        if(currentMoveDirection.magnitude == 0)
-        {
-            Decellerate();
-            //momentumExtraSpeed = 0;
-            momentum = Vector3.zero;
-            slideMomentum = 0;
-        }
-
+        
         if (slideQueued)
         {
             sliding = true;
@@ -699,6 +700,25 @@ public class Controller : MonoBehaviour
         }
         currentVelocity = lastMoveDirection * currentSpeed;
 
+    }
+
+    private void AirDecellerate()
+    {
+        lastMoveDirection = currentVelocity;
+        float yspeed = lastMoveDirection.y;
+        lastMoveDirection.y = 0;
+        lastMoveDirection.Normalize();
+
+        if (currentSpeed > 0)
+        {
+            currentSpeed -= deccelleration * Time.deltaTime;
+            if (currentSpeed <= 0)
+            {
+                currentSpeed = 0;
+            }
+        }
+        currentVelocity = lastMoveDirection * currentSpeed;
+        currentVelocity.y = yspeed;
     }
     #endregion
 
