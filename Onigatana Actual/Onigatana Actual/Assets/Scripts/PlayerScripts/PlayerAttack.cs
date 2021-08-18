@@ -19,7 +19,7 @@ public class PlayerAttack : MonoBehaviour
 
     [Header("Misc")]
     [SerializeField] bool showHitBox;
-    //[SerializeField] Animator weaponSlash;
+    [SerializeField] Animator weaponSlash;
     [SerializeField][Min(0)] float attackCD;
     [SerializeField] LayerMask layerToIgnore;
     [SerializeField] GameObject nme; // to be removed
@@ -50,11 +50,11 @@ public class PlayerAttack : MonoBehaviour
 
         if (Application.isPlaying)
         {
-            if (inputs.Player.Attack.triggered && /*weaponSlash.GetBool("Attack") == false &&*/ attackCDTimer > attackCD == true)
+            if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
             {
                 gameObject.transform.rotation = Camera.main.transform.rotation;
                 Debug.Log("Attacking");
-                //weaponSlash.SetTrigger("Attack");
+                weaponSlash.SetTrigger("Attack");
                 attackCDTimer = 0;
                 RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward, gameObject.transform.rotation, distance, layerhit);
                 RaycastHit[] hitsSecondary = Physics.BoxCastAll(transform.position, halfExtentsSecondary, gameObject.transform.forward, gameObject.transform.rotation, distanceSecondary, layerhitSecondary);

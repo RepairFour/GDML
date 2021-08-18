@@ -645,6 +645,7 @@ MonoBehaviour:
     m_Bits: 256
   dmgSecondary: 2
   showHitBox: 0
+  weaponSlash: {fileID: 1128590249}
   attackCD: 0
   layerToIgnore:
     serializedVersion: 2
@@ -6371,6 +6372,25 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
+--- !u!95 &1128590249
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148994956347}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 02f5e06079f85704086dee82365e8d90, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1001 &1047617898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6442,8 +6462,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: hand test
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 76c64ecd0680b4a4c9a4ab3b83642fad, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 76c64ecd0680b4a4c9a4ab3b83642fad, type: 3}
+--- !u!1 &919132148994956347 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 76c64ecd0680b4a4c9a4ab3b83642fad, type: 3}
+  m_PrefabInstance: {fileID: 1047617898}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &543450652660729473 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 76c64ecd0680b4a4c9a4ab3b83642fad, type: 3}
