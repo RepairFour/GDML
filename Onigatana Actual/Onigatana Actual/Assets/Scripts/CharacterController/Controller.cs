@@ -73,7 +73,10 @@ public class Controller : MonoBehaviour
     LineRenderer lr;
 
     [Header("UI Variables")]
+    public ParticleSystem animeLines;
     public Image crossHair;
+    public Slider dash1;
+    public Slider dash2;
     #endregion
     
     #region Debugging and Private Variables
@@ -99,6 +102,8 @@ public class Controller : MonoBehaviour
     [SerializeField] float dashingTimer;
     [SerializeField] float dashCooldownTimer;
     [SerializeField] int numberOfDashesCurrent;
+    [SerializeField] bool dashNoMove;
+    [SerializeField] Vector3 dashNoMoveDirection;
 
     [SerializeField] bool slideQueued;
     [SerializeField] bool sliding;
@@ -515,7 +520,15 @@ public class Controller : MonoBehaviour
 
     void HandleDash()
     {
-        currentVelocity = dashSpeed * currentMoveDirection;
+        if (dashNoMove)
+        {
+            currentVelocity = dashSpeed * dashNoMoveDirection;
+        }
+        else
+        {
+            currentVelocity = dashSpeed * currentMoveDirection;
+        }
+        animeLines.gameObject.SetActive(true);
     }
 
     void HandleVelocity()
@@ -616,13 +629,23 @@ public class Controller : MonoBehaviour
         {
             return;
         }
-        if (input.Player.Dash.triggered && numberOfDashesCurrent > 0)
+        if (input.Player.Dash.triggered && numberOfDashesCurrent > 0 && inputDirection.magnitude > 0)
         {
             dashing = true;
+            dashNoMove = false;
             //hookShotCancelled = true;
             numberOfDashesCurrent--;
-
+            animeLines.gameObject.SetActive(true);
         }
+        else if(input.Player.Dash.triggered && numberOfDashesCurrent > 0 && inputDirection.magnitude == 0)
+        {
+            dashing = true;
+            dashNoMove = true;
+            dashNoMoveDirection = transform.forward;
+            numberOfDashesCurrent--;
+            animeLines.gameObject.SetActive(true);
+        }
+        
     }
 
     void DashTimer()
@@ -636,6 +659,7 @@ public class Controller : MonoBehaviour
         {
             dashing = false;
             dashingTimer = 0f;
+            animeLines.gameObject.SetActive(false);
         }
     }
     #endregion
@@ -803,6 +827,28 @@ public class Controller : MonoBehaviour
                 dashCooldownTimer = 0;
             }
         }
+        
+        if(numberOfDashesCurrent < maxDashAmount)
+        {
+            dash1.gameObject.SetActive(true);
+            dash2.gameObject.SetActive(true);
+            if(numberOfDashesCurrent < 1)
+            {
+                dash1.value = dashCooldownTimer / dashCooldown;
+                dash2.value = 0;
+            }
+            if(numberOfDashesCurrent >= 1 && numberOfDashesCurrent < 2)
+            {
+                dash1.value = 1;
+                dash2.value = dashCooldownTimer / dashCooldown;
+            }
+        }
+        if (numberOfDashesCurrent == maxDashAmount)
+        {
+            dash1.value = 1;
+            dash2.value = 1;
+        }
+
     }
 
     private void HookShotCooldowns()
