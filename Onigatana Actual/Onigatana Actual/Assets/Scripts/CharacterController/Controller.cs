@@ -424,7 +424,8 @@ public class Controller : MonoBehaviour
         if(currentMoveDirection.magnitude == 0)
         {
             Decellerate();
-            momentumExtraSpeed = 0;
+            //momentumExtraSpeed = 0;
+            momentum = Vector3.zero;
             slideMomentum = 0;
         }
 
