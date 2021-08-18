@@ -8,15 +8,17 @@ public class EnemyProjectile : MonoBehaviour
 	public int dmg;
 	[SerializeField] float lifeSpan;
 	float timeAlive = 0;
+	bool hitSomething = false;
 	private void OnTriggerEnter(Collider other)
 	{
-		if (other.GetComponent<EnemyStats>() == null)
+		if (other.GetComponent<EnemyStats>() == null && !hitSomething)
 		{
 			if (other.GetComponent<PlayerStats>() != null)
 			{
 				other.GetComponent<PlayerStats>().Hurt(dmg);
 			}
 			Destroy(gameObject);
+			hitSomething = true;
 		}
 	}
 

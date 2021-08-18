@@ -35,13 +35,25 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-	private void OnCollisionEnter(Collision collision)
-	{
+	//private void OnCollisionEnter(Collision collision)
+	//{
+ //       if (melee && timer > timerMax)
+ //       {
+ //           var player = collision.gameObject.GetComponent<PlayerStats>();
+ //           if (player != null)
+	//		{
+ //               player.Hurt(dmgPerHit);
+ //               timer = 0;
+ //           }
+ //       }
+ //   }
+	private void OnTriggerEnter(Collider other)
+    {
         if (melee && timer > timerMax)
         {
-            var player = collision.gameObject.GetComponent<PlayerStats>();
+            var player = other.GetComponent<PlayerStats>();
             if (player != null)
-			{
+            {
                 player.Hurt(dmgPerHit);
                 timer = 0;
             }
