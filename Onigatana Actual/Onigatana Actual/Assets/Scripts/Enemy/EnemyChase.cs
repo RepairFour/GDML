@@ -121,10 +121,12 @@ public class EnemyChase : MonoBehaviour
 
     private void CanISeeThePlayer()
 	{
+        float visionDistance = 100;
         // try to see player 
         RaycastHit hit;
         Vector3 directionToPlayer = player.transform.position - transform.position;
-        if (Physics.Raycast(transform.position, directionToPlayer, out hit))
+        Debug.DrawRay(transform.position, directionToPlayer.normalized * visionDistance, Color.red);
+        if (Physics.Raycast(transform.position, directionToPlayer, out hit,visionDistance))
         {
             if (hit.collider.GetComponent<PlayerStats>() != null && Vector3.Dot(transform.forward, directionToPlayer.normalized) > 0.25)
             {

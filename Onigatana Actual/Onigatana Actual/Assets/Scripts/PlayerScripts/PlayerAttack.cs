@@ -22,7 +22,6 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] Animator weaponSlash;
     [SerializeField][Min(0)] float attackCD;
     [SerializeField] LayerMask layerToIgnore;
-    [SerializeField] GameObject nme; // to be removed
 
     List<EnemyStats> enemiesHit;
 
@@ -44,8 +43,7 @@ public class PlayerAttack : MonoBehaviour
         if (showHitBox)
         {
             ExtDebug.DrawBoxCastBox(transform.position, halfExtents, gameObject.transform.rotation, gameObject.transform.forward, distance, Color.blue);
-            ExtDebug.DrawBoxCastBox(transform.position, halfExtentsSecondary, gameObject.transform.rotation, gameObject.transform.forward, distanceSecondary, Color.red);
-            Debug.DrawRay(transform.position, nme.transform.position - transform.position, Color.green);
+            ExtDebug.DrawBoxCastBox(transform.position, halfExtentsSecondary, gameObject.transform.rotation, gameObject.transform.forward, distanceSecondary, Color.red);            
         }
 
         if (Application.isPlaying)
