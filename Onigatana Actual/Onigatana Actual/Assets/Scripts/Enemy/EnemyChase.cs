@@ -8,11 +8,13 @@ public class EnemyChase : MonoBehaviour
 {
     PlayerStats player;
     NavMeshAgent agent;
-    [SerializeField] Transform patrolStart;
-    [SerializeField] Transform patrolEnd;
-    bool finishedPatrol = false;
+    WaypointManager wayManager;
+    [HideInInspector]
+    public int patrolPath;
+    List<Transform> path;
+
+    int pathNode = 0;
     bool chasePlayer = false;
-    Rigidbody rb;
 
     EnemyAttack enemyAttack;
     [SerializeField] float attackDistance;
@@ -32,9 +34,10 @@ public class EnemyChase : MonoBehaviour
         player = FindObjectOfType<PlayerStats>();
         agent = GetComponent<NavMeshAgent>();
         enemyAttack = GetComponent<EnemyAttack>();
-        rb = GetComponent<Rigidbody>();
         agentWalkSpeed = agent.speed;
         agentAccelleration = agent.acceleration;
+        wayManager = FindObjectOfType<WaypointManager>();
+        path = new List<Transform>(wayManager.paths[patrolPath].waypoints);
     }
 
     // Update is called once per frame
@@ -43,28 +46,18 @@ public class EnemyChase : MonoBehaviour
         if (chasePlayer == false)
         {
             CanISeeThePlayer();
-
-            //patrol if you cant see the player
-            if (!finishedPatrol)
-            {
-                agent.destination = patrolEnd.position;
-                if (Mathf.Abs(transform.position.x - patrolEnd.position.x) < 1
-                    && Mathf.Abs(transform.position.z - patrolEnd.position.z) < 1)
-                {
-                    finishedPatrol = true;
-                }
-
-            }
-            else
-            {
-                agent.destination = patrolStart.position;
-                if (Mathf.Abs(transform.position.x - patrolStart.position.x) < 1
-                    && Mathf.Abs(transform.position.z - patrolStart.position.z) < 1)
-                {
-                    finishedPatrol = false;
-                }
-            }
-        }
+			agent.destination = path[pathNode].position;
+			if (Mathf.Abs(transform.position.x - path[pathNode].position.x) < 1 &&
+			   Mathf.Abs(transform.position.z - path[pathNode].position.z) < 1)
+			{
+				++pathNode;
+				if (pathNode == path.Count)
+				{
+					pathNode = 0;
+				}
+			}
+			
+		}
 		else // chase the player
 		{
             enemyAttack.attackMode = true;
