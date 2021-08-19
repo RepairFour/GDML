@@ -14,9 +14,7 @@ public class EnemyChase : MonoBehaviour
     List<Transform> path;
 
     int pathNode = 0;
-    bool finishedPatrol = false;
     bool chasePlayer = false;
-    Rigidbody rb;
 
     EnemyAttack enemyAttack;
     [SerializeField] float attackDistance;
@@ -36,7 +34,6 @@ public class EnemyChase : MonoBehaviour
         player = FindObjectOfType<PlayerStats>();
         agent = GetComponent<NavMeshAgent>();
         enemyAttack = GetComponent<EnemyAttack>();
-        rb = GetComponent<Rigidbody>();
         agentWalkSpeed = agent.speed;
         agentAccelleration = agent.acceleration;
         wayManager = FindObjectOfType<WaypointManager>();
@@ -59,28 +56,7 @@ public class EnemyChase : MonoBehaviour
 					pathNode = 0;
 				}
 			}
-
-
-			////patrol if you cant see the player
-			//if (!finishedPatrol)
-			//{
-			//    agent.destination = patrolPath.waypoints[patrolPath.waypoints.Count - 1].position;
-			//    if (Mathf.Abs(transform.position.x - patrolEnd.position.x) < 1
-			//        && Mathf.Abs(transform.position.z - patrolEnd.position.z) < 1)
-			//    {
-			//        finishedPatrol = true;
-			//    }
-
-			//}
-			//else
-			//{
-			//    agent.destination = patrolStart.position;
-			//    if (Mathf.Abs(transform.position.x - patrolStart.position.x) < 1
-			//        && Mathf.Abs(transform.position.z - patrolStart.position.z) < 1)
-			//    {
-			//        finishedPatrol = false;
-			//    }
-			//}
+			
 		}
 		else // chase the player
 		{
