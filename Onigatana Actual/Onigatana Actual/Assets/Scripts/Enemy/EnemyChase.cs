@@ -43,6 +43,10 @@ public class EnemyChase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(player == null)
+		{
+            player = FindObjectOfType<PlayerStats>();
+        }
         if (chasePlayer == false)
         {
             CanISeeThePlayer();

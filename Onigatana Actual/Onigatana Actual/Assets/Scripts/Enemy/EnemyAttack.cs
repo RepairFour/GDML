@@ -22,6 +22,10 @@ public class EnemyAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (player == null)
+        {
+            player = FindObjectOfType<PlayerStats>();
+        }
         if (attackMode)
         {
             timer += Time.deltaTime;
