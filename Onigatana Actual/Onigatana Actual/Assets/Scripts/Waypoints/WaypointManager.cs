@@ -12,6 +12,12 @@ namespace Roaming
 		public Color color;
 		[HideInInspector]
 		public List<GameObject> waypointHistory;
+		public Path(Color color)
+		{
+			waypoints = new List<Transform>();
+			waypointHistory = new List<GameObject>();
+			this.color = color;
+		}
 	}
 }
 
@@ -19,9 +25,9 @@ namespace Roaming
 public class WaypointManager : MonoBehaviour
 {
 	[SerializeField] GameObject wayPoint;
-	
-	
-	public List<Roaming.Path> paths;
+
+
+	public List<Roaming.Path> paths = new List<Roaming.Path>();
 	[HideInInspector] public int pathIdx = 0;
 	[HideInInspector] public List<string> pathNames = new List<string>();
 
@@ -44,12 +50,14 @@ public class WaypointManager : MonoBehaviour
 
 	public int PathID(Roaming.Path p)
 	{
-		for(int i = 0; i < paths.Count; ++i)
+		int i = 0;
+		foreach(var path in paths)
 		{
-			if(p.color == paths[i].color)
+			if(path.Equals(p))
 			{
 				return i;
 			}
+			++i;
 		}
 		Debug.LogError("Path Pass Invalid");
 		return 0;
@@ -160,6 +168,11 @@ public class WaypointManager : MonoBehaviour
 				path.waypointHistory[i].name = $"Path {PathID(path)} - Waypoint {i}";
 			}
 		}
+	}
+
+	public void BuildPath()
+	{
+		paths.Add(new Roaming.Path(Color.yellow));
 	}
 
 }
