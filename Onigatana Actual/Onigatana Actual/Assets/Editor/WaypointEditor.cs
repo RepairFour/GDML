@@ -14,7 +14,12 @@ public class WaypointEditor : Editor
 
 		if(GUILayout.Button("Add Waypoint"))
 		{
-			manager.BuildWaypoint(manager.pathIdx);			
+			manager.BuildWaypoint(manager.pathIdx);
+		}
+		if (GUILayout.Button("Add Path"))
+		{
+			manager.BuildPath();
+			manager.pathIdx = manager.paths.Count - 1;
 		}
 
 		EditorUtility.SetDirty(target);

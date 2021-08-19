@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(EnemyChase))]
+[CustomEditor(typeof(EnemyChase)), CanEditMultipleObjects]
 public class EnemyChaseEditor : Editor
 {
 	public override void OnInspectorGUI()
