@@ -904,11 +904,11 @@ CharacterController:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Height: 2
+  m_Height: 4
   m_Radius: 0.5
-  m_SlopeLimit: 45
+  m_SlopeLimit: 90
   m_StepOffset: 1
-  m_SkinWidth: 0.0001
+  m_SkinWidth: 0.01
   m_MinMoveDistance: 0
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1107168495503103489
@@ -923,17 +923,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1aff40593ca90344aae738ec25a43c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cameraHeight: 1
-  slideCameraHeight: 0.25
+  cameraHeight: 3
+  slideCameraHeight: 1.25
   xSensitivity: 50
   ySensitivity: 50
   yMin: -70
   yMax: 70
-  maxSpeed: 20
-  globalMaxSpeed: 100
+  maxSpeed: 35
+  globalMaxSpeed: 65
   maxJumpStrafeSpeed: 50
-  maxStrafeSpeed: 25
-  accelleration: 50
+  maxStrafeSpeed: 35
+  accelleration: 45
   deccelleration: 75
   strafeAcceleration: 10
   strafeJumpDecelleration: 10
@@ -941,7 +941,7 @@ MonoBehaviour:
   dashTime: 0.1
   maxDashAmount: 2
   dashCooldown: 1
-  jumpSpeed: 17
+  jumpSpeed: 21
   gravity: 50
   groundedTime: 0.1
   layerMask:
@@ -949,12 +949,12 @@ MonoBehaviour:
     m_Bits: 64
   maxSlideMomentum: 50
   slideDirectionalScalar: 0.5
-  slideHeight: 2
-  normalHeight: 2
+  slideHeight: 1.5
+  normalHeight: 4
   slideAccelerate: 50
   slideDeccelerate: 225
   minSlideTime: 0.35
-  slideCooldown: 0.5
+  slideCooldown: 0.1
   hookShotDistance: 60
   hookShotSpeed: 75
   hookShotThrowSpeed: 500
