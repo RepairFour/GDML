@@ -606,7 +606,7 @@ public class Controller : MonoBehaviour
 
         hit = Physics.SphereCastAll(ray, 0.1f, cc.height / 2 + 0.1f, layerMask);
 
-        if (hit.Length > 0)
+        if (hit.Length > 0 || sliding)
         {
             if (jumpingTimer >= minJumpingTimer)
             {
