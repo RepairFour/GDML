@@ -394,13 +394,13 @@ public class Controller : MonoBehaviour
 
     private void AirMove()
     {
-        if (currentMoveDirection.magnitude == 0)
-        {
-            AirDecellerate();
-            //momentumExtraSpeed = 0;
-            momentum = Vector3.zero;
-            slideMomentum = 0;
-        }
+        //if (currentMoveDirection.magnitude == 0)
+        //{
+        //    AirDecellerate();
+        //    //momentumExtraSpeed = 0;
+        //    momentum = Vector3.zero;
+        //    slideMomentum = 0;
+        //}
 
         float yspeed = currentVelocity.y;
         GetMoveDirection();
@@ -444,7 +444,7 @@ public class Controller : MonoBehaviour
 
         else
         {
-            Decellerate();
+            AirDecellerate();
         }
         HandleGravity(yspeed);
     }
@@ -830,6 +830,7 @@ public class Controller : MonoBehaviour
         DashCooldowns();
         HookShotCooldowns();
         SlideCooldown();
+        
     }
 
     private void DashCooldowns()
