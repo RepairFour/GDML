@@ -79,7 +79,9 @@ public class Controller : MonoBehaviour
     public Slider dash1;
     public Slider dash2;
     #endregion
-    
+    [Header("Animation Variables")]
+    public Animator animator;
+    private bool slideTriggerSet = false;
     #region Debugging and Private Variables
     float rotationX;
     float rotationY;
@@ -254,9 +256,39 @@ public class Controller : MonoBehaviour
                 momentum = Vector3.zero;
             }
         }
+        RunAnimations();
 
         
     }
+    #endregion
+    #region Animations
+    void RunAnimations()
+    {
+        HandleWalkAnimation();
+        HandleSlideAnimation();
+    }
+
+    void HandleWalkAnimation()
+    {
+        if (currentSpeed > 0)
+        {
+            animator.SetFloat("Moving", currentSpeed / maxSpeed);
+        }
+        else
+        {
+            animator.SetFloat("Moving", 0);
+        }
+    }
+    void HandleSlideAnimation()
+    {
+        if (sliding && !slideTriggerSet)
+        {
+            animator.SetTrigger("Sliding");
+            slideTriggerSet = true;
+        }
+        
+    }
+
     #endregion
 
     #region HookShot Functions
@@ -562,6 +594,7 @@ public class Controller : MonoBehaviour
             groundedTimer = 0;
             CancelSlideForHookShot();
             jumps++;
+            animator.SetTrigger("Jump");
         }
     }
 
@@ -647,6 +680,7 @@ public class Controller : MonoBehaviour
                     grounded = true;
                     Debug.Log(hit.Length);
                     jumpingTimer = 0;
+                    animator.SetTrigger("HitGround");
                 }
             }
             
@@ -842,12 +876,14 @@ public class Controller : MonoBehaviour
         cc.height = normalHeight;
         slidingTimer = 0f;
         slideOnCooldown = true;
+        slideTriggerSet = false;
     }
     void CancelSlideForHookShot()
     {
         slideMomentum = 0;
         maxSlideSpeedHit = false;
         sliding = false;
+        slideTriggerSet = false;
         cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
         slidingTimer = 0f;
@@ -928,7 +964,7 @@ public class Controller : MonoBehaviour
     #endregion
 
 
-#region UnityAnalytics Functions
+    #region UnityAnalytics Functions
     public void SendAnalytics(int deathNumber)
     {
         if (sendAnalytics)
