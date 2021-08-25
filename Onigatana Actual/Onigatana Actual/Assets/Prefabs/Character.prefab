@@ -1001,6 +1001,15 @@ MonoBehaviour:
   momentum: {x: 0, y: 0, z: 0}
   hookCooldownTimer: 0
   hookOnCooldown: 0
+  jumps: 0
+  timeSpentInHookShot: 0
+  timeSpentDashing: 0
+  timeSpentSliding: 0
+  timeSpentInAir: 0
+  timeSpentOnGround: 0
+  timeSpentAlive: 0
+  deathNumber: 0
+  sendAnalytics: 0
 --- !u!114 &1515994391
 MonoBehaviour:
   m_ObjectHideFlags: 0
