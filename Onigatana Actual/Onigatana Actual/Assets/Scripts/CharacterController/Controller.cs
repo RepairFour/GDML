@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.UI;
+using UnityEngine.Analytics;
 
 public class Controller : MonoBehaviour
 {
@@ -134,6 +135,19 @@ public class Controller : MonoBehaviour
     private ButtonControl hook;
     #endregion
 
+    #region UnityAnalytics
+    [Header ("Unity Analytics")]
+    [SerializeField] int jumps;
+    [SerializeField] float timeSpentInHookShot;
+    [SerializeField] float timeSpentDashing;
+    [SerializeField] float timeSpentSliding;
+    [SerializeField] float timeSpentInAir;
+    [SerializeField] float timeSpentOnGround;
+    [SerializeField] float timeSpentAlive;
+    [SerializeField] int deathNumber;
+    public bool sendAnalytics = false;
+    #endregion
+
     #region UnityFunctions
     private void Start()
     {
@@ -153,10 +167,18 @@ public class Controller : MonoBehaviour
         cc.gameObject.transform.position = new Vector3(0, normalHeight, 0);
 
         lr = hookShotTransform.gameObject.GetComponent<LineRenderer>();
-        
+
+        timeSpentInHookShot = 0f;
+        timeSpentDashing = 0f;
+        timeSpentSliding = 0f;
+        timeSpentInAir = 0f;
+        timeSpentOnGround = 0f;
+        jumps = 0;
+        deathNumber = 0;
     }
     private void Update()
     {
+        timeSpentAlive += Time.deltaTime;
         CheckGrounded();
         if (grounded)
         {
@@ -204,10 +226,12 @@ public class Controller : MonoBehaviour
 
         if (grounded)
         {
+            timeSpentOnGround += Time.deltaTime;
             GroundMove();
         }
         if (!grounded /*|| queueJump*/)
         {
+            timeSpentInAir += Time.deltaTime;
             AirMove();
         }
         currentVelocity += momentum;
@@ -216,6 +240,7 @@ public class Controller : MonoBehaviour
 
         if (sliding)
         {
+            timeSpentSliding += Time.deltaTime;
             cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
             cc.height = slideHeight;
         }
@@ -237,7 +262,7 @@ public class Controller : MonoBehaviour
     #region HookShot Functions
     private void CheckGrappleHook()
     {
-        if (Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance, hookShotMask))
+        if (Physics.Raycast(hookShotHand.transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance, hookShotMask))
         {
             if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
             {
@@ -296,7 +321,7 @@ public class Controller : MonoBehaviour
     }
     private void CheckHookShotHit()
     {
-        if(Physics.Raycast(transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
+        if(Physics.Raycast(hookShotHand.transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
         {
 
             if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
@@ -309,6 +334,7 @@ public class Controller : MonoBehaviour
                     HookShotDirection();
                     hookShotSize = 0f;
                     hookShotTransform.LookAt(hookHitPoint);
+                    
                 }
                 else
                 {
@@ -351,6 +377,7 @@ public class Controller : MonoBehaviour
     }
     private void HookShotMove()
     {
+        timeSpentInHookShot += Time.deltaTime;
         HookShotDirection();
         currentVelocity = hookShotSpeed * hookShotDirection;
         hookShotTransform.LookAt(hookHitPoint);
@@ -407,6 +434,7 @@ public class Controller : MonoBehaviour
 
         if (dashing)
         {
+            timeSpentDashing += Time.deltaTime;
             HandleDash();
             CancelHookShot();
             return;
@@ -491,6 +519,8 @@ public class Controller : MonoBehaviour
         
         if (dashing)
         {
+            timeSpentDashing += Time.deltaTime;
+
             HandleDash();
             return;
         }
@@ -531,6 +561,7 @@ public class Controller : MonoBehaviour
             grounded = false;
             groundedTimer = 0;
             CancelSlideForHookShot();
+            jumps++;
         }
     }
 
@@ -545,6 +576,7 @@ public class Controller : MonoBehaviour
             currentVelocity = dashSpeed * currentMoveDirection;
         }
         animeLines.gameObject.SetActive(true);
+        
     }
 
     void HandleVelocity()
@@ -894,4 +926,46 @@ public class Controller : MonoBehaviour
         }
     }
     #endregion
+
+
+#region UnityAnalytics Functions
+    public void SendAnalytics(int deathNumber)
+    {
+        if (sendAnalytics)
+        {
+            Debug.Log("Analytics Sent");
+            this.deathNumber = deathNumber;
+            AnalyticsEvent.Custom("Times for Playthrough - Player Died", new Dictionary<string, object>
+            {
+                {"Number of Jumps", jumps },
+                {"Time spent on ground", timeSpentOnGround},
+                {"Time spent in air", timeSpentInAir },
+                {"Time spent sliding", timeSpentSliding},
+                {"Time spent dashing", timeSpentDashing},
+                {"Time spent in hookshot", timeSpentInHookShot},
+                {"Time spent alive", timeSpentAlive},
+                {"Death number",  this.deathNumber}
+            });
+        }
+    }
+    private void OnApplicationQuit()
+    { 
+        if (sendAnalytics) {
+            Debug.Log("Analytics Sent");
+            AnalyticsEvent.Custom("Times for Playthrough - Player Quit", new Dictionary<string, object>
+            {
+                {"Number of Jumps", jumps},
+                {"Time spent on ground", timeSpentOnGround},
+                {"Time spent in air", timeSpentInAir },
+                {"Time spent sliding", timeSpentSliding},
+                {"Time spent dashing", timeSpentDashing},
+                {"Time spent in hookshot", timeSpentInHookShot},
+                {"Time spent alive", timeSpentAlive},
+                {"Death number", this.deathNumber }
+            });
+        }
+    }
+
+#endregion
+
 }
