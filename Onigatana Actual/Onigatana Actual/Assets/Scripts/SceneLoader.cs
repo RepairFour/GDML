@@ -8,7 +8,7 @@ public class SceneLoader : MonoBehaviour
     // Start is called before the first frame update
     public void PlayClicked()
     {
-        SceneManager.LoadScene("1");
+        SceneManager.LoadScene("Test Level");
     }
     public void QuitClicked()
     {

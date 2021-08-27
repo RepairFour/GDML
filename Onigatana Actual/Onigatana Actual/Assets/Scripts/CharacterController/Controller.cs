@@ -718,6 +718,7 @@ public class Controller : MonoBehaviour
             //hookShotCancelled = true;
             numberOfDashesCurrent--;
             animeLines.gameObject.SetActive(true);
+            animator.SetTrigger("Dash");
         }
         else if(input.Player.Dash.triggered && numberOfDashesCurrent > 0 && inputDirection.magnitude == 0)
         {
@@ -726,6 +727,7 @@ public class Controller : MonoBehaviour
             dashNoMoveDirection = transform.forward;
             numberOfDashesCurrent--;
             animeLines.gameObject.SetActive(true);
+            animator.SetTrigger("Dash");
         }
         
     }
