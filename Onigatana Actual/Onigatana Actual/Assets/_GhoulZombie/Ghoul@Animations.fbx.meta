@@ -1,7 +1,7 @@
 fileFormatVersion: 2
 guid: ce65fa103f0e84b4289374b2a4bf93f8
 ModelImporter:
-  serializedVersion: 20200
+  serializedVersion: 21100
   internalIDToNameTable:
   - first:
       1: 100000
@@ -668,7 +668,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 240
       lastFrame: 265
-      wrapMode: 2
+      wrapMode: 1
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
@@ -774,7 +774,7 @@ ModelImporter:
     armStretch: 0.05
     legStretch: 0.05
     feetSpacing: 0
-    globalScale: 0.06
+    globalScale: 6
     rootMotionBoneName: 
     hasTranslationDoF: 0
     hasExtraRoot: 1
