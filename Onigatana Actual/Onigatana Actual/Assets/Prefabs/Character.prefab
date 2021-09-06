@@ -650,7 +650,6 @@ MonoBehaviour:
   layerToIgnore:
     serializedVersion: 2
     m_Bits: 0
-  nme: {fileID: 0}
 --- !u!1 &1414516076
 GameObject:
   m_ObjectHideFlags: 0
@@ -869,6 +868,7 @@ GameObject:
   - component: {fileID: 1107168495503103489}
   - component: {fileID: 1515994391}
   - component: {fileID: 1515994392}
+  - component: {fileID: 3305691042017949375}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -1030,6 +1030,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 0
+--- !u!114 &3305691042017949375
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695064047465506041}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5e2139ad72f1d484194c1bc9030a047c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &695064047634165591
 GameObject:
   m_ObjectHideFlags: 0
