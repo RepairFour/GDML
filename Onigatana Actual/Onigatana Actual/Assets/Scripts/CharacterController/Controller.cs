@@ -480,7 +480,10 @@ public class Controller : MonoBehaviour
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShotMomentum();
+            if (hookShotMove)
+            {
+                CancelHookShotMomentum();
+            }
             return;
         }
 
@@ -540,7 +543,10 @@ public class Controller : MonoBehaviour
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShotMomentum();
+            if (hookShotMove)
+            {
+                CancelHookShotMomentum();
+            }
             return;
         }
         if (hookShotMove)
