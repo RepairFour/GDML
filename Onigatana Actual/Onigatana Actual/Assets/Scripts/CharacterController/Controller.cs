@@ -616,7 +616,7 @@ public class Controller : MonoBehaviour
 
     void HandleJump()
     {
-        if (queueJump)
+        if (queueJump && jumpNumber < maxJumpNumber)
         {
             currentVelocity.y = jumpSpeed;
             jumpingTimer = 0;
@@ -626,6 +626,7 @@ public class Controller : MonoBehaviour
             CancelSlideForHookShot();
             jumps++;
             animator.SetTrigger("Jump");
+            
             jumpNumber++;
         }
     }
@@ -673,9 +674,13 @@ public class Controller : MonoBehaviour
     private void QueueJump()
     {
         if (input.Player.Jump.triggered /*jump.wasPressedThisFrame*/ &&
-            !queueJump && jumpNumber < maxJumpNumber)
+            !queueJump)
         {
             queueJump = true;
+            if (!grounded && jumpNumber != maxJumpNumber)
+            {
+                jumpNumber = 1;
+            }
         }
 
         if (jump.wasReleasedThisFrame)
