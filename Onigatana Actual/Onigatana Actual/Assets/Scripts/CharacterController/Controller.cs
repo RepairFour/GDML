@@ -400,7 +400,7 @@ public class Controller : MonoBehaviour
     private void CancelHookShotMomentum()
     {
         hookShotDirection.Normalize();
-        momentum = (cameraTransform.forward + hookShotDirection) * hookShotSpeed * momentumExtraSpeed;
+        momentum = (cameraTransform.forward + hookShotDirection).normalized * hookShotSpeed * momentumExtraSpeed;
         momentum.y = 0;
         //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
         currentVelocity.y = 0;
@@ -478,7 +478,7 @@ public class Controller : MonoBehaviour
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShot();
+            CancelHookShotMomentum();
             return;
         }
 
@@ -538,7 +538,7 @@ public class Controller : MonoBehaviour
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShot();
+            CancelHookShotMomentum();
             return;
         }
         if (hookShotMove)
