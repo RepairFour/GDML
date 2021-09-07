@@ -394,15 +394,12 @@ public class Controller : MonoBehaviour
         hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
         //lr.positionCount = 0;
-
     }
-
-    
 
     private void CancelHookShotMomentum()
     {
         hookShotDirection.Normalize();
-        momentum = cameraTransform.forward * hookShotSpeed * momentumExtraSpeed;
+        momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
         momentum.y = 0;
         //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
         currentVelocity.y = 0;
@@ -482,7 +479,7 @@ public class Controller : MonoBehaviour
             HandleDash();
             if (hookShotMove)
             {
-                CancelHookShotMomentum();
+                CancelHookShotMomentumWallKick();
             }
             return;
         }
@@ -545,7 +542,7 @@ public class Controller : MonoBehaviour
             HandleDash();
             if (hookShotMove)
             {
-                CancelHookShotMomentum();
+                CancelHookShotMomentumWallKick();
             }
             return;
         }
@@ -619,6 +616,11 @@ public class Controller : MonoBehaviour
 
     void HandleDash()
     {
+        if(momentum.magnitude > 0)
+        {
+            momentum = Vector3.zero;
+        }
+        
         if (dashNoMove)
         {
             currentVelocity = dashSpeed * dashNoMoveDirection;
