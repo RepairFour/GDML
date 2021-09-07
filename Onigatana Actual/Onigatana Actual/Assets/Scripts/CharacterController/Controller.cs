@@ -400,7 +400,17 @@ public class Controller : MonoBehaviour
     private void CancelHookShotMomentum()
     {
         hookShotDirection.Normalize();
-        momentum = (transform.forward + hookShotDirection) * hookShotSpeed * momentumExtraSpeed;
+        momentum = hookShotDirection * hookShotSpeed * momentumExtraSpeed;
+        momentum.y = 0;
+        //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
+        currentVelocity.y = 0;
+        CancelHookShot();
+        hookOnCooldown = true;
+    }
+    private void CancelHookShotMomentumWallKick()
+    {
+        hookShotDirection.Normalize();
+        momentum = cameraTransform.forward * hookShotSpeed * momentumExtraSpeed;
         momentum.y = 0;
         //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
         currentVelocity.y = 0;
@@ -418,7 +428,7 @@ public class Controller : MonoBehaviour
 
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
-            CancelHookShotMomentum();
+            CancelHookShotMomentumWallKick();
             //currentVelocity.y = yMomentumScalarValue;
         }
         if (hook.wasReleasedThisFrame)
@@ -468,7 +478,7 @@ public class Controller : MonoBehaviour
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShotMomentum();
+            CancelHookShot();
             return;
         }
 
@@ -528,7 +538,7 @@ public class Controller : MonoBehaviour
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShotMomentum();
+            CancelHookShot();
             return;
         }
         if (hookShotMove)
