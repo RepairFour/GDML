@@ -15,11 +15,11 @@ public class PlayerInventory : MonoBehaviour
 		keysObtained.Remove(ob);
 	}
 
-	public bool HasKey(int id)
+	public bool HasKey(Key k)
 	{
 		foreach(var key in keysObtained)
 		{
-			if (key.GetId() == id)
+			if (key == k)
 			{
 				return true;
 			}
