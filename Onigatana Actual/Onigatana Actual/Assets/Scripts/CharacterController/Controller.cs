@@ -62,6 +62,7 @@ public class Controller : MonoBehaviour
     public float momentumExtraSpeed = 7f;
     [Tooltip("How quickly momentum drops off once hookshot is done")]
     public float momentumDrag = 3f;
+    public float hookShotFloatTime = 0.25f;
     public LayerMask hookShotMask;
     public Transform hookShotHand;
 
@@ -79,9 +80,13 @@ public class Controller : MonoBehaviour
     public Slider dash1;
     public Slider dash2;
     #endregion
+
+    #region Animation Variables
     [Header("Animation Variables")]
     public Animator animator;
     private bool slideTriggerSet = false;
+    #endregion
+
     #region Debugging and Private Variables
     float rotationX;
     float rotationY;
@@ -116,6 +121,8 @@ public class Controller : MonoBehaviour
     [SerializeField] bool slideOnCooldown;
     [SerializeField] float slideCooldownTimer;
 
+    [SerializeField] bool floatAfterHookShot = false;
+    [SerializeField] float floatAfterHookShotTimer = 0f;
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
     [SerializeField] bool hookShotMove;
@@ -261,6 +268,7 @@ public class Controller : MonoBehaviour
         
     }
     #endregion
+    
     #region Animations
     void RunAnimations()
     {
@@ -405,6 +413,7 @@ public class Controller : MonoBehaviour
         currentVelocity.y = 0;
         CancelHookShot();
         hookOnCooldown = true;
+        floatAfterHookShot = true;
     }
     private void CancelHookShotMomentumWallKick()
     {
@@ -415,6 +424,7 @@ public class Controller : MonoBehaviour
         currentVelocity.y = 0;
         CancelHookShot();
         hookOnCooldown = true;
+        floatAfterHookShot = true;
     }
     private void HookShotMove()
     {
@@ -645,8 +655,11 @@ public class Controller : MonoBehaviour
 
     void HandleGravity(float speed)
     {
-        currentVelocity.y = speed;
-        currentVelocity.y -= gravity * Time.deltaTime;
+        if (!floatAfterHookShot)
+        {
+            currentVelocity.y = speed;
+            currentVelocity.y -= gravity * Time.deltaTime;
+        }
     }
     #endregion
 
@@ -922,6 +935,19 @@ public class Controller : MonoBehaviour
         HookShotCooldowns();
         SlideCooldown();
         
+        
+    }
+    private void HookShotFloatCooldown()
+    {
+        if (floatAfterHookShot)
+        {
+            floatAfterHookShotTimer += Time.deltaTime;
+            if(floatAfterHookShotTimer >= hookShotFloatTime)
+            {
+                floatAfterHookShotTimer = 0f;
+                floatAfterHookShot = false;
+            }
+        }
     }
 
     private void DashCooldowns()
@@ -970,6 +996,7 @@ public class Controller : MonoBehaviour
                 hookCooldownTimer = 0;
             }
         }
+        HookShotFloatCooldown();
     }
 
     private void SlideCooldown()
@@ -985,7 +1012,6 @@ public class Controller : MonoBehaviour
         }
     }
     #endregion
-
 
     #region UnityAnalytics Functions
     public void SendAnalytics(int deathNumber)
