@@ -400,7 +400,7 @@ public class Controller : MonoBehaviour
     private void CancelHookShotMomentum()
     {
         hookShotDirection.Normalize();
-        momentum = transform.forward * hookShotSpeed * momentumExtraSpeed;
+        momentum = (transform.forward + hookShotDirection) * hookShotSpeed * momentumExtraSpeed;
         momentum.y = 0;
         //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
         currentVelocity.y = 0;
@@ -468,7 +468,7 @@ public class Controller : MonoBehaviour
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShot();
+            CancelHookShotMomentum();
             return;
         }
 
@@ -523,7 +523,14 @@ public class Controller : MonoBehaviour
             sliding = true;
             slideQueued = false;
         }
-
+        
+        if (dashing)
+        {
+            timeSpentDashing += Time.deltaTime;
+            HandleDash();
+            CancelHookShotMomentum();
+            return;
+        }
         if (hookShotMove)
         {
             CancelSlideForHookShot();
@@ -549,13 +556,7 @@ public class Controller : MonoBehaviour
         }
         GetMoveDirection();
         
-        if (dashing)
-        {
-            timeSpentDashing += Time.deltaTime;
-
-            HandleDash();
-            return;
-        }
+        
        
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
