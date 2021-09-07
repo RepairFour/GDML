@@ -39,7 +39,9 @@ public class Controller : MonoBehaviour
     public float jumpSpeed;
     public float gravity;
     public float groundedTime;
+    public int maxJumpNumber = 2;
     public LayerMask layerMask;
+
 
     [Header("Slide Variables")]
     public float maxSlideMomentum;
@@ -97,6 +99,7 @@ public class Controller : MonoBehaviour
     [SerializeField] bool queueJump;
     [SerializeField] float jumpingTimer;
     [SerializeField] float minJumpingTimer = 0.01f;
+    [SerializeField] int jumpNumber = 0;
 
     [SerializeField] Vector3 currentMoveDirection;
     [SerializeField] Vector3 lastMoveDirection;
@@ -528,7 +531,9 @@ public class Controller : MonoBehaviour
         {
             AirDecellerate();
         }
+        
         HandleGravity(yspeed);
+        HandleJump();
     }
     void GroundMove()
     {
@@ -621,6 +626,7 @@ public class Controller : MonoBehaviour
             CancelSlideForHookShot();
             jumps++;
             animator.SetTrigger("Jump");
+            jumpNumber++;
         }
     }
 
@@ -667,7 +673,7 @@ public class Controller : MonoBehaviour
     private void QueueJump()
     {
         if (input.Player.Jump.triggered /*jump.wasPressedThisFrame*/ &&
-            !queueJump)
+            !queueJump && jumpNumber < maxJumpNumber)
         {
             queueJump = true;
         }
@@ -714,6 +720,7 @@ public class Controller : MonoBehaviour
                     grounded = true;
                     Debug.Log(hit.Length);
                     jumpingTimer = 0;
+                    jumpNumber = 0;
                     animator.SetTrigger("HitGround");
                 }
             }

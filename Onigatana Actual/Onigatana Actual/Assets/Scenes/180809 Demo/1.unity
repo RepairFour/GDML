@@ -25655,9 +25655,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1341390064, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
-      propertyPath: weaponSlash
-      value: 
+    - target: {fileID: 1100983846, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834797031, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1834797031, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 695064047465506036, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: m_RootOrder
@@ -25706,10 +25714,6 @@ PrefabInstance:
     - target: {fileID: 695064047465506041, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: m_Name
       value: Character
-      objectReference: {fileID: 0}
-    - target: {fileID: 1107168495503103489, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
-      propertyPath: animator
-      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}

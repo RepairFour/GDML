@@ -868,6 +868,7 @@ GameObject:
   - component: {fileID: 1107168495503103489}
   - component: {fileID: 1515994391}
   - component: {fileID: 1515994392}
+  - component: {fileID: 7863869536658219895}
   m_Layer: 8
   m_Name: Character
   m_TagString: Player
@@ -943,6 +944,7 @@ MonoBehaviour:
   jumpSpeed: 27
   gravity: 65
   groundedTime: 0.1
+  maxJumpNumber: 2
   layerMask:
     serializedVersion: 2
     m_Bits: 64
@@ -971,10 +973,11 @@ MonoBehaviour:
   crossHair: {fileID: 695064047351294876}
   dash1: {fileID: 1134980284}
   dash2: {fileID: 1118568474}
-  animator: {fileID: 0}
+  animator: {fileID: 7863869536658219895}
   queueJump: 0
   jumpingTimer: 0
   minJumpingTimer: 0.01
+  jumpNumber: 0
   currentMoveDirection: {x: 0, y: 0, z: 0}
   lastMoveDirection: {x: 0, y: 0, z: 0}
   inputDirection: {x: 0, y: 0, z: 0}
@@ -1042,6 +1045,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   active: 0
+--- !u!95 &7863869536658219895
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 695064047465506041}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 8889987043a6a304a8bde6052a3bd93c, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &695064047634165591
 GameObject:
   m_ObjectHideFlags: 0
