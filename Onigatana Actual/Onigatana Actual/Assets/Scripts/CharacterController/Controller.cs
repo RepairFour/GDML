@@ -397,10 +397,12 @@ public class Controller : MonoBehaviour
 
     }
 
+    
+
     private void CancelHookShotMomentum()
     {
         hookShotDirection.Normalize();
-        momentum = (cameraTransform.forward + hookShotDirection).normalized * hookShotSpeed * momentumExtraSpeed;
+        momentum = cameraTransform.forward * hookShotSpeed * momentumExtraSpeed;
         momentum.y = 0;
         //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
         currentVelocity.y = 0;
