@@ -1,14 +1,32 @@
 fileFormatVersion: 2
-guid: 098b7734eca930b468eea7f1e6747ebe
+guid: 57932fe3de99f9847b342d525b825f4c
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable:
   - first:
-      74: -289675514616574842
-    second: R_hand|R_handAction
+      74: -62398897293770771
+    second: R_hand|attack 1
   - first:
-      74: 4781951162920444690
-    second: Armature|ArmatureAction
+      74: 4968605132831584382
+    second: R_hand|attack 2
+  - first:
+      74: 1901040007083005061
+    second: R_hand|attack 3
+  - first:
+      74: -3994168138420238873
+    second: R_hand|fall
+  - first:
+      74: -6825333175911022620
+    second: R_hand|idle
+  - first:
+      74: -863131119457436112
+    second: R_hand|jump
+  - first:
+      74: -2221160612122880474
+    second: R_hand|run/walk
+  - first:
+      74: 6759163837408201107
+    second: R_hand|slide
   externalObjects: {}
   materials:
     materialImportMode: 2
