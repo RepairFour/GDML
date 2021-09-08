@@ -6374,7 +6374,7 @@ MonoBehaviour:
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
   m_Cameras:
-  - {fileID: 0}
+  - {fileID: 4431350767797423878}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -6500,6 +6500,22 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -1853094968961178454, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+      propertyPath: far clip plane
+      value: 1000
+      objectReference: {fileID: 0}
+    - target: {fileID: -1853094968961178454, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+      propertyPath: near clip plane
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: -1853094968961178454, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+      propertyPath: m_CullingMask.m_Bits
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: -1853094968961178454, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+      propertyPath: m_projectionMatrixMode
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: -1148210888960331814, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -6507,6 +6523,14 @@ PrefabInstance:
     - target: {fileID: -969232876853926903, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
       propertyPath: m_Layer
       value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -415136158766342463, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+      propertyPath: m_CameraType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 65702495048144492, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+      propertyPath: m_TagString
+      value: MainCamera
       objectReference: {fileID: 0}
     - target: {fileID: 147586068754208440, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
       propertyPath: m_Layer
@@ -6558,6 +6582,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+--- !u!20 &4431350767797423878 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: -1853094968961178454, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
+  m_PrefabInstance: {fileID: 6572768335521983404}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6682656333109677127 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 57932fe3de99f9847b342d525b825f4c, type: 3}
