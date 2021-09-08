@@ -28,6 +28,7 @@ public class Controller : MonoBehaviour
     public float deccelleration;
     public float strafeAcceleration;
     public float strafeJumpDecelleration;
+    public float airControlModifier;
 
     [Header ("Dash Variables")]
     public float dashSpeed;
@@ -39,7 +40,9 @@ public class Controller : MonoBehaviour
     public float jumpSpeed;
     public float gravity;
     public float groundedTime;
+    public int maxJumpNumber = 2;
     public LayerMask layerMask;
+
 
     [Header("Slide Variables")]
     public float maxSlideMomentum;
@@ -62,6 +65,7 @@ public class Controller : MonoBehaviour
     public float momentumExtraSpeed = 7f;
     [Tooltip("How quickly momentum drops off once hookshot is done")]
     public float momentumDrag = 3f;
+    public float hookShotFloatTime = 0.25f;
     public LayerMask hookShotMask;
     public Transform hookShotHand;
 
@@ -79,9 +83,13 @@ public class Controller : MonoBehaviour
     public Slider dash1;
     public Slider dash2;
     #endregion
+
+    #region Animation Variables
     [Header("Animation Variables")]
     public Animator animator;
     private bool slideTriggerSet = false;
+    #endregion
+
     #region Debugging and Private Variables
     float rotationX;
     float rotationY;
@@ -92,10 +100,13 @@ public class Controller : MonoBehaviour
     [SerializeField] bool queueJump;
     [SerializeField] float jumpingTimer;
     [SerializeField] float minJumpingTimer = 0.01f;
+    [SerializeField] int jumpNumber = 0;
 
     [SerializeField] Vector3 currentMoveDirection;
     [SerializeField] Vector3 lastMoveDirection;
     [SerializeField] Vector3 inputDirection;
+    [SerializeField] Vector3 lastInputDirection;
+    [SerializeField] bool airControl;
 
     [SerializeField] Vector3 currentVelocity;
     [SerializeField] float currentSpeed;
@@ -116,6 +127,8 @@ public class Controller : MonoBehaviour
     [SerializeField] bool slideOnCooldown;
     [SerializeField] float slideCooldownTimer;
 
+    [SerializeField] bool floatAfterHookShot = false;
+    [SerializeField] float floatAfterHookShotTimer = 0f;
     [SerializeField] bool hookShoting;
     [SerializeField] bool hookShotFiring;
     [SerializeField] bool hookShotMove;
@@ -261,6 +274,7 @@ public class Controller : MonoBehaviour
         
     }
     #endregion
+    
     #region Animations
     void RunAnimations()
     {
@@ -394,7 +408,6 @@ public class Controller : MonoBehaviour
         hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
         //lr.positionCount = 0;
-
     }
 
     private void CancelHookShotMomentum()
@@ -406,6 +419,18 @@ public class Controller : MonoBehaviour
         currentVelocity.y = 0;
         CancelHookShot();
         hookOnCooldown = true;
+        floatAfterHookShot = true;
+    }
+    private void CancelHookShotMomentumWallKick()
+    {
+        hookShotDirection.Normalize();
+        momentum = cameraTransform.forward * hookShotSpeed * momentumExtraSpeed;
+        momentum.y = 0;
+        //momentum.y = hookShotDirection.y * hookShotSpeed/yMomentumSc;
+        currentVelocity.y = 0;
+        CancelHookShot();
+        hookOnCooldown = true;
+        floatAfterHookShot = true;
     }
     private void HookShotMove()
     {
@@ -418,7 +443,7 @@ public class Controller : MonoBehaviour
 
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
-            CancelHookShotMomentum();
+            CancelHookShotMomentumWallKick();
             //currentVelocity.y = yMomentumScalarValue;
         }
         if (hook.wasReleasedThisFrame)
@@ -433,6 +458,10 @@ public class Controller : MonoBehaviour
     #region Movement Functions
     void GetMoveDirection()
     {
+        if (Mathf.Abs(inputDirection.x) > 0 || Mathf.Abs(inputDirection.y) > 0)
+        {
+            lastInputDirection = inputDirection;
+        }
         inputDirection = input.Player.Move.ReadValue<Vector2>();
         currentMoveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
         currentMoveDirection = transform.TransformDirection(currentMoveDirection);
@@ -453,6 +482,7 @@ public class Controller : MonoBehaviour
 
     private void AirMove()
     {
+        
         //if (currentMoveDirection.magnitude == 0)
         //{
         //    AirDecellerate();
@@ -463,12 +493,23 @@ public class Controller : MonoBehaviour
 
         float yspeed = currentVelocity.y;
         GetMoveDirection();
+        
+        if (((lastInputDirection.x + inputDirection.x == 0) && Mathf.Abs(inputDirection.x) > 0) 
+            || ((lastInputDirection.y + inputDirection.y == 0) && Mathf.Abs(inputDirection.y) > 0))
+        {
+            Debug.Log(lastInputDirection + " " + inputDirection);
+            Debug.Log("Activate Air Control");
+            airControl = true;
+        }
 
         if (dashing)
         {
             timeSpentDashing += Time.deltaTime;
             HandleDash();
-            CancelHookShot();
+            if (hookShotMove)
+            {
+                CancelHookShotMomentumWallKick();
+            }
             return;
         }
 
@@ -488,8 +529,10 @@ public class Controller : MonoBehaviour
         {
 
             JumpStrafeAccelerate();
+            AddAirControl();
             HandleVelocity();
             HandleGravity(yspeed);
+            HandleJump();
             return;
         }
 
@@ -497,16 +540,17 @@ public class Controller : MonoBehaviour
         {
            
             Accelerate();
+            AddAirControl();
             currentVelocity = currentMoveDirection * currentSpeed;
             //currentVelocity.y = 0;
             
         }
-
         else
         {
             AirDecellerate();
         }
         HandleGravity(yspeed);
+        HandleJump();
     }
     void GroundMove()
     {
@@ -523,7 +567,17 @@ public class Controller : MonoBehaviour
             sliding = true;
             slideQueued = false;
         }
-
+        
+        if (dashing)
+        {
+            timeSpentDashing += Time.deltaTime;
+            HandleDash();
+            if (hookShotMove)
+            {
+                CancelHookShotMomentumWallKick();
+            }
+            return;
+        }
         if (hookShotMove)
         {
             CancelSlideForHookShot();
@@ -549,13 +603,7 @@ public class Controller : MonoBehaviour
         }
         GetMoveDirection();
         
-        if (dashing)
-        {
-            timeSpentDashing += Time.deltaTime;
-
-            HandleDash();
-            return;
-        }
+        
        
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
@@ -585,7 +633,7 @@ public class Controller : MonoBehaviour
 
     void HandleJump()
     {
-        if (queueJump)
+        if (queueJump && jumpNumber < maxJumpNumber)
         {
             currentVelocity.y = jumpSpeed;
             jumpingTimer = 0;
@@ -595,11 +643,18 @@ public class Controller : MonoBehaviour
             CancelSlideForHookShot();
             jumps++;
             animator.SetTrigger("Jump");
+            
+            jumpNumber++;
         }
     }
 
     void HandleDash()
     {
+        if(momentum.magnitude > 0)
+        {
+            momentum = Vector3.zero;
+        }
+        
         if (dashNoMove)
         {
             currentVelocity = dashSpeed * dashNoMoveDirection;
@@ -616,6 +671,14 @@ public class Controller : MonoBehaviour
     {
         currentVelocity = currentMoveDirection * currentSpeed;
     }
+    void AddAirControl()
+    {
+        if (airControl)
+        {
+            currentSpeed *= airControlModifier;
+            airControl = false;
+        }
+    }
 
     void HandleSlideVelocity()
     {
@@ -624,8 +687,11 @@ public class Controller : MonoBehaviour
 
     void HandleGravity(float speed)
     {
-        currentVelocity.y = speed;
-        currentVelocity.y -= gravity * Time.deltaTime;
+        if (!floatAfterHookShot)
+        {
+            currentVelocity.y = speed;
+            currentVelocity.y -= gravity * Time.deltaTime;
+        }
     }
     #endregion
 
@@ -636,6 +702,10 @@ public class Controller : MonoBehaviour
             !queueJump)
         {
             queueJump = true;
+            if (!grounded && jumpNumber != maxJumpNumber)
+            {
+                jumpNumber = 1;
+            }
         }
 
         if (jump.wasReleasedThisFrame)
@@ -680,6 +750,7 @@ public class Controller : MonoBehaviour
                     grounded = true;
                     Debug.Log(hit.Length);
                     jumpingTimer = 0;
+                    jumpNumber = 0;
                     animator.SetTrigger("HitGround");
                 }
             }
@@ -901,6 +972,19 @@ public class Controller : MonoBehaviour
         HookShotCooldowns();
         SlideCooldown();
         
+        
+    }
+    private void HookShotFloatCooldown()
+    {
+        if (floatAfterHookShot)
+        {
+            floatAfterHookShotTimer += Time.deltaTime;
+            if(floatAfterHookShotTimer >= hookShotFloatTime)
+            {
+                floatAfterHookShotTimer = 0f;
+                floatAfterHookShot = false;
+            }
+        }
     }
 
     private void DashCooldowns()
@@ -949,6 +1033,7 @@ public class Controller : MonoBehaviour
                 hookCooldownTimer = 0;
             }
         }
+        HookShotFloatCooldown();
     }
 
     private void SlideCooldown()
@@ -964,7 +1049,6 @@ public class Controller : MonoBehaviour
         }
     }
     #endregion
-
 
     #region UnityAnalytics Functions
     public void SendAnalytics(int deathNumber)
