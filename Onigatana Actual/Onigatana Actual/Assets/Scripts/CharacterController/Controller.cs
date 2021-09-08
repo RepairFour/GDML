@@ -561,6 +561,8 @@ public class Controller : MonoBehaviour
             momentum = Vector3.zero;
             slideMomentum = 0;
         }
+        float yspeed = currentVelocity.y;
+        currentVelocity.y = 0;
 
         if (slideQueued)
         {
@@ -598,6 +600,7 @@ public class Controller : MonoBehaviour
             }
             
             HandleSlideVelocity();
+            HandleGravity(yspeed);
             HandleJump();
             return;
         }
@@ -626,7 +629,7 @@ public class Controller : MonoBehaviour
             currentVelocity = lastMoveDirection * currentSpeed;
 
         }
-        
+        HandleGravity(yspeed);
         HandleJump();
         //HandleGravity(0);
     }
