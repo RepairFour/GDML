@@ -10,7 +10,9 @@ public class Key : MonoBehaviour
 		if (playerInventory != null)
 		{
 			playerInventory.AddKey(this);
-			Destroy(gameObject);				
+			GetComponent<CapsuleCollider>().enabled = false;
+			FindObjectOfType<KeyUI>().FillSlot(gameObject);
+			//Destroy(gameObject);				
 		}
 	}
 }
