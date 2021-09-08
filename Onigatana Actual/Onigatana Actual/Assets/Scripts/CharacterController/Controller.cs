@@ -532,6 +532,7 @@ public class Controller : MonoBehaviour
             AddAirControl();
             HandleVelocity();
             HandleGravity(yspeed);
+            HandleJump();
             return;
         }
 
@@ -544,12 +545,10 @@ public class Controller : MonoBehaviour
             //currentVelocity.y = 0;
             
         }
-
         else
         {
             AirDecellerate();
         }
-
         HandleGravity(yspeed);
         HandleJump();
     }
