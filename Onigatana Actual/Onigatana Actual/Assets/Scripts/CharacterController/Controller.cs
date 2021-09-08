@@ -755,6 +755,7 @@ public class Controller : MonoBehaviour
                     jumpingTimer = 0;
                     jumpNumber = 0;
                     animator.SetTrigger("HitGround");
+                    animator.SetBool("Falling", false);
                 }
             }
             
@@ -763,6 +764,7 @@ public class Controller : MonoBehaviour
         {
             grounded = false;
             groundedTimer = 0;
+            animator.SetBool("Falling", true);
         }
         
         
