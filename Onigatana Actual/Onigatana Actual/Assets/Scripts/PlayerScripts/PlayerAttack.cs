@@ -53,6 +53,8 @@ public class PlayerAttack : MonoBehaviour
                 gameObject.transform.rotation = Camera.main.transform.rotation;
                 Debug.Log("Attacking");
                 weaponSlash.SetTrigger("Attack");
+                var n = Random.Range(1, 3);
+                weaponSlash.SetInteger("Attack#", n);
                 attackCDTimer = 0;
                 RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward, gameObject.transform.rotation, distance, layerhit);
                 RaycastHit[] hitsSecondary = Physics.BoxCastAll(transform.position, halfExtentsSecondary, gameObject.transform.forward, gameObject.transform.rotation, distanceSecondary, layerhitSecondary);

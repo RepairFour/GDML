@@ -937,7 +937,7 @@ MonoBehaviour:
   deccelleration: 75
   strafeAcceleration: 10
   strafeJumpDecelleration: 10
-  airControlModifier: 0
+  airControlModifier: 0.2
   dashSpeed: 200
   dashTime: 0.1
   maxDashAmount: 2
