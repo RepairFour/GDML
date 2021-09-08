@@ -28,6 +28,7 @@ public class Controller : MonoBehaviour
     public float deccelleration;
     public float strafeAcceleration;
     public float strafeJumpDecelleration;
+    public float airControlModifier;
 
     [Header ("Dash Variables")]
     public float dashSpeed;
@@ -104,6 +105,8 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 currentMoveDirection;
     [SerializeField] Vector3 lastMoveDirection;
     [SerializeField] Vector3 inputDirection;
+    [SerializeField] Vector3 lastInputDirection;
+    [SerializeField] bool airControl;
 
     [SerializeField] Vector3 currentVelocity;
     [SerializeField] float currentSpeed;
@@ -455,6 +458,10 @@ public class Controller : MonoBehaviour
     #region Movement Functions
     void GetMoveDirection()
     {
+        if (Mathf.Abs(inputDirection.x) > 0 || Mathf.Abs(inputDirection.y) > 0)
+        {
+            lastInputDirection = inputDirection;
+        }
         inputDirection = input.Player.Move.ReadValue<Vector2>();
         currentMoveDirection = new Vector3(inputDirection.x, 0, inputDirection.y);
         currentMoveDirection = transform.TransformDirection(currentMoveDirection);
@@ -475,6 +482,7 @@ public class Controller : MonoBehaviour
 
     private void AirMove()
     {
+        
         //if (currentMoveDirection.magnitude == 0)
         //{
         //    AirDecellerate();
@@ -485,6 +493,14 @@ public class Controller : MonoBehaviour
 
         float yspeed = currentVelocity.y;
         GetMoveDirection();
+        
+        if (((lastInputDirection.x + inputDirection.x == 0) && Mathf.Abs(inputDirection.x) > 0) 
+            || ((lastInputDirection.y + inputDirection.y == 0) && Mathf.Abs(inputDirection.y) > 0))
+        {
+            Debug.Log(lastInputDirection + " " + inputDirection);
+            Debug.Log("Activate Air Control");
+            airControl = true;
+        }
 
         if (dashing)
         {
@@ -513,6 +529,7 @@ public class Controller : MonoBehaviour
         {
 
             JumpStrafeAccelerate();
+            AddAirControl();
             HandleVelocity();
             HandleGravity(yspeed);
             return;
@@ -522,6 +539,7 @@ public class Controller : MonoBehaviour
         {
            
             Accelerate();
+            AddAirControl();
             currentVelocity = currentMoveDirection * currentSpeed;
             //currentVelocity.y = 0;
             
@@ -531,7 +549,7 @@ public class Controller : MonoBehaviour
         {
             AirDecellerate();
         }
-        
+
         HandleGravity(yspeed);
         HandleJump();
     }
@@ -653,6 +671,14 @@ public class Controller : MonoBehaviour
     void HandleVelocity()
     {
         currentVelocity = currentMoveDirection * currentSpeed;
+    }
+    void AddAirControl()
+    {
+        if (airControl)
+        {
+            currentSpeed *= airControlModifier;
+            airControl = false;
+        }
     }
 
     void HandleSlideVelocity()
