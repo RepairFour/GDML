@@ -24,6 +24,7 @@ public class PlayerAttack : MonoBehaviour
     [SerializeField] LayerMask layerToIgnore;
 
     List<EnemyStats> enemiesHit;
+    PlayerStats playerStats;
 
     //[SerializeField] float hitBoxRotation;
     float attackCDTimer;
@@ -34,6 +35,7 @@ public class PlayerAttack : MonoBehaviour
         inputs.Enable();
         attackCDTimer = attackCD;
         enemiesHit = new List<EnemyStats>();
+        playerStats = FindObjectOfType<PlayerStats>();
     }
 
     // Update is called once per frame
@@ -98,6 +100,7 @@ public class PlayerAttack : MonoBehaviour
                             {
                                 enemy.Hurt(dmg);
                                 enemiesHit.Add(enemy);
+                                playerStats.FillBloodMeter(10);
                             }
                         }
 					}

@@ -20,10 +20,13 @@ public class TargetDummy : MonoBehaviour
         
     }
 
-	private void OnTriggerEnter(Collider other)
+    public void IsHit()
 	{
         hitAni.Play("Death");
         blood.Play();
-
+    }
+    private void OnTriggerEnter(Collider other)
+	{
+        
     }
 }

@@ -6,11 +6,12 @@ using UnityEngine;
 public class PlayerStats : MonoBehaviour
 {
 	[SerializeField] int maxHealth;
+	[SerializeField] int bloodCap;
 	public int health { get; private set; }
-	public int armour { get; private set; }
 	public int bloodMeter { get; private set; }
-	[SerializeField] int bloodSoftCap;
-	[SerializeField] int bloodHardCap;
+	public int armour { get; private set; }
+
+	//[SerializeField] int bloodHardCap;
 	BloodFuryState bloodFuryState;
 
 	float attackTimer = 0;
@@ -22,7 +23,7 @@ public class PlayerStats : MonoBehaviour
 	{
 		health = maxHealth;
 		bloodFuryState = GetComponent<BloodFuryState>();
-		FillBloodMeter(150);
+		HUDCon.instance.Initialise(bloodCap);
 	}
 	///////health stuff/////////
 	public bool IsDead()
@@ -50,7 +51,15 @@ public class PlayerStats : MonoBehaviour
 			armour = 0;
 			health -= dmgRemaining;
 		}
-		Debug.Log(health);
+		HUDCon.instance.UpdateHpBar();
+		if(health <= 0)
+		{
+			Death();
+		}
+	}
+	private void Death()
+	{
+
 	}
 	public void ModArmour(int amount)
 	{
@@ -66,36 +75,46 @@ public class PlayerStats : MonoBehaviour
 	public void FillBloodMeter(int amount)
 	{
 		bloodMeter += amount;
-		//if > than 100 enter blood fury state
-		if(amount >= bloodSoftCap && !bloodFuryState.active)
+		if(bloodMeter > bloodCap)
 		{
-			bloodFuryState.EnterState();
-		}
+			bloodMeter = bloodCap;
+		}	
+		HUDCon.instance.UpdateBloodBar();
+		////if > than 100 enter blood fury state
+		//if(amount >= bloodSoftCap && !bloodFuryState.active)
+		//{
+		//	bloodFuryState.EnterState();
+		//}
 	}
 	public void DrainBloodMeter(int amount)
 	{
 		bloodMeter -= amount;
-		if(bloodMeter < 0)
+		if (bloodMeter < 0)
 		{
 			bloodMeter = 0;
 		}
-		if(bloodMeter < bloodSoftCap && bloodFuryState.active)
-		{
-			bloodFuryState.ExitState();
-		}
+		HUDCon.instance.UpdateBloodBar();
+		//if(bloodMeter < 0)
+		//{
+		//	bloodMeter = 0;
+		//}
+		//if(bloodMeter < bloodSoftCap && bloodFuryState.active)
+		//{
+		//	bloodFuryState.ExitState();
+		//}
 	}
 	public void Update()
 	{
 		attackTimer += Time.deltaTime;
-		if (attackTimer > attackTimerMax)
-		{
-			//TODO: reset timer upon attacking an enemy
-			drainTimer += Time.deltaTime;
-			if (drainTimer > drainTimerMax)
-			{
-				drainTimer = 0;
-				DrainBloodMeter(5);
-			}
-		}
+		//if (attackTimer > attackTimerMax)
+		//{
+		//	//TODO: reset timer upon attacking an enemy
+		//	drainTimer += Time.deltaTime;
+		//	if (drainTimer > drainTimerMax)
+		//	{
+		//		drainTimer = 0;
+		//		DrainBloodMeter(5);
+		//	}
+		//}
 	}
 }

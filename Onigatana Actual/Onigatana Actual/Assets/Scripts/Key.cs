@@ -11,7 +11,7 @@ public class Key : MonoBehaviour
 		{
 			playerInventory.AddKey(this);
 			GetComponent<CapsuleCollider>().enabled = false;
-			FindObjectOfType<KeyUI>().FillSlot(gameObject);
+			FindObjectOfType<HUDCon>().FillSlot(gameObject);
 			//Destroy(gameObject);				
 		}
 	}

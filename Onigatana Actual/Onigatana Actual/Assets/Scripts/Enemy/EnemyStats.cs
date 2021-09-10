@@ -5,6 +5,9 @@ using UnityEngine;
 public class EnemyStats : MonoBehaviour
 {
     [SerializeField] private int health;
+
+    [SerializeField] Animation hitAni;
+    [SerializeField] ParticleSystem blood;
     public int Health
 	{
         get { return health; }
@@ -15,11 +18,18 @@ public class EnemyStats : MonoBehaviour
 	{
         Health -= dmg;
         Debug.Log($"OUCHHHHHH! I took {dmg} damage");
+        IsHit();
         if(isDead())
 		{
+            HUDCon.instance.UpdateKillCount();
             Destroy(gameObject);
 		}
 	}
+    public void IsHit()
+    {
+        hitAni.Play("Death");
+        blood.Play();
+    }
 
     private bool isDead()
 	{
