@@ -177,9 +177,9 @@ public class Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+        //cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
-        cc.gameObject.transform.position = new Vector3(0, normalHeight, 0);
+        //cc.gameObject.transform.position = new Vector3(0, normalHeight, 0);
 
         lr = hookShotTransform.gameObject.GetComponent<LineRenderer>();
 
