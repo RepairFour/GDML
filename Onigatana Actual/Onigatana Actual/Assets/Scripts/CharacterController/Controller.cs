@@ -138,6 +138,7 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 momentum;
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
+    [SerializeField] Animator cameraAni;
 
     [SerializeField] RaycastHit[] hit;
     bool crouch;
@@ -287,10 +288,43 @@ public class Controller : MonoBehaviour
         if (currentSpeed > 0)
         {
             animator.SetFloat("Moving", currentSpeed / maxSpeed);
+            if(currentMoveDirection.x > 0)
+			{
+                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") + 0.1f);
+            }
+            else if (currentMoveDirection.x < 0)
+            {
+                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") - 0.1f);
+            }
+            if (currentMoveDirection.z > 0)
+            {
+                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") + 0.1f);
+            }
+            else if (currentMoveDirection.z < 0)
+            {
+                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") - 0.1f);
+            }
+
         }
         else
         {
             animator.SetFloat("Moving", 0);
+            if (cameraAni.GetFloat("Forward") > 0)
+            {
+                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") - 0.01f);
+            }
+            else
+            {
+                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") + 0.01f);
+            }
+            if (cameraAni.GetFloat("Left") > 0)
+            {
+                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") - 0.01f);
+            }
+            else
+            {
+                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") + 0.01f);
+            }
         }
     }
     void HandleSlideAnimation()
