@@ -288,42 +288,53 @@ public class Controller : MonoBehaviour
         if (currentSpeed > 0)
         {
             animator.SetFloat("Moving", currentSpeed / maxSpeed);
-            if(currentMoveDirection.x > 0)
+            if(inputDirection.x > 0)
 			{
                 cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") + 0.1f);
+                if(cameraAni.GetFloat("Left") > 1)
+				{
+                    cameraAni.SetFloat("Left", 1);
+                }
             }
-            else if (currentMoveDirection.x < 0)
+            else if (inputDirection.x < 0)
             {
                 cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") - 0.1f);
+                if (cameraAni.GetFloat("Left") < -1)
+                {
+                    cameraAni.SetFloat("Left", -1);
+                }
             }
-            if (currentMoveDirection.z > 0)
-            {
-                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") + 0.1f);
-            }
-            else if (currentMoveDirection.z < 0)
-            {
-                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") - 0.1f);
+			else
+			{
+                if (Camera.main.transform.localRotation.z > 0f)
+                {
+                    cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") + 0.1f);
+                }
+                else if (Camera.main.transform.localRotation.z < 0f)
+                {
+                    cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") - 0.1f);
+                }
+                if (Mathf.Abs(cameraAni.GetFloat("Left")) < 0.1f)
+                {
+                    cameraAni.SetFloat("Left", 0f);
+                }
             }
 
         }
         else
         {
             animator.SetFloat("Moving", 0);
-            if (cameraAni.GetFloat("Forward") > 0)
+            if (Camera.main.transform.localRotation.z > 0) //left rotation
             {
-                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") - 0.01f);
+                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") + 0.1f);             
             }
-            else
+            else if (Camera.main.transform.localRotation.z < 0) // right rotation
             {
-                cameraAni.SetFloat("Forward", cameraAni.GetFloat("Forward") + 0.01f);
+                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") - 0.1f);
             }
-            if (cameraAni.GetFloat("Left") > 0)
+            if (Mathf.Abs(cameraAni.GetFloat("Left")) < 0.1f)
             {
-                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") - 0.01f);
-            }
-            else
-            {
-                cameraAni.SetFloat("Left", cameraAni.GetFloat("Left") + 0.01f);
+                cameraAni.SetFloat("Left", 0f);
             }
         }
     }
