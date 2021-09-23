@@ -28,6 +28,8 @@ public class GunTest : MonoBehaviour
     public AudioClip gunShotSFX;
     public AudioClip reloadSFX;
 
+    public Animator gunAnimator;
+
     private bool hasMuzzleFlashOn;
 
 
@@ -98,6 +100,7 @@ public class GunTest : MonoBehaviour
         currentBullet.GetComponent<Rigidbody>().AddForce(directionWithSpread.normalized * shootForce, ForceMode.Impulse);
         currentBullet.GetComponent<Rigidbody>().AddForce(fpsCam.transform.up * upwardForce, ForceMode.Impulse);
 
+
         if (hasMuzzleFlashOn == false) {
             if (muzzleFlash != null)
             {
@@ -109,8 +112,6 @@ public class GunTest : MonoBehaviour
             }
             gameObject.GetComponent<AudioSource>().PlayOneShot(gunShotSFX, 0.1f);
         }
-        
-
 
         bulletsLeft--;
         bulletsShot++;
@@ -119,6 +120,7 @@ public class GunTest : MonoBehaviour
 
         if (allowInvoke)
         {
+            gunAnimator.SetTrigger("Fire");
             Invoke("ResetShot", timeBetweenShooting);
             allowInvoke = false;
             hasMuzzleFlashOn = false;
@@ -145,6 +147,7 @@ public class GunTest : MonoBehaviour
 
     private void Reload()
     {
+        gunAnimator.SetTrigger("Reload");
         reloading = true;
         gameObject.GetComponent<AudioSource>().PlayOneShot(reloadSFX, 2);
         Invoke("ReloadFinished", reloadTime);

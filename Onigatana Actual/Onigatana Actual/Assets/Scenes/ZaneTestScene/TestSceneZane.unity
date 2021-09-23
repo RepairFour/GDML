@@ -578,7 +578,13 @@ MonoBehaviour:
   ammunitionDisplay: {fileID: 0}
   gunShotSFX: {fileID: 8300000, guid: f085c37807c50b6458cd760304fda127, type: 3}
   reloadSFX: {fileID: 8300000, guid: d19ce6f7cc12270438a3532ce17f0116, type: 3}
+  gunAnimator: {fileID: 962287895}
   allowInvoke: 1
+--- !u!95 &962287895 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: 876a9efcae3245e4ab66feeb8f437976, type: 3}
+  m_PrefabInstance: {fileID: 1693259701}
+  m_PrefabAsset: {fileID: 0}
 --- !u!82 &962287898
 AudioSource:
   m_ObjectHideFlags: 0
@@ -804,7 +810,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh39760
+  m_Name: pb_Mesh28976
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -973,6 +979,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Bit Gun
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 876a9efcae3245e4ab66feeb8f437976, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 876a9efcae3245e4ab66feeb8f437976, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -1017,6 +1027,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 876a9efcae3245e4ab66feeb8f437976, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9500000, guid: 876a9efcae3245e4ab66feeb8f437976, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 1248e7c9644c94242903a0967f688a70, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 876a9efcae3245e4ab66feeb8f437976, type: 3}
 --- !u!4 &232508819104205307
