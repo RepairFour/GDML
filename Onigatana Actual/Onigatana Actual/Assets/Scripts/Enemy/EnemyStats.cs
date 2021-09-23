@@ -6,8 +6,10 @@ public class EnemyStats : MonoBehaviour
 {
     [SerializeField] private int health;
 
-    [SerializeField] Animation hitAni;
+    //[SerializeField] Animation hitAni;
     [SerializeField] ParticleSystem blood;
+    [SerializeField] AudioSource weaponHit;
+
     public int Health
 	{
         get { return health; }
@@ -27,8 +29,9 @@ public class EnemyStats : MonoBehaviour
 	}
     public void IsHit()
     {
-        hitAni.Play("Death");
+        //hitAni.Play("Death");
         blood.Play();
+        weaponHit.Play();
     }
 
     private bool isDead()
