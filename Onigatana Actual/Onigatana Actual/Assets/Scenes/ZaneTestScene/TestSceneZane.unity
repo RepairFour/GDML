@@ -571,7 +571,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   magazineSize: 10
   bulletsPerTap: 5
-  allowButtonHold: 0
+  allowButtonHold: 1
   fpsCam: {fileID: 4305095280635220785}
   attackPoint: {fileID: 999982647}
   muzzleFlash: {fileID: 1743301284569550, guid: 192d9350342c02f41bf500409f4b7fce, type: 3}

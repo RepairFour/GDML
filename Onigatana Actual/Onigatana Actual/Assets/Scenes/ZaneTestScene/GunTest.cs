@@ -32,10 +32,24 @@ public class GunTest : MonoBehaviour
 
     private bool hasMuzzleFlashOn;
 
-
+    private ButtonControl ClickShoot;
+    private bool isHoldingShoot;
 
     public bool allowInvoke = true;
 
+
+    private bool queryShooting()
+    {
+        if (ClickShoot.isPressed)
+        {
+            isHoldingShoot = true;
+        }
+        else if (ClickShoot.wasReleasedThisFrame)
+        {
+            isHoldingShoot = false;
+        }
+        return isHoldingShoot;
+    }
 
     private void Awake()
     {
@@ -44,6 +58,7 @@ public class GunTest : MonoBehaviour
 
         input = new PlayerMap();
         input.Enable();
+        ClickShoot = (ButtonControl)input.Player.Shoot.controls[0];
     }
 
     private void Update()
@@ -52,11 +67,13 @@ public class GunTest : MonoBehaviour
 
         if (ammunitionDisplay != null)
             ammunitionDisplay.SetText(bulletsLeft / bulletsPerTap + " / " + magazineSize / bulletsPerTap);
+
+
     }
 
     private void MyInput()
     {
-        if (allowButtonHold) shooting = Input.GetKey(KeyCode.Mouse0);
+        if (allowButtonHold) shooting = queryShooting();
         else shooting = input.Player.Shoot.triggered;
 
         if (input.Player.Reload.triggered && bulletsLeft < magazineSize && !reloading) 
