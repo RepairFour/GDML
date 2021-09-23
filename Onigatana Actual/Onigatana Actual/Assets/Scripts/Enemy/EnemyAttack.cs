@@ -9,6 +9,7 @@ public class EnemyAttack : MonoBehaviour
     [HideInInspector]
     public bool attackMode = false;
     [SerializeField] GameObject projectile;
+    [SerializeField] float projectileSpeed;
     PlayerStats player;
 
     float timer = 0;
@@ -34,7 +35,7 @@ public class EnemyAttack : MonoBehaviour
 		{
             var bullet = Instantiate(projectile,transform.position,transform.rotation);
             bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-            bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - transform.position) * 100);
+            bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - transform.position).normalized * projectileSpeed);
             timer = 0;
         }
     }
