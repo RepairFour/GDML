@@ -17,7 +17,7 @@ public class EnemyChase : MonoBehaviour
     bool chasePlayer = false;
 
     EnemyAttack enemyAttack;
-    [SerializeField] float attackDistance;
+    public float attackDistance;
 
     //leaping stuff for melee units
     bool leap = false;
@@ -28,6 +28,9 @@ public class EnemyChase : MonoBehaviour
     float agentWalkSpeed;
     float agentAccelleration;
     Vector3 leapVector = new Vector3();
+    [SerializeField] float visionDistance = 100;
+    [SerializeField] LayerMask layersToIgnore;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -38,6 +41,7 @@ public class EnemyChase : MonoBehaviour
         agentAccelleration = agent.acceleration;
         wayManager = FindObjectOfType<WaypointManager>();
         path = new List<Transform>(wayManager.paths[patrolPath].waypoints);
+        
     }
 
     // Update is called once per frame
@@ -47,10 +51,11 @@ public class EnemyChase : MonoBehaviour
 		{
             player = FindObjectOfType<PlayerStats>();
         }
+        CanISeeThePlayer(); // fills out chasePlayer bool 
         if (chasePlayer == false)
         {
-            CanISeeThePlayer();
-			agent.destination = path[pathNode].position;
+            enemyAttack.attackMode = false;
+            agent.destination = path[pathNode].position;
 			if (Mathf.Abs(transform.position.x - path[pathNode].position.x) < 1 &&
 			   Mathf.Abs(transform.position.z - path[pathNode].position.z) < 1)
 			{
@@ -121,14 +126,14 @@ public class EnemyChase : MonoBehaviour
 
     private void CanISeeThePlayer()
 	{
-        float visionDistance = 100;
+        chasePlayer = false;
         // try to see player 
         RaycastHit hit;
         Vector3 directionToPlayer = player.transform.position - transform.position;
         Debug.DrawRay(transform.position, directionToPlayer.normalized * visionDistance, Color.red);
-        if (Physics.Raycast(transform.position, directionToPlayer, out hit,visionDistance))
+        if (Physics.Raycast(transform.position, directionToPlayer, out hit,visionDistance,~layersToIgnore))
         {
-            if (hit.collider.GetComponent<PlayerStats>() != null && Vector3.Dot(transform.forward, directionToPlayer.normalized) > 0.25)
+            if (hit.collider.GetComponent<PlayerStats>() != null /*&& Vector3.Dot(transform.forward, directionToPlayer.normalized) > 0*/)
             {
                 chasePlayer = true;
             }

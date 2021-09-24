@@ -116,6 +116,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 3
+  blood: {fileID: 0}
+  weaponHit: {fileID: 0}
 --- !u!195 &298417389046888801
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -154,6 +156,10 @@ MonoBehaviour:
   attackDistance: 4
   leapTimerMax: 0.5
   leapForce: 300
+  visionDistance: 100
+  layersToIgnore:
+    serializedVersion: 2
+    m_Bits: 260
 --- !u!54 &298417389046888800
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -186,6 +192,7 @@ MonoBehaviour:
   dmgPerHit: 1
   attackMode: 0
   projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
+  projectileSpeed: 0
   timerMax: 1
 --- !u!1001 &1698540375691244692
 PrefabInstance:

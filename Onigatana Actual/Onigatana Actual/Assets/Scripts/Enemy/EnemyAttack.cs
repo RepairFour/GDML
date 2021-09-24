@@ -14,10 +14,13 @@ public class EnemyAttack : MonoBehaviour
 
     float timer = 0;
     [SerializeField] float timerMax;
+    [HideInInspector]
+    public float attackDistance;
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerStats>();
+        attackDistance = GetComponent<EnemyChase>().attackDistance;
     }
 
     // Update is called once per frame
@@ -33,10 +36,13 @@ public class EnemyAttack : MonoBehaviour
         }
         if(!melee && attackMode && timer > timerMax)
 		{
-            var bullet = Instantiate(projectile,transform.position,transform.rotation);
-            bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-            bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - transform.position).normalized * projectileSpeed);
-            timer = 0;
+            if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance)
+            {
+                var bullet = Instantiate(projectile, transform.position, transform.rotation);
+                bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
+                bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - transform.position).normalized * projectileSpeed);
+                timer = 0;
+            }
         }
     }
 
