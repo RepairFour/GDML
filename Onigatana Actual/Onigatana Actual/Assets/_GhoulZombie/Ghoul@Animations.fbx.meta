@@ -639,7 +639,7 @@ ModelImporter:
       internalID: 0
       firstFrame: 190
       lastFrame: 230
-      wrapMode: 2
+      wrapMode: 1
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0

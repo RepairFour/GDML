@@ -160,6 +160,7 @@ MonoBehaviour:
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 260
+  aknowledgementTimerMax: 0
 --- !u!54 &298417389046888800
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -193,7 +194,11 @@ MonoBehaviour:
   attackMode: 0
   projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
   projectileSpeed: 0
-  timerMax: 1
+  attackCDtimerMax: 0
+  attackDistance: 0
+  firstAttackDelayMod: 1
+  attackChargeTimerMax: 0
+  chargeAttackAni: {fileID: 1593946773203661804}
 --- !u!1001 &1698540375691244692
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -254,5 +259,10 @@ PrefabInstance:
 --- !u!4 &1701712076806415176 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4467757482891228, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
+  m_PrefabInstance: {fileID: 1698540375691244692}
+  m_PrefabAsset: {fileID: 0}
+--- !u!111 &1593946773203661804 stripped
+Animation:
+  m_CorrespondingSourceObject: {fileID: 111670102475343736, guid: 227ee07e9e5b7914ba8fbb8f430be9a5, type: 3}
   m_PrefabInstance: {fileID: 1698540375691244692}
   m_PrefabAsset: {fileID: 0}

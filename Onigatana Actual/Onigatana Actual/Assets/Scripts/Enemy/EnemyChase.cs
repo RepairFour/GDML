@@ -129,8 +129,9 @@ public class EnemyChase : MonoBehaviour
                 //the desired distance away from the player to shoot him
                 agent.destination = playerPos - ((playerPos - transform.position).normalized  * attackDistance);
                 RaycastHit hit;
-                if(Physics.Raycast(transform.position,agent.destination,out hit, agent.destination.magnitude/2, ~layersToIgnore))
+                if(Physics.Raycast(transform.position,agent.destination,out hit, (agent.destination - transform.position).magnitude/2, ~layersToIgnore))
 				{
+                    
                     if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
                     { 
                         agent.destination = Vector3.Cross(transform.right, playerPos).normalized * attackDistance;

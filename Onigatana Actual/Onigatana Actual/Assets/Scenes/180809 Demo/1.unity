@@ -671,10 +671,50 @@ PrefabInstance:
       propertyPath: projectileSpeed
       value: 3000
       objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: attackCDtimerMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: firstAttackDelayMod
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: attackChargeTimerMax
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_Animation
       value: 
       objectReference: {fileID: 7400002, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
+    - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Animations.Array.data[0]
+      value: 
+      objectReference: {fileID: 7400012, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
+    - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Animations.Array.data[1]
+      value: 
+      objectReference: {fileID: 7400000, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
+    - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Animations.Array.data[2]
+      value: 
+      objectReference: {fileID: 7400002, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
+    - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Animations.Array.data[3]
+      value: 
+      objectReference: {fileID: 7400004, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
+    - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Animations.Array.data[4]
+      value: 
+      objectReference: {fileID: 7400006, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
+    - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Animations.Array.data[5]
+      value: 
+      objectReference: {fileID: 7400008, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
+    - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Animations.Array.data[6]
+      value: 
+      objectReference: {fileID: 7400010, guid: ce65fa103f0e84b4289374b2a4bf93f8, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
 --- !u!4 &22307590 stripped
@@ -59028,6 +59068,18 @@ PrefabInstance:
       propertyPath: projectileSpeed
       value: 3000
       objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: attackCDtimerMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: firstAttackDelayMod
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: attackChargeTimerMax
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_Animation
       value: 
@@ -67225,6 +67277,48 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 695064047465506041, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
   m_PrefabInstance: {fileID: 1856542931}
   m_PrefabAsset: {fileID: 0}
+--- !u!23 &1515994393
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515994387}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
 --- !u!1 &1528281821
 GameObject:
   m_ObjectHideFlags: 0
@@ -67432,6 +67526,18 @@ PrefabInstance:
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: projectileSpeed
       value: 3000
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: attackCDtimerMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: firstAttackDelayMod
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: attackChargeTimerMax
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_Animation

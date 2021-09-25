@@ -12,12 +12,17 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float projectileSpeed;
     PlayerStats player;
 
-    float timer = 0;
-    [SerializeField] float timerMax;
+    float attackCDtimer = 0;
+    [SerializeField] float attackCDtimerMax;
     [HideInInspector]
     public float attackDistance;
     bool firstAttack = true;
-    [SerializeField][Range(1,3)] float firstAttackMod = 1;
+    [SerializeField][Range(1,3)] float firstAttackDelayMod = 1;
+
+    [SerializeField] float attackChargeTimerMax;
+    float attackChargeTimer = 0;
+    bool chargingAttack = false;
+    [SerializeField] Animation chargeAttackAni;
     // Start is called before the first frame update
     void Start()
     {
@@ -34,47 +39,47 @@ public class EnemyAttack : MonoBehaviour
         }
         if (attackMode)
         {
-            timer += Time.deltaTime;
+            attackCDtimer += Time.deltaTime;
             if(firstAttack)
 			{
-
                 firstAttack = false;
-                timer -= Random.value * firstAttackMod;
+                attackCDtimer -= Random.value * firstAttackDelayMod;
 			}
         }
-        if(!melee && attackMode && timer > timerMax)
+        if(!melee && attackMode && attackCDtimer > attackCDtimerMax)
 		{
-            if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance)
+            if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance + 1)
             {
-                var bullet = Instantiate(projectile, transform.position, transform.rotation);
-                bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-                bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - transform.position).normalized * projectileSpeed);
-                timer = 0;
+                chargingAttack = true;
+                chargeAttackAni.Play("Idle");
             }
+            if(chargingAttack)
+			{
+                attackChargeTimer += Time.deltaTime;
+                if(attackChargeTimer > attackChargeTimerMax)
+				{
+                    chargingAttack = false;
+                    chargeAttackAni.Play("Attack2");
+                    chargeAttackAni.PlayQueued("Run");
+                    attackChargeTimer = 0;
+                    attackCDtimer = 0;
+                    var bullet = Instantiate(projectile, transform.position, transform.rotation);
+                    bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
+                    bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - transform.position).normalized * projectileSpeed);                    
+                }
+			}
         }
     }
 
-	//private void OnCollisionEnter(Collision collision)
-	//{
- //       if (melee && timer > timerMax)
- //       {
- //           var player = collision.gameObject.GetComponent<PlayerStats>();
- //           if (player != null)
-	//		{
- //               player.Hurt(dmgPerHit);
- //               timer = 0;
- //           }
- //       }
- //   }
 	private void OnTriggerEnter(Collider other)
     {
-        if (melee && timer > timerMax)
+        if (melee && attackCDtimer > attackCDtimerMax)
         {
             var player = other.GetComponent<PlayerStats>();
             if (player != null)
             {
                 player.Hurt(dmgPerHit);
-                timer = 0;
+                attackCDtimer = 0;
             }
         }
     }
