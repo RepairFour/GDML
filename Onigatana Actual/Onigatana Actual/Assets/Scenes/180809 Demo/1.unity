@@ -564,6 +564,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 298417389046888801, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888801, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_AngularSpeed
       value: 600
       objectReference: {fileID: 0}
@@ -574,6 +578,10 @@ PrefabInstance:
     - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: attackDistance
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: aknowledgementTimerMax
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 298417389046888803, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_RootOrder
@@ -653,6 +661,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: timerMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: firstAttackMod
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
@@ -18030,7 +18042,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh26450
+  m_Name: pb_Mesh26454
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -58909,6 +58921,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 298417389046888801, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888801, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_AngularSpeed
       value: 600
       objectReference: {fileID: 0}
@@ -58919,6 +58935,10 @@ PrefabInstance:
     - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: attackDistance
       value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: aknowledgementTimerMax
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 298417389046888803, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_RootOrder
@@ -58998,6 +59018,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: timerMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: firstAttackMod
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
@@ -67302,6 +67326,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 298417389046888801, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: m_Radius
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888801, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_AngularSpeed
       value: 600
       objectReference: {fileID: 0}
@@ -67312,6 +67340,10 @@ PrefabInstance:
     - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: attackDistance
       value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: aknowledgementTimerMax
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 298417389046888803, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_RootOrder
@@ -67391,6 +67423,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: timerMax
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: firstAttackMod
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}

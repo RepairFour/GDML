@@ -30,6 +30,9 @@ public class EnemyChase : MonoBehaviour
     Vector3 leapVector = new Vector3();
     [SerializeField] float visionDistance = 100;
     [SerializeField] LayerMask layersToIgnore;
+    [SerializeField] float aknowledgementTimerMax;
+    float aknowledgementTimer = 0;
+    Vector3 playerPos;
 
     // Start is called before the first frame update
     void Start()
@@ -67,7 +70,7 @@ public class EnemyChase : MonoBehaviour
 			}
 			
 		}
-		else // chase the player
+		else // get to optimal attack range
 		{
             enemyAttack.attackMode = true;
             if (enemyAttack.melee)
@@ -117,8 +120,22 @@ public class EnemyChase : MonoBehaviour
             }
 			else
 			{
+                aknowledgementTimer += Time.deltaTime;
+                if (aknowledgementTimer > aknowledgementTimerMax)
+                {
+                    playerPos = player.transform.position;
+                    aknowledgementTimer = 0;
+                }
                 //the desired distance away from the player to shoot him
-                agent.destination = player.transform.position - ((player.transform.position - transform.position).normalized  * attackDistance); 
+                agent.destination = playerPos - ((playerPos - transform.position).normalized  * attackDistance);
+                RaycastHit hit;
+                if(Physics.Raycast(transform.position,agent.destination,out hit, agent.destination.magnitude/2, ~layersToIgnore))
+				{
+                    if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
+                    { 
+                        agent.destination = Vector3.Cross(transform.right, playerPos).normalized * attackDistance;
+                    }
+				}
             }
         }
         

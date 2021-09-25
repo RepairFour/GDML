@@ -16,6 +16,8 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float timerMax;
     [HideInInspector]
     public float attackDistance;
+    bool firstAttack = true;
+    [SerializeField][Range(1,3)] float firstAttackMod = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -33,6 +35,12 @@ public class EnemyAttack : MonoBehaviour
         if (attackMode)
         {
             timer += Time.deltaTime;
+            if(firstAttack)
+			{
+
+                firstAttack = false;
+                timer -= Random.value * firstAttackMod;
+			}
         }
         if(!melee && attackMode && timer > timerMax)
 		{
