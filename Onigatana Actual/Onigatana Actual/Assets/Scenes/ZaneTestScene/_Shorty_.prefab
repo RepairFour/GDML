@@ -228,6 +228,7 @@ MonoBehaviour:
   muzzleFlash: {fileID: 1743301284569550, guid: 192d9350342c02f41bf500409f4b7fce, type: 3}
   ammunitionDisplay: {fileID: 0}
   gunShotSFX: {fileID: 8300000, guid: f085c37807c50b6458cd760304fda127, type: 3}
+  gunShotSFXAlt: {fileID: 8300000, guid: 61d2d104198df104bbe69af8cd040fd2, type: 3}
   reloadSFX: {fileID: 8300000, guid: d19ce6f7cc12270438a3532ce17f0116, type: 3}
   gunAnimator: {fileID: 6382340648587785948}
   allowInvoke: 1
