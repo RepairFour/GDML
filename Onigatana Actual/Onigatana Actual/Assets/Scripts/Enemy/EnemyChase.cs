@@ -34,6 +34,9 @@ public class EnemyChase : MonoBehaviour
     float aknowledgementTimer = 0;
     Vector3 playerPos;
 
+    NavMeshAgent NavMeshAgent;
+    [SerializeField] float boxedInDistance;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,7 +47,8 @@ public class EnemyChase : MonoBehaviour
         agentAccelleration = agent.acceleration;
         wayManager = FindObjectOfType<WaypointManager>();
         path = new List<Transform>(wayManager.paths[patrolPath].waypoints);
-        
+        NavMeshAgent = GetComponent<NavMeshAgent>();
+
     }
 
     // Update is called once per frame
@@ -126,20 +130,31 @@ public class EnemyChase : MonoBehaviour
                     playerPos = player.transform.position;
                     aknowledgementTimer = 0;
                 }
-                //the desired distance away from the player to shoot him
-                agent.destination = playerPos - ((playerPos - transform.position).normalized  * attackDistance);
-                RaycastHit hit;
-                if(Physics.Raycast(transform.position,agent.destination,out hit, (agent.destination - transform.position).magnitude/2, ~layersToIgnore))
-				{
-                    
-                    if(hit.collider.gameObject.layer == LayerMask.NameToLayer("Ground"))
-                    { 
-                        agent.destination = Vector3.Cross(transform.right, playerPos).normalized * attackDistance;
-                    }
-				}
+                //the desired distance away from the player to shoot hit
+                FindValidPath(playerPos - ((playerPos - transform.position).normalized  * attackDistance));                
             }
+            Debug.DrawLine(transform.position, agent.destination);
         }
         
+    }
+
+    void FindValidPath(Vector3 desiredDestination)
+	{
+        agent.SetDestination(desiredDestination);
+        if(agent.pathStatus != NavMeshPathStatus.PathComplete)
+		{
+            agent.destination = Quaternion.Euler(0, 45, 0) * agent.destination;
+            //         if(Vector3.Distance(transform.position, player.transform.position) < boxedInDistance)
+            //{
+            //             agent.destination = player.transform.position + (player.transform.position - transform.position).normalized * attackDistance;
+            //         }
+            //else
+            //{
+            //             agent.destination = Vector3.Cross(desiredDestination - transform.position, player.transform.position - desiredDestination).normalized * attackDistance;
+            //         }
+
+        }
+       
     }
 
     private void CanISeeThePlayer()
@@ -148,7 +163,7 @@ public class EnemyChase : MonoBehaviour
         // try to see player 
         RaycastHit hit;
         Vector3 directionToPlayer = player.transform.position - transform.position;
-        Debug.DrawRay(transform.position, directionToPlayer.normalized * visionDistance, Color.red);
+        //Debug.DrawRay(transform.position, directionToPlayer.normalized * visionDistance, Color.red);
         if (Physics.Raycast(transform.position, directionToPlayer, out hit,visionDistance,~layersToIgnore))
         {
             if (hit.collider.GetComponent<PlayerStats>() != null /*&& Vector3.Dot(transform.forward, directionToPlayer.normalized) > 0*/)
