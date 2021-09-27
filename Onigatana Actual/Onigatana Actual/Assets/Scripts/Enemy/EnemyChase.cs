@@ -131,28 +131,19 @@ public class EnemyChase : MonoBehaviour
                     aknowledgementTimer = 0;
                 }
                 //the desired distance away from the player to shoot hit
-                FindValidPath(playerPos - ((playerPos - transform.position).normalized  * attackDistance));                
+                FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
             }
             Debug.DrawLine(transform.position, agent.destination);
         }
         
     }
 
-    void FindValidPath(Vector3 desiredDestination)
+    void FindPath(Vector3 desiredDestination)
 	{
         agent.SetDestination(desiredDestination);
         if(agent.pathStatus != NavMeshPathStatus.PathComplete)
 		{
             agent.destination = Quaternion.Euler(0, 45, 0) * agent.destination;
-            //         if(Vector3.Distance(transform.position, player.transform.position) < boxedInDistance)
-            //{
-            //             agent.destination = player.transform.position + (player.transform.position - transform.position).normalized * attackDistance;
-            //         }
-            //else
-            //{
-            //             agent.destination = Vector3.Cross(desiredDestination - transform.position, player.transform.position - desiredDestination).normalized * attackDistance;
-            //         }
-
         }
        
     }
