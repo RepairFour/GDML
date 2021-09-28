@@ -131,7 +131,7 @@ MonoBehaviour:
   explosion: {fileID: 4010770018812959258, guid: 9c3bef84aa9ac584fb2fa80141a0b0dc, type: 3}
   whatIsEnemies:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   bounciness: 0.8
   useGravity: 1
   explosionDamage: 40

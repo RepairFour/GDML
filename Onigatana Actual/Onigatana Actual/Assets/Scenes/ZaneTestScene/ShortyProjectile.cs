@@ -52,12 +52,13 @@ public class ShortyProjectile : MonoBehaviour
     {
         if (explosion != null) Instantiate(explosion, transform.position, Quaternion.identity);
 
-            Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatIsEnemies);
-            for (int i = 0; i < enemies.Length; i++)
-            {
-                // need to replace this line with whatever our damage function on enemies is.
-               // enemies[i].GetComponent<insertnameoftheirtakedamagescript>().TAKEDAMAGEFUNCTION(explosionDamage);
-            }
+        Collider[] enemies = Physics.OverlapSphere(transform.position, explosionRange, whatIsEnemies);
+        for (int i = 0; i < enemies.Length; i++)
+        {
+            // need to replace this line with whatever our damage function on enemies is.
+            // enemies[i].GetComponent<insertnameoftheirtakedamagescript>().TAKEDAMAGEFUNCTION(explosionDamage);
+            enemies[i].GetComponent<EnemyStats>().Hurt(explosionDamage);
+        }
         Invoke("Delay", 0.001f);
 
     }
