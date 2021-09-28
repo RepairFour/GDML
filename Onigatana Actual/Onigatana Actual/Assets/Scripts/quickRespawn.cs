@@ -10,6 +10,11 @@ public class quickRespawn : MonoBehaviour
     public GameObject PlayerPrefab;
     int deathNumber;
     bool sendAnalytics;
+
+
+    public Vector3 respawnLocation;
+
+
     private void Start()
     {
         deathNumber = 0;
@@ -26,7 +31,9 @@ public class quickRespawn : MonoBehaviour
             controller.SendAnalytics(deathNumber);
       
             Destroy(Player);
-            Player = Instantiate(PlayerPrefab, new Vector3(0, 0, 0), Quaternion.identity);
+                Player = Instantiate(PlayerPrefab, respawnLocation, Quaternion.identity);
+
+
             
             controller = Player.GetComponent<Controller>();
             
