@@ -51,7 +51,7 @@ public class PlayerStats : MonoBehaviour
 			armour = 0;
 			health -= dmgRemaining;
 		}
-		HUDCon.instance.UpdateHpBar();
+		//HUDCon.instance.UpdateHpBar();
 		if(health <= 0)
 		{
 			Death();

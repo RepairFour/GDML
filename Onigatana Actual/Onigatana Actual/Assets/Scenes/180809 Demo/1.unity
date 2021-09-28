@@ -58989,6 +58989,14 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: runawayCooldown
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
+      propertyPath: runawayDistance
+      value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 298417389046888802, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: aknowledgementTimerMax
       value: 1
       objectReference: {fileID: 0}
@@ -59094,7 +59102,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 371746600533163855, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: attackChargeTimerMax
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1593946773203661804, guid: 382b0648e98252846aa4022b8a967b53, type: 3}
       propertyPath: m_Animation

@@ -23,7 +23,7 @@ public class EnemyStats : MonoBehaviour
         IsHit();
         if(isDead())
 		{
-            HUDCon.instance.UpdateKillCount();
+            //HUDCon.instance.UpdateKillCount();
             Destroy(gameObject);
 		}
 	}

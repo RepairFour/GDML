@@ -35,7 +35,13 @@ public class EnemyChase : MonoBehaviour
     Vector3 playerPos;
 
     NavMeshAgent NavMeshAgent;
-    [SerializeField] float boxedInDistance;
+    [Tooltip("The distance this can run before needing a break")]
+    [SerializeField]float runawayDistance;
+    [Tooltip("How long of a break this needs after expending its runaway distance")]
+    [SerializeField] float runawayCooldown;
+    [HideInInspector]
+    public float runawayTimer = 0;
+    float runawayDistanceMax;
 
     // Start is called before the first frame update
     void Start()
@@ -48,7 +54,7 @@ public class EnemyChase : MonoBehaviour
         wayManager = FindObjectOfType<WaypointManager>();
         path = new List<Transform>(wayManager.paths[patrolPath].waypoints);
         NavMeshAgent = GetComponent<NavMeshAgent>();
-
+        runawayDistanceMax = runawayDistance;
     }
 
     // Update is called once per frame
@@ -125,13 +131,26 @@ public class EnemyChase : MonoBehaviour
 			else
 			{
                 aknowledgementTimer += Time.deltaTime;
-                if (aknowledgementTimer > aknowledgementTimerMax)
+                runawayTimer -= Time.deltaTime;
+                if (aknowledgementTimer > aknowledgementTimerMax && runawayTimer < 0)
                 {
+                    runawayDistance -= Vector3.Distance(player.transform.position, playerPos);
                     playerPos = player.transform.position;
-                    aknowledgementTimer = 0;
+                    aknowledgementTimer = 0;                 
+                    //if distance < 0 
+                    if(runawayDistance <= 0)
+					{
+                        runawayTimer = runawayCooldown;
+                        runawayDistance = runawayDistanceMax;
+                        FindPath(transform.position);
+                    }
+                    
                 }
-                //the desired distance away from the player to shoot hit
-                FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
+                if (runawayTimer < 0)
+                {
+                    //the desired distance away from the player to shoot hit
+                    FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
+                }
             }
             Debug.DrawLine(transform.position, agent.destination);
         }

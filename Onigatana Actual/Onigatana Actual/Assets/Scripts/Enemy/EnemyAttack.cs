@@ -23,11 +23,14 @@ public class EnemyAttack : MonoBehaviour
     float attackChargeTimer = 0;
     bool chargingAttack = false;
     [SerializeField] Animation chargeAttackAni;
+    EnemyChase enemyChase;
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerStats>();
-        attackDistance = GetComponent<EnemyChase>().attackDistance;
+        enemyChase = GetComponent<EnemyChase>();
+        attackDistance = enemyChase.attackDistance;
+       
     }
 
     // Update is called once per frame
@@ -48,7 +51,7 @@ public class EnemyAttack : MonoBehaviour
         }
         if(!melee && attackMode && attackCDtimer > attackCDtimerMax)
 		{
-            if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance + 1)
+            if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance + 1 || enemyChase.runawayTimer > 0)
             {
                 chargingAttack = true;
                 chargeAttackAni.Play("Idle");
