@@ -53,7 +53,7 @@ public class PlayerAttack : MonoBehaviour
             if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
             {
                 gameObject.transform.rotation = Camera.main.transform.rotation;
-                Debug.Log("Attacking");
+                //Debug.Log("Attacking");
                 weaponSlash.SetTrigger("Attack");
                 var n = Random.Range(1, 3);
                 weaponSlash.SetInteger("Attack#", n);

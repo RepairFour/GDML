@@ -79,13 +79,13 @@ public class GunTestTeleport : MonoBehaviour
 
         else if (SecondaryClickShoot.isPressed)
         {
-            Debug.Log("SecondaryFireActive");
+            //Debug.Log("SecondaryFireActive");
             isHoldingShoot = true;
             secondaryFireActive = true;
         }
         else if (SecondaryClickShoot.wasReleasedThisFrame)
         {
-            Debug.Log("SecondaryFireDeactive");
+            //Debug.Log("SecondaryFireDeactive");
             isHoldingShoot = false;
             secondaryFireActive = false;
         }
@@ -148,7 +148,7 @@ public class GunTestTeleport : MonoBehaviour
 
     private void Shoot()
     {
-        Debug.Log("bulletFired");
+        //Debug.Log("bulletFired");
         readyToShoot = false;
 
         //resets the gun if ammo is not full, and the player tries to use the secondary fire, and plays a click sound effect.
@@ -206,7 +206,7 @@ public class GunTestTeleport : MonoBehaviour
                 }
 
                 ShootSoundPicker = Random.Range(1, 11);
-                Debug.Log("ShootSoundPicker Value = " + ShootSoundPicker);
+                //Debug.Log("ShootSoundPicker Value = " + ShootSoundPicker);
 
                 if (ShootSoundPicker <= 5)
                 {
@@ -278,7 +278,7 @@ public class GunTestTeleport : MonoBehaviour
                     }
 
                     ShootSoundPicker = Random.Range(1, 11);
-                    Debug.Log("ShootSoundPicker Value = " + ShootSoundPicker);
+                    //Debug.Log("ShootSoundPicker Value = " + ShootSoundPicker);
 
                     if (ShootSoundPicker <= 5)
                     {
@@ -341,8 +341,8 @@ public class GunTestTeleport : MonoBehaviour
         bulletsLeft = magazineSize;
         reloading = false;
         hasFiredPrimaryShot = false;
-        Debug.Log("bulletsLeft " + bulletsLeft);
-        Debug.Log("magazineSize " + magazineSize);
+       // Debug.Log("bulletsLeft " + bulletsLeft);
+       // Debug.Log("magazineSize " + magazineSize);
 
     }
 

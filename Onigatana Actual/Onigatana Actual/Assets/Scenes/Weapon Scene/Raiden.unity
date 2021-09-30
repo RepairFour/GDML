@@ -129,7 +129,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-19830
+  m_Name: pb_Mesh37308
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -287,6 +287,50 @@ Mesh:
     offset: 0
     size: 0
     path: 
+--- !u!1 &964453546
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 964453548}
+  - component: {fileID: 964453547}
+  m_Layer: 0
+  m_Name: Mananger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &964453547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964453546}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cffa113f4af39e74195f62e40e974352, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerController: {fileID: 4569158100163732290}
+--- !u!4 &964453548
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 964453546}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -76.76118, y: -18.725788, z: 116.85038}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &1008246080
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -657,7 +701,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh42164
+  m_Name: pb_Mesh37292
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1769,8 +1813,8 @@ GameObject:
   - component: {fileID: 2132483297}
   - component: {fileID: 2132483296}
   - component: {fileID: 2132483295}
-  - component: {fileID: 2132483301}
   - component: {fileID: 2132483302}
+  - component: {fileID: 2132483301}
   m_Layer: 0
   m_Name: '"enemy"'
   m_TagString: Untagged
@@ -1817,7 +1861,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 2
   m_RayTraceProcedural: 0
-  m_RenderingLayerMask: 1
+  m_RenderingLayerMask: 2147483649
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: e8a5e4947bfb1e146a6175ac3484cc74, type: 2}
@@ -2431,12 +2475,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 2132483294}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7dd21320269edc74d8ea5478e2aeaf3b, type: 3}
+  m_Script: {fileID: 11500000, guid: 5c9a7deb7831e4241a3f28bb5801cabe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMark: 0
+  blinkMarkDuration: 5
   markDisplay: {fileID: 1703803116}
   blinkIcon: {fileID: 21300000, guid: c2e97f2849b1a1b46b699d8d2d1478bd, type: 3}
-  player: {fileID: 4148035045711368634}
 --- !u!65 &2132483302
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2948,14 +2993,6 @@ MonoBehaviour:
   m_RequiresDepthTexture: 0
   m_RequiresColorTexture: 0
   m_Version: 2
---- !u!81 &1839203934172322613
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1839203934172322618}
-  m_Enabled: 1
 --- !u!4 &1839203934172322614
 Transform:
   m_ObjectHideFlags: 0
@@ -2980,7 +3017,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1839203934172322614}
   - component: {fileID: 1839203934172322619}
-  - component: {fileID: 1839203934172322613}
   - component: {fileID: 1839203934172322612}
   m_Layer: 0
   m_Name: HUDCamera
@@ -9741,6 +9777,7 @@ MonoBehaviour:
   crossHair: {fileID: 4148035045797928671}
   dash1: {fileID: 3473853061851159039}
   dash2: {fileID: 3473853061833749849}
+  markedEnemy: {fileID: 0}
   animator: {fileID: 3473853060567272280}
   queueJump: 0
   jumpingTimer: 0
@@ -9778,6 +9815,7 @@ MonoBehaviour:
   momentum: {x: 0, y: 0, z: 0}
   hookCooldownTimer: 0
   hookOnCooldown: 0
+  blinkStrikeActivated: 0
   jumps: 0
   timeSpentInHookShot: 0
   timeSpentDashing: 0

@@ -37,10 +37,10 @@ public class BlinkMark : MonoBehaviour
 
     private void Update()
     {
-        //if (Input.Player.Melee.triggered)
-       // {
+       if (Input.Player.Melee.triggered)
+       {
             meleeAbility();
-       // }
+       }
 
     }
 
@@ -49,7 +49,10 @@ public class BlinkMark : MonoBehaviour
         if (isMarkedBlink == true)
         {
             Debug.Log("meleePressed");
-            player.transform.position = new Vector3(100, 110, 111);
+            Debug.Log("Player Transform before " + player.transform.position);
+            player.GetComponent<Controller>().TeleportToPosition(transform.position);
+            Debug.Log("Player Transform after " + player.transform.position);
+
 
         }
     }

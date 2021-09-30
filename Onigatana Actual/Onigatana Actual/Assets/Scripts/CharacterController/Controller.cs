@@ -82,6 +82,10 @@ public class Controller : MonoBehaviour
     public Image crossHair;
     public Slider dash1;
     public Slider dash2;
+
+
+    [Header("Testing Enemy Marks Variables")]
+    public Mark markedEnemy;
     #endregion
 
     #region Animation Variables
@@ -139,6 +143,9 @@ public class Controller : MonoBehaviour
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
 
+    [SerializeField] bool blinkStrikeActivated = false;
+    
+
     [SerializeField] RaycastHit[] hit;
     bool crouch;
     PlayerMap input;
@@ -148,6 +155,7 @@ public class Controller : MonoBehaviour
     private ButtonControl jump;
     private ButtonControl slide;
     private ButtonControl hook;
+    private ButtonControl blinkStrike;
     #endregion
 
     #region UnityAnalytics
@@ -174,6 +182,7 @@ public class Controller : MonoBehaviour
         jump = (ButtonControl)input.Player.Jump.controls[0];
         hook = (ButtonControl)input.Player.Hook.controls[0];
         slide = (ButtonControl)input.Player.Slide.controls[0];
+        blinkStrike = (ButtonControl)input.Player.Melee.controls[0];
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
@@ -193,6 +202,13 @@ public class Controller : MonoBehaviour
     }
     private void Update()
     {
+        Debug.Log(transform.position);
+        
+        if (blinkStrikeActivated)
+        {
+            HandleBlinkStrike();
+            return;
+        }
         timeSpentAlive += Time.deltaTime;
         CheckGrounded();
         if (grounded)
@@ -227,7 +243,9 @@ public class Controller : MonoBehaviour
         {
             CheckGrappleHook();
         }
-       
+
+        HandleBlinkStrikeInput();
+
         QueueJump();
         QueueSlide();
         CheckDash();
@@ -249,9 +267,11 @@ public class Controller : MonoBehaviour
             timeSpentInAir += Time.deltaTime;
             AirMove();
         }
+       
         currentVelocity += momentum;
 
         cc.Move(currentVelocity * Time.deltaTime);
+        
 
         if (sliding)
         {
@@ -269,6 +289,7 @@ public class Controller : MonoBehaviour
                 momentum = Vector3.zero;
             }
         }
+        
         RunAnimations();
 
         
@@ -569,6 +590,7 @@ public class Controller : MonoBehaviour
             sliding = true;
             slideQueued = false;
         }
+
         
         if (dashing)
         {
@@ -751,7 +773,7 @@ public class Controller : MonoBehaviour
                 foreach (RaycastHit c in hit)
                 {
                     grounded = true;
-                    Debug.Log(hit.Length);
+                    //Debug.Log(hit.Length);
                     jumpingTimer = 0;
                     jumpNumber = 0;
                     animator.SetTrigger("HitGround");
@@ -1054,6 +1076,50 @@ public class Controller : MonoBehaviour
         }
     }
     #endregion
+
+    public void TeleportToPosition(Vector3 positionToTeleport)
+    {
+        //foreach(Collider c in cc.)
+        var currentPosition = transform.position;
+        var direction = positionToTeleport - currentPosition;
+        direction.Normalize();
+        Physics.IgnoreLayerCollision(7, 0, true);
+        cc.Move(direction * 1000 * Time.deltaTime);
+
+        if(Vector3.Distance(currentPosition, positionToTeleport) < 10)
+        {
+            Physics.IgnoreLayerCollision(7, 0, false);
+            //cc.detectCollisions = true;
+            blinkStrikeActivated = false;
+            markedEnemy.blinkMarkApplied();
+            Debug.Log("Function Called");
+        }
+
+
+        //gameObject.transform.position = positionToTeleport;
+    }
+    public void HandleBlinkStrikeInput()
+    {
+        if (blinkStrike.wasPressedThisFrame && markedEnemy != null)
+        {
+            blinkStrikeActivated = true;
+        }
+    }
+
+    public void SetMark(Mark mark)
+    {
+        ChangeMark();
+        markedEnemy = mark;
+    }
+    public void ChangeMark()
+    {
+       
+    }
+
+    public void HandleBlinkStrike()
+    {
+        TeleportToPosition(markedEnemy.transform.position);
+    }
 
     #region UnityAnalytics Functions
     public void SendAnalytics(int deathNumber)
