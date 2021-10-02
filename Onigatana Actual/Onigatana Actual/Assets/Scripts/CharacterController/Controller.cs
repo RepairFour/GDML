@@ -202,7 +202,7 @@ public class Controller : MonoBehaviour
     }
     private void Update()
     {
-        Debug.Log(transform.position);
+        //Debug.Log(transform.position);
         
         if (blinkStrikeActivated)
         {
