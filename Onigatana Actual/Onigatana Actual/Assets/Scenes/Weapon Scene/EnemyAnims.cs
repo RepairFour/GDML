@@ -10,28 +10,64 @@ public class EnemyAnims : MonoBehaviour
     private bool InAnimation1;
     private bool InAnimation2;
 
+    private GameObject Player;
+    private Rigidbody enemyRigidbody;
+    private float knockbackStrength;
+
+    public Vector3 knockBackDirection;
+
     public Material defaultMaterial;
     public Material hurtMaterial;
 
+
+
+    private void Start()
+    {
+        Player = GameObject.FindGameObjectWithTag("Player");
+        enemyRigidbody = gameObject.GetComponent<Rigidbody>();
+    }
+
+
+    //There's a pretty horrible bug with the collisions that causes them to not work if the player's attack hitbox is already inside the enemy object when it's turned on. This makes it really annoying to hit enemies.
+    //I think we should handle this better than collisionenter, but its my best solution for now.
     private void OnCollisionEnter(Collision collidedObject)
     {
+
+        //There is likely a better way to handle this, since colliders seem to make the hitboxes rather buggy.
+        //We check to see if the collider has the MeleeAttack tag, and if it does, and the enemy isnt currently in their first hit animation, this part plays.
+       
         if (collidedObject.collider.tag == "MeleeAttack" && InAnimation1 == false)
-        {
+        { 
+            
+            //We briefly update it's states and turn on the animator (since the Animator prevents the rigidbody if just enabled by default), we then change it's material.
             gameObject.GetComponent<Animator>().enabled = true;
             InAnimation1 = true;
             InAnimation2 = false;
             gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
-            
+
+
+            //Here we calculate from what position the player hits the enemy, in order to calculate what direction the knockback will trigger in later. We also increase the knockback strength, but it is capped at a certain amount.
+            //enemyRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+            knockBackDirection = enemyRigidbody.transform.position - Player.transform.position;
+            knockbackStrength = knockbackStrength + 150;
+            if (knockbackStrength >= 650)
+            {
+                knockbackStrength = 650;
+            }
+
+            //We activate their animation, and we cancel any reset invokes. We do this so that we can continually keep the enemy in hitstun/animations until we stop attacking, and then we send them back to normal.
             Debug.Log("Collided");
             enemyTestAnims.SetTrigger("Attacked1");
             CancelInvoke("resetToNormal");
 
-
-            Invoke("resetToNormal", 0.5f);
+            //After all this, we reset their entire state back to normal in a few frames (only slightly longer than the max attack speed of the sword). This gets cancelled if another attack is launched, in order to allow players to continually attack the same enemy.
+            //We reset materials after only 1/10th of a second, to give a satisfying hit effect.
+            Invoke("resetToNormal", 0.25f);
             Invoke("resetMaterial", 0.1f);
 
         }
 
+        //This function is virtually identical to the one above, but it allows us to have two different hit states, in the event that we want to have different hurt animations.
         else if (collidedObject.collider.tag == "MeleeAttack"  && InAnimation1 == true)
         {
             gameObject.GetComponent<Animator>().enabled = true;
@@ -39,12 +75,21 @@ public class EnemyAnims : MonoBehaviour
             InAnimation2 = true;
             gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
 
+            knockBackDirection = enemyRigidbody.transform.position - Player.transform.position;
+            knockbackStrength = knockbackStrength + 150;
+            if (knockbackStrength >= 650)
+            { 
+              knockbackStrength = 650;
+            }
+
+
+
             Debug.Log("Collided");
             enemyTestAnims.SetTrigger("Attacked2");
             CancelInvoke("resetToNormal");
 
 
-            Invoke("resetToNormal", 0.35f);
+            Invoke("resetToNormal", 0.25f);
             Invoke("resetMaterial", 0.1f);
         }
 
@@ -52,13 +97,24 @@ public class EnemyAnims : MonoBehaviour
 
     private void resetToNormal()
     {
-        gameObject.GetComponent<Animator>().enabled = false;
+
+        //When we reset back to normal, we clear the states, change the material back and reset the animation to default. We also calculate, perform and reset knockback, finally disabling the animator.
+        
         InAnimation1 = false;
-        InAnimation2 = true;
+        InAnimation2 = false;
         gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
         enemyTestAnims.SetTrigger("Reset");
+
+        Debug.Log(knockbackStrength);
+        //enemyRigidbody.constraints = ~RigidbodyConstraints.FreezePositionX | ~RigidbodyConstraints.FreezePositionZ;
+        enemyRigidbody.AddForce(knockBackDirection.normalized * knockbackStrength);
+        knockbackStrength = 0;
+        gameObject.GetComponent<Animator>().enabled = false;
+        
     }
 
+
+    //Simple invoked function to reset the material after a short timer.
     private void resetMaterial()
     {
         gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
