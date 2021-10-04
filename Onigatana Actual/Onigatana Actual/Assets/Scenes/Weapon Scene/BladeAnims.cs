@@ -4,6 +4,9 @@ using UnityEngine;
 using UnityEngine.InputSystem.Controls;
 
 public class BladeAnims : MonoBehaviour
+
+    //The biggest takeaway from this code is that we ***NEED*** a better way to handle hit detection other than my hitbox, because for some reason, it's very inconsistent.
+
 {
     PlayerMap Input;
     private ButtonControl meleeButton;
