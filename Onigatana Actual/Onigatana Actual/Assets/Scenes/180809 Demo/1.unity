@@ -69340,6 +69340,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Character
       objectReference: {fileID: 0}
+    - target: {fileID: 695064049159826576, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
+      propertyPath: m_RenderPostProcessing
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: SubModule.enabled
       value: 1
