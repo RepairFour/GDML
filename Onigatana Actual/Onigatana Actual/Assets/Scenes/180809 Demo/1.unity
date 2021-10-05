@@ -11437,7 +11437,7 @@ GameObject:
   - component: {fileID: 234147706}
   - component: {fileID: 234147705}
   m_Layer: 3
-  m_Name: Particle System (1)
+  m_Name: sword trail sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69354,35 +69354,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[0].inWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[0].inWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.maxCurve.m_Curve.Array.data[1].outWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 961257703150591743, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.data[0].countCurve.minCurve.m_Curve.Array.data[1].outWeight
-      value: 0.33333334
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2380726514950272365, guid: 00e5c8b48bea2a54ca8ea0cbcacb700d, type: 3}
       propertyPath: m_RenderPostProcessing
