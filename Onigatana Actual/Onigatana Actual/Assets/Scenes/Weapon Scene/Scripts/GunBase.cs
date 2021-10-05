@@ -173,7 +173,8 @@ public class GunBase : MonoBehaviour
     IEnumerator Reload()
     {
         gunAnimator.SetTrigger("Reload");
-       // Debug.Log("Reloading");
+        gameObject.GetComponent<AudioSource>().PlayOneShot(reloadSFX, 2);
+        // Debug.Log("Reloading");
         yield return new WaitForSeconds(reloadTime);
        // Debug.Log("Reloaded");
         isReloading = false;

@@ -24,7 +24,7 @@ public class BladeAnims : MonoBehaviour
     public float timeRequiredForChargedAttack;
 
     public MeshRenderer RangedWeapon;
-    public GunTestTeleport guntestscript;
+    public GunBase guntestscript;
     public MeshRenderer meleeWeapon;
 
     //There is almost certainly a better way to handle our attacks than this. Josh/Cam, please look into this.
