@@ -27,6 +27,35 @@ public class EnemyAnims : MonoBehaviour
         enemyRigidbody = gameObject.GetComponent<Rigidbody>();
     }
 
+    public void EnemyHit()
+    {
+        gameObject.GetComponent<Animator>().enabled = true;
+        InAnimation1 = true;
+        InAnimation2 = false;
+        gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
+
+
+        //Here we calculate from what position the player hits the enemy, in order to calculate what direction the knockback will trigger in later. We also increase the knockback strength, but it is capped at a certain amount.
+        //enemyRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+        knockBackDirection = enemyRigidbody.transform.position - Player.transform.position;
+        knockbackStrength = knockbackStrength + 150;
+        if (knockbackStrength >= 650)
+        {
+            knockbackStrength = 650;
+        }
+
+        //We activate their animation, and we cancel any reset invokes. We do this so that we can continually keep the enemy in hitstun/animations until we stop attacking, and then we send them back to normal.
+        Debug.Log("Collided");
+        enemyTestAnims.SetTrigger("Attacked1");
+        CancelInvoke("resetToNormal");
+
+        //After all this, we reset their entire state back to normal in a few frames (only slightly longer than the max attack speed of the sword). This gets cancelled if another attack is launched, in order to allow players to continually attack the same enemy.
+        //We reset materials after only 1/10th of a second, to give a satisfying hit effect.
+        Invoke("resetToNormal", 0.25f);
+        Invoke("resetMaterial", 0.1f);
+
+
+    }
 
     //There's a pretty horrible bug with the collisions that causes them to not work if the player's attack hitbox is already inside the enemy object when it's turned on. This makes it really annoying to hit enemies.
     //I think we should handle this better than collisionenter, but its my best solution for now.
