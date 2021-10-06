@@ -43,6 +43,9 @@ public class EnemyChase : MonoBehaviour
     public float runawayTimer = 0;
     float runawayDistanceMax;
 
+    [SerializeField] float loseInterestTimerMax;
+    float loseInterestTimer = 0;
+    bool wasChasing = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,92 +70,26 @@ public class EnemyChase : MonoBehaviour
         CanISeeThePlayer(); // fills out chasePlayer bool 
         if (chasePlayer == false)
         {
-            enemyAttack.attackMode = false;
-            agent.destination = path[pathNode].position;
-			if (Mathf.Abs(transform.position.x - path[pathNode].position.x) < 1 &&
-			   Mathf.Abs(transform.position.z - path[pathNode].position.z) < 1)
-			{
-				++pathNode;
-				if (pathNode == path.Count)
+            if (wasChasing)
+            {
+                loseInterestTimer += Time.deltaTime;
+                if(loseInterestTimer >= loseInterestTimerMax)
 				{
-					pathNode = 0;
+                    wasChasing = false;
+                    loseInterestTimer = 0;
+                    ChasePlayer();
 				}
-			}
-            Debug.DrawLine(transform.position, agent.destination, Color.green);
+            }
+            else
+            {
+                FollowPatrol();
+            }
         }
         else // get to optimal attack range
 		{
+            wasChasing = true;
             enemyAttack.attackMode = true;
-            if (enemyAttack.melee)
-            {
-                leapingTimer -= Time.deltaTime;
-                if (!leap)
-                {
-                    if (leapingTimer < 0)
-                    {
-                        agent.speed = agentWalkSpeed;
-                        agent.acceleration = agentAccelleration;
-                        agent.destination = player.transform.position - ((player.transform.position - transform.position).normalized * attackDistance);
-                        if (Mathf.Abs(transform.position.x - agent.destination.x) < 1 &&
-                           Mathf.Abs(transform.position.z - agent.destination.z) < 1)
-                        {
-                            leap = true;
-                        }
-                    }
-					else
-					{
-                        //vector to the player
-                        Vector3 toPlayer = player.transform.position - transform.position;
-                        //dot product against leap vector
-                        if(Vector3.Dot(leapVector, toPlayer) < 0)                        
-                        {
-                            agent.velocity = Vector3.zero;
-                            
-
-                        }
-					}
-                }
-				else
-                { 
-                    leapTimer += Time.deltaTime;
-                    if(leapTimer > leapTimerMax)
-					{
-                        agent.destination = player.transform.position;                       
-                        agent.speed = leapForce;
-                        agent.acceleration = leapForce;
-                        leap = false;
-                        leapTimer = 0;
-                        leapingTimer = 1;
-                        leapVector = agent.destination - transform.position;
-                    }
-				}
-                
-            }
-			else
-			{
-                aknowledgementTimer += Time.deltaTime;
-                runawayTimer -= Time.deltaTime;
-                if (aknowledgementTimer > aknowledgementTimerMax && runawayTimer < 0)
-                {
-                    runawayDistance -= Vector3.Distance(player.transform.position, playerPos);
-                    playerPos = player.transform.position;
-                    aknowledgementTimer = 0;                 
-                    //if distance < 0 
-                    if(runawayDistance <= 0)
-					{
-                        runawayTimer = runawayCooldown;
-                        runawayDistance = runawayDistanceMax;
-                        FindPath(transform.position);
-                    }
-                    
-                }
-                if (runawayTimer < 0)
-                {
-                    //the desired distance away from the player to shoot hit
-                    FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
-                }
-            }
-            Debug.DrawLine(transform.position, agent.destination, Color.green);
+            ChasePlayer();
         }
         
     }
@@ -181,5 +118,94 @@ public class EnemyChase : MonoBehaviour
                 chasePlayer = true;
             }
         }
+    }
+
+    private void ChasePlayer()
+	{
+        if (enemyAttack.melee)
+        {
+            leapingTimer -= Time.deltaTime;
+            if (!leap)
+            {
+                if (leapingTimer < 0)
+                {
+                    agent.speed = agentWalkSpeed;
+                    agent.acceleration = agentAccelleration;
+                    agent.destination = player.transform.position - ((player.transform.position - transform.position).normalized * attackDistance);
+                    if (Mathf.Abs(transform.position.x - agent.destination.x) < 1 &&
+                       Mathf.Abs(transform.position.z - agent.destination.z) < 1)
+                    {
+                        leap = true;
+                    }
+                }
+                else
+                {
+                    //vector to the player
+                    Vector3 toPlayer = player.transform.position - transform.position;
+                    //dot product against leap vector
+                    if (Vector3.Dot(leapVector, toPlayer) < 0)
+                    {
+                        agent.velocity = Vector3.zero;
+
+
+                    }
+                }
+            }
+            else
+            {
+                leapTimer += Time.deltaTime;
+                if (leapTimer > leapTimerMax)
+                {
+                    agent.destination = player.transform.position;
+                    agent.speed = leapForce;
+                    agent.acceleration = leapForce;
+                    leap = false;
+                    leapTimer = 0;
+                    leapingTimer = 1;
+                    leapVector = agent.destination - transform.position;
+                }
+            }
+
+        }
+        else
+        {
+            aknowledgementTimer += Time.deltaTime;
+            runawayTimer -= Time.deltaTime;
+            if (aknowledgementTimer > aknowledgementTimerMax && runawayTimer < 0)
+            {
+                runawayDistance -= Vector3.Distance(player.transform.position, playerPos);
+                playerPos = player.transform.position;
+                aknowledgementTimer = 0;
+                //if distance < 0 
+                if (runawayDistance <= 0)
+                {
+                    runawayTimer = runawayCooldown;
+                    runawayDistance = runawayDistanceMax;
+                    FindPath(transform.position);
+                }
+
+            }
+            if (runawayTimer < 0)
+            {
+                //the desired distance away from the player to shoot hit
+                FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
+            }
+        }
+        Debug.DrawLine(transform.position, agent.destination, Color.green);
+    }
+    private void FollowPatrol()
+    {
+        enemyAttack.attackMode = false;
+        agent.destination = path[pathNode].position;
+        if (Mathf.Abs(transform.position.x - path[pathNode].position.x) < 1 &&
+           Mathf.Abs(transform.position.z - path[pathNode].position.z) < 1)
+        {
+            ++pathNode;
+            if (pathNode == path.Count)
+            {
+                pathNode = 0;
+            }
+        }
+        Debug.DrawLine(transform.position, agent.destination, Color.green);
     }
 }
