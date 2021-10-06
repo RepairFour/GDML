@@ -7,6 +7,7 @@ public class GunBase : MonoBehaviour
 {
     PlayerMap input;
 
+    [Header("Primary Fire Variables")]
     public float fireRate;
     public float spread;
     public float range;
@@ -29,9 +30,18 @@ public class GunBase : MonoBehaviour
     private ButtonControl secondaryClickShoot;
     bool isHoldingShoot;
 
+    [Header("Secondary Fire Variables")]
+    public float cooldown;
+    public int secondaryBulletsPerTap;
+    public float secondaryRange;
+    private float secondaryCooldownTimer = 0f;
+    private bool OnCooldown;
+
+
     [Header("Animation and Sound")]
     public Animator gunAnimator;
     public GameObject muzzleFlash;
+    public GameObject secondaryMuzzleFlash;
     public Transform muzzleFlashPoint;
 
     int ShootingSound;
@@ -40,6 +50,7 @@ public class GunBase : MonoBehaviour
     public AudioClip gunShotSFX;
     public AudioClip gunShotSFXAlt;
     public AudioClip secondaryFireSFX;
+    public AudioClip secondaryFireSFXAlt;
     public AudioClip click;
     public AudioClip reloadSFX;
 
@@ -74,31 +85,39 @@ public class GunBase : MonoBehaviour
         HandleInput();
     }
 
-    private bool IsShooting()
+    private bool PrimaryFirePressed()
     {
-        if (clickShoot.isPressed)
-        {
-            isHoldingShoot = true;
-        }
-        else if (clickShoot.wasReleasedThisFrame)
-        {
-            isHoldingShoot = false;
-        }
-        return isHoldingShoot;
+        //if (clickShoot.isPressed)
+        //{
+        //    isHoldingShoot = true;
+        //}
+        //else if (clickShoot.wasReleasedThisFrame)
+        //{
+        //    isHoldingShoot = false;
+        //}
+        return clickShoot.isPressed;
+    }
+    private bool SecondaryFirePressed()
+    {
+        return secondaryClickShoot.isPressed;
     }
 
     private void HandleInput()
     {
-        isShooting = IsShooting();
+       
         if (!isReloading && ammoLeft <= 0)
         {
             isReloading = true;
             StartCoroutine(Reload());
         }
-        if((isReadyToShoot && isShooting) && !isReloading && ammoLeft > 0)
+        else if((isReadyToShoot && PrimaryFirePressed()) && !isReloading && ammoLeft > 0)
         {
             PrimaryFire();
             //Debug.Log("Shoot");
+        }
+        else if (isReadyToShoot && SecondaryFirePressed() && !OnCooldown && !isShooting && !isReloading)
+        {
+            SecondaryFire();
         }
     }
 
@@ -132,7 +151,6 @@ public class GunBase : MonoBehaviour
                         Debug.Log("Hit Something");
                     }
                     var h = Instantiate(bulletHole, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
-                    
                    
                 }
                 
@@ -160,15 +178,77 @@ public class GunBase : MonoBehaviour
 
         gunAnimator.SetTrigger("Fire");
         ammoLeft--;
-        StartCoroutine(ShotCooldown());
+        StartCoroutine(PrimaryCooldown());
+    }
+
+    private void SecondaryFire()
+    {
+        for (int i = 0; i < secondaryBulletsPerTap; i++)
+        {
+
+
+            Ray ray = new Ray(fpsCamera.gameObject.transform.position, Vector3.Normalize(fpsCamera.transform.forward));
+            RaycastHit hit;
+
+            //Debug.Log("Firing");
+            if (Physics.Raycast(ray, out hit, secondaryRange))
+            {
+                if (hit.collider)
+                {
+                    if (hit.collider.CompareTag("Enemy"))
+                    {
+                        Debug.Log("Enemy hit");
+                        hit.collider.gameObject.GetComponent<EnemyAnims>().EnemyHit();
+                        hit.collider.gameObject.GetComponent<Mark>().SetMark(Mark.Marks.BLINK);
+
+                    }
+                    else
+                    {
+                        Debug.Log("Hit Something");
+                    }
+                    var h = Instantiate(bulletHole, hit.point, Quaternion.LookRotation(hit.normal), hit.transform);
+
+
+                }
+
+            }
+            var temp = Instantiate(shotHit, muzzleFlashPoint.position, Quaternion.LookRotation(fpsCamera.transform.forward));
+        }
+        if (secondaryMuzzleFlash != null)
+        {
+            var newMuzzleFlash = Instantiate(secondaryMuzzleFlash, muzzleFlashPoint.position, Quaternion.identity);
+            newMuzzleFlash.transform.parent = gameObject.transform;
+            //hasMuzzleFlashOn = true;
+
+        }
+        ShootingSound = Random.Range(1, 11);
+
+        if (ShootingSound <= 5)
+        {
+            audioSource.PlayOneShot(secondaryFireSFX, 0.075f);
+
+        }
+        else
+        {
+            audioSource.PlayOneShot(secondaryFireSFXAlt, 0.075f);
+        }
+
+        gunAnimator.SetTrigger("SecondaryFire");
+        OnCooldown = true;
+        StartCoroutine(SecondaryCooldown());
     }
    
-    IEnumerator ShotCooldown()
+    IEnumerator PrimaryCooldown()
     {
        // Debug.Log("Fire Rate Started");
         yield return new WaitForSeconds(fireRate);
        // Debug.Log("Ready to Shoot");
         isReadyToShoot = true; 
+    }
+    IEnumerator SecondaryCooldown()
+    {
+        yield return new WaitForSeconds(cooldown);
+        OnCooldown = false;
     }
     IEnumerator Reload()
     {

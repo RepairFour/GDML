@@ -16,7 +16,19 @@ public class Mark : MonoBehaviour
     public void SetMark(Marks mark)
     {
         currentMark = mark;
+        switch (currentMark)
+        {
+            case Marks.NONE:
+                markDisplay.GetComponent<SpriteRenderer>().sprite = null;
+                break;
+            case Marks.BLINK:
+                markDisplay.GetComponent<SpriteRenderer>().sprite = blinkIcon;
+                GameManager.instance.playerController.SetMark(this);
+                break;
+        }
 
+
+       
     }
 
     private void Start()
@@ -33,7 +45,7 @@ public class Mark : MonoBehaviour
                 blinkMarkTimer += Time.deltaTime;
                 if (blinkMarkTimer >= blinkMarkDuration)
                 {
-                    blinkMarkApplied();
+                    BlinkMarkApplied();
                 }
                 break;
         }
@@ -45,16 +57,14 @@ public class Mark : MonoBehaviour
         if (collidedObject.gameObject.tag == "BlinkBullet" && currentMark != Marks.BLINK)
         {
             //Gets the sprite renderer above the object's head and sets it to the blink icon, and also flags that it is currently marked as the blink target.
-            markDisplay.GetComponent<SpriteRenderer>().sprite = blinkIcon;
-            SetMark(Marks.BLINK);
-            GameManager.instance.playerController.SetMark(this);
+
 
         }
     }
 
 
     //This function resets the sprite display and removes the flag telling the game that the mark is above the enemy's head.
-    public void blinkMarkApplied()
+    public void BlinkMarkApplied()
     {
         SetMark(Marks.NONE);
         GameManager.instance.playerController.SetMark(null);

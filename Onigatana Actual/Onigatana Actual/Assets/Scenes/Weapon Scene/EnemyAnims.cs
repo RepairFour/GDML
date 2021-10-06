@@ -57,15 +57,16 @@ public class EnemyAnims : MonoBehaviour
 
     }
 
+    
     //There's a pretty horrible bug with the collisions that causes them to not work if the player's attack hitbox is already inside the enemy object when it's turned on. This makes it really annoying to hit enemies.
     //I think we should handle this better than collisionenter, but its my best solution for now.
-    private void OnCollisionEnter(Collision collidedObject)
+    private void OnTriggerEnter (Collider collidedObject)
     {
 
         //There is likely a better way to handle this, since colliders seem to make the hitboxes rather buggy.
         //We check to see if the collider has the MeleeAttack tag, and if it does, and the enemy isnt currently in their first hit animation, this part plays.
        
-        if (collidedObject.collider.tag == "MeleeAttack" && InAnimation1 == false)
+        if (collidedObject.tag == "MeleeAttack" && InAnimation1 == false)
         { 
             
             //We briefly update it's states and turn on the animator (since the Animator prevents the rigidbody if just enabled by default), we then change it's material.
@@ -97,7 +98,7 @@ public class EnemyAnims : MonoBehaviour
         }
 
         //This function is virtually identical to the one above, but it allows us to have two different hit states, in the event that we want to have different hurt animations.
-        else if (collidedObject.collider.tag == "MeleeAttack"  && InAnimation1 == true)
+        else if (collidedObject.tag == "MeleeAttack"  && InAnimation1 == true)
         {
             gameObject.GetComponent<Animator>().enabled = true;
             InAnimation1 = false;

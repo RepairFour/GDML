@@ -11,14 +11,14 @@ public class Controller : MonoBehaviour
     [Header("Camera Variables")]
     public float cameraHeight = 1f;
     public float slideCameraHeight = 0.5f;
-
+    [Space]
     [Header("Mouse sensitivity values")]
     public float xSensitivity;
     public float ySensitivity;
     
     public float yMin;
     public float yMax;
-    
+    [Space]
     [Header ("Character Movement Values")]
     public float maxSpeed;
     public float globalMaxSpeed;
@@ -29,13 +29,13 @@ public class Controller : MonoBehaviour
     public float strafeAcceleration;
     public float strafeJumpDecelleration;
     public float airControlModifier;
-
+    [Space]
     [Header ("Dash Variables")]
     public float dashSpeed;
     public float dashTime;
     public int maxDashAmount;
     public float dashCooldown;
-
+    [Space]
     [Header("Jump Variables")]
     public float jumpSpeed;
     public float gravity;
@@ -43,7 +43,7 @@ public class Controller : MonoBehaviour
     public int maxJumpNumber = 2;
     public LayerMask layerMask;
 
-
+    [Space]
     [Header("Slide Variables")]
     public float maxSlideMomentum;
     public float slideDirectionalScalar;
@@ -71,6 +71,10 @@ public class Controller : MonoBehaviour
 
    
     public float hookCooldown;
+    [Space]
+    [Header("Blink Strike Variable")]
+    public float blinkStrikeRange;
+    public float blinkAngleModifier = 0.7f;
 
     [Header ("Transforms")]
     public Transform cameraTransform;
@@ -1077,6 +1081,7 @@ public class Controller : MonoBehaviour
     }
     #endregion
 
+    #region BlinkFunctions
     public void TeleportToPosition(Vector3 positionToTeleport)
     {
         //foreach(Collider c in cc.)
@@ -1091,7 +1096,7 @@ public class Controller : MonoBehaviour
             Physics.IgnoreLayerCollision(7, 0, false);
             //cc.detectCollisions = true;
             blinkStrikeActivated = false;
-            markedEnemy.blinkMarkApplied();
+            markedEnemy.BlinkMarkApplied();
             Debug.Log("Function Called");
         }
 
@@ -1100,7 +1105,7 @@ public class Controller : MonoBehaviour
     }
     public void HandleBlinkStrikeInput()
     {
-        if (blinkStrike.wasPressedThisFrame && markedEnemy != null)
+        if (blinkStrike.wasPressedThisFrame && markedEnemy != null && InRangeForBlink())
         {
             blinkStrikeActivated = true;
         }
@@ -1115,11 +1120,28 @@ public class Controller : MonoBehaviour
     {
        
     }
+    public bool InRangeForBlink()
+    {
+        var distanceToEnemy = Vector3.Distance(markedEnemy.gameObject.transform.position, gameObject.transform.position);
+
+        if(distanceToEnemy <= blinkStrikeRange)
+        {
+            float dot = Vector3.Dot(transform.forward, (markedEnemy.gameObject.transform.position - transform.position).normalized);
+            if (dot >= blinkAngleModifier)
+            {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 
     public void HandleBlinkStrike()
     {
         TeleportToPosition(markedEnemy.transform.position);
     }
+
+    #endregion
 
     #region UnityAnalytics Functions
     public void SendAnalytics(int deathNumber)
