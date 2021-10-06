@@ -90,7 +90,7 @@ public class GunBase : MonoBehaviour
     private void HandleInput()
     {
         isShooting = IsShooting();
-        if (isReadyToShoot && isShooting && !isReloading && ammoLeft <= 0)
+        if (!isReloading && ammoLeft <= 0)
         {
             isReloading = true;
             StartCoroutine(Reload());
@@ -109,9 +109,11 @@ public class GunBase : MonoBehaviour
         //Ray ray = fpsCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         for(int i = 0; i < bulletsPerTap; i++)
         {
-            var spreadVector = new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), 0);
+            var spreadVector = new Vector3(Random.Range(-spread, spread), Random.Range(-spread, spread), Random.Range(-spread, spread));
 
-            Ray ray = new Ray(fpsCamera.transform.position, Vector3.Normalize(fpsCamera.transform.forward + spreadVector));
+            //Debug.Log(fpsCamera.transform.forward + new Vector3(0.1f,0 , 0.1f));
+            
+            Ray ray = new Ray(fpsCamera.gameObject.transform.position, Vector3.Normalize(fpsCamera.transform.forward + spreadVector));
             RaycastHit hit;
 
             //Debug.Log("Firing");
@@ -121,8 +123,6 @@ public class GunBase : MonoBehaviour
                 {
                     if (hit.collider.CompareTag("Enemy"))
                     {
-                        
-                        
                         Debug.Log("Enemy hit");
                         hit.collider.gameObject.GetComponent<EnemyAnims>().EnemyHit();
                         
@@ -137,7 +137,7 @@ public class GunBase : MonoBehaviour
                 }
                 
             }
-            var temp = Instantiate(shotHit, muzzleFlashPoint.position, Quaternion.LookRotation(Vector3.Normalize(transform.forward + spreadVector)));
+            var temp = Instantiate(shotHit, muzzleFlashPoint.position, Quaternion.LookRotation(fpsCamera.transform.forward + spreadVector));
         }
         if(muzzleFlash != null)
         {
