@@ -23,7 +23,7 @@ public class PlayerStats : MonoBehaviour
 	{
 		health = maxHealth;
 		bloodFuryState = GetComponent<BloodFuryState>();
-		HUDCon.instance.Initialise(bloodCap);
+		//HUDCon.instance.Initialise(bloodCap);
 	}
 	///////health stuff/////////
 	public bool IsDead()
