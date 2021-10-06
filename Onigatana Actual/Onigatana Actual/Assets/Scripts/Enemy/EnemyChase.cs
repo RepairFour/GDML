@@ -78,9 +78,9 @@ public class EnemyChase : MonoBehaviour
 					pathNode = 0;
 				}
 			}
-			
-		}
-		else // get to optimal attack range
+            Debug.DrawLine(transform.position, agent.destination, Color.green);
+        }
+        else // get to optimal attack range
 		{
             enemyAttack.attackMode = true;
             if (enemyAttack.melee)
@@ -152,7 +152,7 @@ public class EnemyChase : MonoBehaviour
                     FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
                 }
             }
-            Debug.DrawLine(transform.position, agent.destination);
+            Debug.DrawLine(transform.position, agent.destination, Color.green);
         }
         
     }

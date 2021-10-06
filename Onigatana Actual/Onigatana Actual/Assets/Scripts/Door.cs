@@ -6,12 +6,11 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     [SerializeField] Key keyToOpen;
-    //[SerializeField] int id;
     bool isOpen = false;
     [SerializeField] [Range(0, 1)] float doorOpenSpeed;
     [SerializeField] bool findKey;
 
-	private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
 	{
         var inv = other.GetComponent<PlayerInventory>();
         if(inv != null)
@@ -19,7 +18,7 @@ public class Door : MonoBehaviour
             if(inv.HasKey(keyToOpen))
 			{
                 isOpen = true;
-			}
+            }
 		}
 	}
 

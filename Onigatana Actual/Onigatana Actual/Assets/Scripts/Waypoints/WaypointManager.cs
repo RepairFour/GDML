@@ -30,7 +30,7 @@ public class WaypointManager : MonoBehaviour
 	public List<Roaming.Path> paths = new List<Roaming.Path>();
 	[HideInInspector] public int pathIdx = 0;
 	[HideInInspector] public List<string> pathNames = new List<string>();
-
+	[SerializeField] bool placeWithCamera;
 
 	public Roaming.Path ReturnPath(Transform pathStartNode)
 	{
@@ -130,22 +130,32 @@ public class WaypointManager : MonoBehaviour
 
 	public void BuildWaypoint(int pathId)
 	{
-		
+		Transform sceneCameraTransform = UnityEditor.SceneView.lastActiveSceneView.camera.transform;
+		Vector3 waypointPos = sceneCameraTransform.position + sceneCameraTransform.forward * 10;
 		if (paths[pathId].waypoints.Count > 0)
 		{
 			if (paths[pathId].waypoints[paths[pathId].waypoints.Count - 1] == null) //this fixes an issue where an empty list of one item would cause a nullreference
 			{
 				paths[pathId].waypoints.RemoveAt(paths[pathId].waypoints.Count - 1);
-				InstantiateWayPoint(pathId, Vector3.zero);
+				InstantiateWayPoint(pathId, waypointPos);
+				
 			}
 			else
 			{
-				InstantiateWayPoint(pathId, paths[pathId].waypoints[paths[pathId].waypoints.Count - 1].position);
+				if (placeWithCamera)
+				{
+					InstantiateWayPoint(pathId, waypointPos);
+				}
+				else
+				{
+					InstantiateWayPoint(pathId, paths[pathId].waypoints[paths[pathId].waypoints.Count - 1].position);
+				}
 			}
 		}
 		else
 		{
-			InstantiateWayPoint(pathId, Vector3.zero);			
+			InstantiateWayPoint(pathId, waypointPos);
+			Debug.Log(waypointPos);
 		}
 		
 	}
