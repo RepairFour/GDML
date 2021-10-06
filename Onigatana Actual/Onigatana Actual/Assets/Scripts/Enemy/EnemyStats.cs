@@ -8,7 +8,7 @@ public class EnemyStats : MonoBehaviour
 
     //[SerializeField] Animation hitAni;
     [SerializeField] ParticleSystem blood;
-    [SerializeField] AudioSource weaponHit;
+    //[SerializeField] AudioSource weaponHit;
 
     public int Health
 	{
@@ -30,8 +30,11 @@ public class EnemyStats : MonoBehaviour
     public void IsHit()
     {
         //hitAni.Play("Death");
-        blood.Play();
-        weaponHit.Play();
+        if (blood)
+        {
+            blood.Play();
+        }
+        AudioHandler.instance.PlaySound("SwordSlashHit");
     }
 
     private bool isDead()

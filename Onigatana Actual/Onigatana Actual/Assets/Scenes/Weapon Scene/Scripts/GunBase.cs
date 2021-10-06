@@ -13,6 +13,7 @@ public class GunBase : MonoBehaviour
     public float range;
     public float burstTime;
     public float reloadTime;
+    public float dmgPerBullet;
 
     public int magSize;
     public int bulletsPerTap;
@@ -143,7 +144,8 @@ public class GunBase : MonoBehaviour
                     if (hit.collider.CompareTag("Enemy"))
                     {
                         Debug.Log("Enemy hit");
-                        hit.collider.gameObject.GetComponent<EnemyAnims>().EnemyHit();
+                        hit.collider.GetComponent<EnemyAnims>().EnemyHit();
+                        hit.collider.GetComponent<EnemyStats>().Hurt((int)dmgPerBullet);
                         
                     }
                     else

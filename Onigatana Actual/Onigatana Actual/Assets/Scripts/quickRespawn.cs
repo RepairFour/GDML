@@ -28,13 +28,12 @@ public class quickRespawn : MonoBehaviour
             deathNumber++;
             Debug.Log("triggered 14");
 
-            controller.SendAnalytics(deathNumber);
+            //controller.SendAnalytics(deathNumber);
       
             Destroy(Player);
-                Player = Instantiate(PlayerPrefab, respawnLocation, Quaternion.identity);
+            Player = Instantiate(PlayerPrefab, respawnLocation, Quaternion.identity); //respawn
 
 
-            
             controller = Player.GetComponent<Controller>();
             
         }

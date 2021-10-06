@@ -54,7 +54,10 @@ public class EnemyAttack : MonoBehaviour
             if (Vector3.Distance(transform.position, player.transform.position) <= attackDistance + 1 || enemyChase.runawayTimer > 0)
             {
                 chargingAttack = true;
-                chargeAttackAni.Play("Idle");
+                if (chargeAttackAni != null)
+                {
+                    chargeAttackAni.Play("Idle"); //replace for attack charge ani
+                }
             }
             if(chargingAttack)
 			{
@@ -62,8 +65,11 @@ public class EnemyAttack : MonoBehaviour
                 if(attackChargeTimer > attackChargeTimerMax)
 				{
                     chargingAttack = false;
-                    chargeAttackAni.Play("Attack2");
-                    chargeAttackAni.PlayQueued("Run");
+                    if (chargeAttackAni != null)
+                    {
+                        chargeAttackAni.Play("Attack2");
+                        chargeAttackAni.PlayQueued("Run");
+                    }
                     attackChargeTimer = 0;
                     attackCDtimer = 0;
                     var bullet = Instantiate(projectile, transform.position, transform.rotation);
