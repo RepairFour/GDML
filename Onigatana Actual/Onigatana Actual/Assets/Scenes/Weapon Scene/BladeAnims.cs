@@ -45,7 +45,7 @@ public class BladeAnims : MonoBehaviour
         isInAttack2Anim = false;
 
         //I honestly hate the way this works. Its inconsistent as fuck. We HAVE to find a better way to use the melee hitbox.
-        AttacksHitbox1.SetActive(false);
+        AttacksHitbox1.GetComponent<BoxCollider>().enabled = false;
 
         //Here we set the variables so that the gun is active, but the melee weapon isnt. We will turn these values on and off in each case.
         meleeWeapon.enabled = false;
@@ -86,7 +86,7 @@ public class BladeAnims : MonoBehaviour
                 meleeWeapon.enabled = true;
 
                 //We turn on the attack hitbox. This is a horrible way of handling the damage hitbox, please look into alternative solutions.
-                AttacksHitbox1.SetActive(true);
+                AttacksHitbox1.GetComponent<BoxCollider>().enabled = true;
 
                 meleeAnims.SetTrigger("Attack1");
                 isInAttack1Anim = true;
@@ -106,7 +106,7 @@ public class BladeAnims : MonoBehaviour
                 guntestscript.enabled = false;
                 meleeWeapon.enabled = true;
 
-                AttacksHitbox1.SetActive(true);
+                AttacksHitbox1.GetComponent<BoxCollider>().enabled = true;
 
                 meleeAnims.SetTrigger("Attack2");
                 isInAttack1Anim = false;
@@ -167,7 +167,7 @@ public class BladeAnims : MonoBehaviour
     private void disableHitbox()
     {
         Debug.Log("CancelledHitbox");
-        AttacksHitbox1.SetActive(false);
+        AttacksHitbox1.GetComponent<BoxCollider>().enabled = false;
     }
 
 }
