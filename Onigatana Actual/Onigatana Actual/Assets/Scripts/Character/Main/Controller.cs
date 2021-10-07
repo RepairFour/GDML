@@ -311,18 +311,18 @@ public class Controller : MonoBehaviour
     {
         if (currentSpeed > 0)
         {
-            animator.SetFloat("Moving", currentSpeed / maxSpeed);
+           // animator.SetFloat("Moving", currentSpeed / maxSpeed);
         }
         else
         {
-            animator.SetFloat("Moving", 0);
+           // animator.SetFloat("Moving", 0);
         }
     }
     void HandleSlideAnimation()
     {
         if (sliding && !slideTriggerSet)
         {
-            animator.SetTrigger("Sliding");
+            //animator.SetTrigger("Sliding");
             slideTriggerSet = true;
         }
         
@@ -671,7 +671,7 @@ public class Controller : MonoBehaviour
             groundedTimer = 0;
             CancelSlideForHookShot();
             jumps++;
-            animator.SetTrigger("Jump");
+            //animator.SetTrigger("Jump");
             
             jumpNumber++;
         }
@@ -780,8 +780,8 @@ public class Controller : MonoBehaviour
                     //Debug.Log(hit.Length);
                     jumpingTimer = 0;
                     jumpNumber = 0;
-                    animator.SetTrigger("HitGround");
-                    animator.SetBool("Falling", false);
+                    //animator.SetTrigger("HitGround");
+                    //animator.SetBool("Falling", false);
                 }
             }
             
@@ -790,7 +790,7 @@ public class Controller : MonoBehaviour
         {
             grounded = false;
             groundedTimer = 0;
-            animator.SetBool("Falling", true);
+            //animator.SetBool("Falling", true);
         }
         
         
@@ -820,7 +820,7 @@ public class Controller : MonoBehaviour
             //hookShotCancelled = true;
             numberOfDashesCurrent--;
             animeLines.gameObject.SetActive(true);
-            animator.SetTrigger("Dash");
+            //animator.SetTrigger("Dash");
         }
         else if(input.Player.Dash.triggered && numberOfDashesCurrent > 0 && inputDirection.magnitude == 0)
         {
@@ -829,7 +829,7 @@ public class Controller : MonoBehaviour
             dashNoMoveDirection = transform.forward;
             numberOfDashesCurrent--;
             animeLines.gameObject.SetActive(true);
-            animator.SetTrigger("Dash");
+            //animator.SetTrigger("Dash");
         }
         
     }
