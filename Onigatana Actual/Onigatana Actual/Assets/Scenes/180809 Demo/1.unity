@@ -26067,7 +26067,7 @@ GameObject:
   - component: {fileID: 784694196}
   - component: {fileID: 784694195}
   m_Layer: 0
-  m_Name: Particle System
+  m_Name: godrays
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36667,7 +36667,7 @@ GameObject:
   - component: {fileID: 909815077}
   - component: {fileID: 909815076}
   m_Layer: 6
-  m_Name: blood smoke
+  m_Name: blood effect
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46014,7 +46014,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh77330
+  m_Name: pb_Mesh29858
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -75587,7 +75587,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e855f073a71257d4d8ddb3af55e16695, type: 2}
+  - {fileID: 2100000, guid: 0cf51702b4c1b47468ae55dd4776913b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
