@@ -6,7 +6,7 @@ using UnityEngine.InputSystem.Controls;
 
 public class BladeAttack : MonoBehaviour
 {
-
+    [SerializeField] int damage;
     PlayerMap input;
     private ButtonControl meleeButton;
 
@@ -99,4 +99,18 @@ public class BladeAttack : MonoBehaviour
         canAttack = true;
 
     }
+	private void OnTriggerEnter(Collider other)
+	{
+		if(other.gameObject.tag == "Enemy")
+		{
+            if (attackAnimation1)
+            {
+                other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+            }
+            else if(attackAnimation2)
+			{
+                other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION2);
+            }
+        }
+	}
 }

@@ -144,9 +144,7 @@ public class GunBase : MonoBehaviour
                     if (hit.collider.CompareTag("Enemy"))
                     {
                         Debug.Log("Enemy hit");
-                        hit.collider.GetComponent<EnemyAnims>().EnemyHit();
-                        hit.collider.GetComponent<EnemyStats>().Hurt((int)dmgPerBullet);
-                        
+                        hit.collider.GetComponent<EnemyStats>().Hurt((int)dmgPerBullet, EnemyStats.MeleeAnimation.ANIMATION1);                        
                     }
                     else
                     {
@@ -200,7 +198,7 @@ public class GunBase : MonoBehaviour
                     if (hit.collider.CompareTag("Enemy"))
                     {
                         Debug.Log("Enemy hit");
-                        hit.collider.gameObject.GetComponent<EnemyAnims>().EnemyHit();
+                        hit.collider.gameObject.GetComponent<EnemyStats>().Hurt(0, EnemyStats.MeleeAnimation.ANIMATION1);
                         hit.collider.gameObject.GetComponent<Mark>().SetMark(Mark.Marks.BLINK);
 
                     }

@@ -87,6 +87,7 @@ MonoBehaviour:
   pathIdx: 0
   pathNames:
   - Path 0
+  placeWithCamera: 0
 --- !u!1 &4603242361344358852
 GameObject:
   m_ObjectHideFlags: 0

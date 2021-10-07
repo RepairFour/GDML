@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MenuScene.unity
     guid: 948efdfacf19fad44bd343efe21359a9
   - enabled: 1
+    path: Assets/Scenes/Game Scenes/E0M1 - Cameron AI.unity
+    guid: 7c9c1988207667340b27795affc79c4e
+  - enabled: 0
     path: Assets/Scenes/180809 Demo/Test Level.unity
     guid: ec0dd8bb32039494793226b30856a577
   m_configObjects: {}

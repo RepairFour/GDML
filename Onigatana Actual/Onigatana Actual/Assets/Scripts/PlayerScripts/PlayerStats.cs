@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(BloodFuryState))]
 public class PlayerStats : MonoBehaviour
@@ -23,7 +24,7 @@ public class PlayerStats : MonoBehaviour
 	{
 		health = maxHealth;
 		bloodFuryState = GetComponent<BloodFuryState>();
-		//HUDCon.instance.Initialise(bloodCap);
+		HUDCon.instance.Initialise(bloodCap);
 	}
 	///////health stuff/////////
 	public bool IsDead()
@@ -51,7 +52,7 @@ public class PlayerStats : MonoBehaviour
 			armour = 0;
 			health -= dmgRemaining;
 		}
-		//HUDCon.instance.UpdateHpBar();
+		HUDCon.instance.UpdateHpBar();
 		if(health <= 0)
 		{
 			Death();
@@ -59,7 +60,7 @@ public class PlayerStats : MonoBehaviour
 	}
 	private void Death()
 	{
-
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 	}
 	public void ModArmour(int amount)
 	{

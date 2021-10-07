@@ -4,111 +4,112 @@ using UnityEngine;
 [ExecuteInEditMode]
 public class PlayerAttack : MonoBehaviour
 {
-    PlayerMap inputs;
-    [Header("Main Hitbox")]
-    [SerializeField]Vector3 halfExtents;
-    [SerializeField] float distance;
-    [SerializeField] LayerMask layerhit;
-    [SerializeField] int dmg;
+ //   PlayerMap inputs;
+ //   [Header("Main Hitbox")]
+ //   [SerializeField]Vector3 halfExtents;
+ //   [SerializeField] float distance;
+ //   [SerializeField] LayerMask layerhit;
+ //   [SerializeField] int dmg;
 
-    [Header("Secondary Hitbox")]
-    [SerializeField] Vector3 halfExtentsSecondary;
-    [SerializeField] float distanceSecondary;
-    [SerializeField] LayerMask layerhitSecondary;
-    [SerializeField] int dmgSecondary;
+ //   [Header("Secondary Hitbox")]
+ //   [SerializeField] Vector3 halfExtentsSecondary;
+ //   [SerializeField] float distanceSecondary;
+ //   [SerializeField] LayerMask layerhitSecondary;
+ //   [SerializeField] int dmgSecondary;
 
-    [Header("Misc")]
-    [SerializeField] bool showHitBox;
-    [SerializeField] Animator weaponSlash;
-    [SerializeField][Min(0)] float attackCD;
-    [SerializeField] LayerMask layerToIgnore;
+ //   [Header("Misc")]
+ //   [SerializeField] bool showHitBox;
+ //   [SerializeField] Animator weaponSlash;
+ //   [SerializeField][Min(0)] float attackCD;
+ //   [SerializeField] LayerMask layerToIgnore;
 
-    List<EnemyStats> enemiesHit;
-    PlayerStats playerStats;
+ //   List<EnemyStats> enemiesHit;
+ //   PlayerStats playerStats;
 
-    //[SerializeField] float hitBoxRotation;
-    float attackCDTimer;
-    // Start is called before the first frame update
-    void Start()
-    {
-        inputs = new PlayerMap();
-        inputs.Enable();
-        attackCDTimer = attackCD;
-        enemiesHit = new List<EnemyStats>();
-        playerStats = FindObjectOfType<PlayerStats>();
-    }
+ //   //[SerializeField] float hitBoxRotation;
+ //   float attackCDTimer;
+ //   // Start is called before the first frame update
+ //   void Start()
+ //   {
+ //       inputs = new PlayerMap();
+ //       inputs.Enable();
+ //       attackCDTimer = attackCD;
+ //       enemiesHit = new List<EnemyStats>();
+ //       playerStats = FindObjectOfType<PlayerStats>();
+ //   }
 
-    // Update is called once per frame
-    void Update()
-    {
+ //   // Update is called once per frame
+ //   void Update()
+ //   {
         
-        if (showHitBox)
-        {
-            ExtDebug.DrawBoxCastBox(transform.position, halfExtents, gameObject.transform.rotation, gameObject.transform.forward, distance, Color.blue);
-            ExtDebug.DrawBoxCastBox(transform.position, halfExtentsSecondary, gameObject.transform.rotation, gameObject.transform.forward, distanceSecondary, Color.red);            
-        }
+ //       if (showHitBox)
+ //       {
+ //           ExtDebug.DrawBoxCastBox(transform.position, halfExtents, gameObject.transform.rotation, gameObject.transform.forward, distance, Color.blue);
+ //           ExtDebug.DrawBoxCastBox(transform.position, halfExtentsSecondary, gameObject.transform.rotation, gameObject.transform.forward, distanceSecondary, Color.red);            
+ //       }
 
-        if (Application.isPlaying)
-        {
-            if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
-            {
-                gameObject.transform.rotation = Camera.main.transform.rotation;
-                //Debug.Log("Attacking");
-                weaponSlash.SetTrigger("Attack");
-                var n = Random.Range(1, 3);
-                weaponSlash.SetInteger("Attack#", n);
-                attackCDTimer = 0;
-                RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward, gameObject.transform.rotation, distance, layerhit);
-                RaycastHit[] hitsSecondary = Physics.BoxCastAll(transform.position, halfExtentsSecondary, gameObject.transform.forward, gameObject.transform.rotation, distanceSecondary, layerhitSecondary);
+ //       if (Application.isPlaying)
+ //       {
+ //           if (inputs.Player.Attack.triggered && weaponSlash.GetBool("Attack") == false && attackCDTimer > attackCD == true)
+ //           {
+ //               gameObject.transform.rotation = Camera.main.transform.rotation;
+ //               //Debug.Log("Attacking");
+ //               weaponSlash.SetTrigger("Attack");
+ //               var n = Random.Range(1, 3);
+ //               weaponSlash.SetInteger("Attack#", n);
+ //               attackCDTimer = 0;
+ //               RaycastHit[] hits = Physics.BoxCastAll(transform.position, halfExtents, gameObject.transform.forward, gameObject.transform.rotation, distance, layerhit);
+ //               RaycastHit[] hitsSecondary = Physics.BoxCastAll(transform.position, halfExtentsSecondary, gameObject.transform.forward, gameObject.transform.rotation, distanceSecondary, layerhitSecondary);
 
-                //hit the enemies hitting the secondary hitbox first
-                enemiesHit.Clear();
-                HitEnemies(hitsSecondary, dmgSecondary);
-                HitEnemies(hits, dmg);
+ //               //hit the enemies hitting the secondary hitbox first
+ //               enemiesHit.Clear();
+ //               HitEnemies(hitsSecondary, dmgSecondary);
+ //               HitEnemies(hits, dmg);
 
-            }
-            else
-            {
-                attackCDTimer += Time.deltaTime;
-            }
-        }
-    }
+ //           }
+ //           else
+ //           {
+ //               attackCDTimer += Time.deltaTime;
+ //           }
+ //       }
+ //   }
 
-    private void HitEnemies(RaycastHit[] hits , int dmg)
-	{
-        if (hits != null && hits.Length > 0)
-        {
-            foreach (var hit in hits)
-            {
-                EnemyStats enemy = hit.collider.gameObject.GetComponent<EnemyStats>();
-                if (enemy != null)
-                {
-                    RaycastHit ray;
-                    if(Physics.Raycast(transform.position, enemy.transform.position - transform.position, out ray, 10000 , ~layerToIgnore)) // to stop hitting through walls
-					{
-                        if(ray.collider.GetComponent<EnemyStats>())
-						{
-                            bool alreadyHit = false;
-                            foreach (var e in enemiesHit)
-                            {
-                                if (enemy.gameObject == e.gameObject)//another hitbox has it this enemy already
-                                {
-                                    alreadyHit = true;
-                                }
-                            }
-                            if (!alreadyHit)
-                            {
-                                enemy.Hurt(dmg);
-                                enemiesHit.Add(enemy);
-                                playerStats.FillBloodMeter(10);
-                            }
-                        }
-					}
+ //   //deprecated
+ ////   private void HitEnemies(RaycastHit[] hits , int dmg)
+	////{
+ ////       if (hits != null && hits.Length > 0)
+ ////       {
+ ////           foreach (var hit in hits)
+ ////           {
+ ////               EnemyStats enemy = hit.collider.gameObject.GetComponent<EnemyStats>();
+ ////               if (enemy != null)
+ ////               {
+ ////                   RaycastHit ray;
+ ////                   if(Physics.Raycast(transform.position, enemy.transform.position - transform.position, out ray, 10000 , ~layerToIgnore)) // to stop hitting through walls
+	////				{
+ ////                       if(ray.collider.GetComponent<EnemyStats>())
+	////					{
+ ////                           bool alreadyHit = false;
+ ////                           foreach (var e in enemiesHit)
+ ////                           {
+ ////                               if (enemy.gameObject == e.gameObject)//another hitbox has it this enemy already
+ ////                               {
+ ////                                   alreadyHit = true;
+ ////                               }
+ ////                           }
+ ////                           if (!alreadyHit)
+ ////                           {
+ ////                               enemy.Hurt(dmg);
+ ////                               enemiesHit.Add(enemy);
+ ////                               playerStats.FillBloodMeter(10);
+ ////                           }
+ ////                       }
+	////				}
                     
-                }
-            }
-        }
-    }
+ ////               }
+ ////           }
+ ////       }
+ ////   }
 
 	#region BoxCastDraw
 	public static class ExtDebug

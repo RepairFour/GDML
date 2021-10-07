@@ -57,7 +57,7 @@ public class ShortyProjectile : MonoBehaviour
         {
             // need to replace this line with whatever our damage function on enemies is.
             // enemies[i].GetComponent<insertnameoftheirtakedamagescript>().TAKEDAMAGEFUNCTION(explosionDamage);
-            enemies[i].GetComponent<EnemyStats>().Hurt(explosionDamage);
+            //enemies[i].GetComponent<EnemyStats>().Hurt(explosionDamage,);
         }
         Invoke("Delay", 0.001f);
 
