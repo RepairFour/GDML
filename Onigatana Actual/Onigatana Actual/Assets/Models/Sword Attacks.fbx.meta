@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: ae3fc5621fb9809488f8c399d3ab1395
+guid: 929de11f5e684124a9ce71fb7b3a3089
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable:
@@ -9,9 +9,6 @@ ModelImporter:
   - first:
       74: -62398897293770771
     second: R_hand|attack 1
-  - first:
-      74: 3286360344425806831
-    second: R_hand|attack 1 (1)
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -41,11 +38,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: R_hand|attack 1 (1)
-      takeName: R_hand|attack 1
+      name: R_hand|attack 2
+      takeName: R_hand|attack 2
       internalID: 0
       firstFrame: 0
-      lastFrame: 6
+      lastFrame: 9
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

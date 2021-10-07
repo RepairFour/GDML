@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_test texture
-  m_Shader: {fileID: -6465566751694194690, guid: faed511f2a0d856459627e070d299133, type: 3}
+  m_Name: tets
+  m_Shader: {fileID: -6465566751694194690, guid: 90c178603d1ff6d47b07026da4903ba5, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -19,12 +19,8 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _SampleTexture2D_bc97ae6a1de8448e9db3e1bb61c75e36_Texture_1:
-        m_Texture: {fileID: 2800000, guid: 5c85c507bbd363442b3a16a8d0ec5ff9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _SampleTexture2D_d5d80efabb4045aaa996ef21a3b6678c_Texture_1:
-        m_Texture: {fileID: 2800000, guid: be9b20641608fa44498cff89fa71229f, type: 3}
+    - _SampleTexture2D_6f4e73050d8c402188cab5abe1753fcb_Texture_1:
+        m_Texture: {fileID: 2800000, guid: 395d718b657e875499ce736cd3606193, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
