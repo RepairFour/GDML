@@ -287,7 +287,7 @@
             "m_Id": "29d195450f2e48d78400c40baccb2168"
         },
         {
-            "m_Id": "c02922181f78475ea5e5c30e60212658"
+            "m_Id": "c8c67b7c79c8454990170194bf2702a3"
         }
     ],
     "synonyms": [],
@@ -451,31 +451,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector4MaterialSlot",
-    "m_ObjectId": "c02922181f78475ea5e5c30e60212658",
-    "m_Id": 1,
-    "m_DisplayName": "Out_Vector4",
-    "m_SlotType": 1,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "OutVector4",
-    "m_StageCapability": 2,
-    "m_Value": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_DefaultValue": {
-        "x": 0.0,
-        "y": 0.0,
-        "z": 0.0,
-        "w": 0.0
-    },
-    "m_Labels": []
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.BlockNode",
     "m_ObjectId": "c8a5b58712c54394bdc187f9f36bb39b",
     "m_Group": {
@@ -510,6 +485,21 @@
 {
     "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
+    "m_ObjectId": "c8c67b7c79c8454990170194bf2702a3",
+    "m_Id": 1,
+    "m_DisplayName": "Out_Vector4",
+    "m_SlotType": 1,
+    "m_Hidden": false,
+    "m_ShaderOutputName": "Out_Vector4",
+    "m_StageCapability": 2,
+    "m_Value": 0.0,
+    "m_DefaultValue": 0.0,
+    "m_Labels": []
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
     "m_ObjectId": "d6928867763344a2b25e7f6853758790",
     "m_Id": 0,
     "m_DisplayName": "water depth",
@@ -534,10 +524,10 @@
         "m_Expanded": true,
         "m_Position": {
             "serializedVersion": "2",
-            "x": -608.3500366210938,
-            "y": 159.8500213623047,
-            "width": 0.0,
-            "height": 0.0
+            "x": -679.0,
+            "y": 183.00001525878907,
+            "width": 139.0,
+            "height": 34.0
         }
     },
     "m_Slots": [
