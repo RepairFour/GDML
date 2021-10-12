@@ -29,6 +29,7 @@ public class Controller : MonoBehaviour
     public float strafeAcceleration;
     public float strafeJumpDecelleration;
     public float airControlModifier;
+    public float speedDropDirectionChange;
     [Space]
     [Header ("Dash Variables")]
     public float dashSpeed;
@@ -190,7 +191,7 @@ public class Controller : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
-        //cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+        cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
         //cc.gameObject.transform.position = new Vector3(0, normalHeight, 0);
 
@@ -429,6 +430,7 @@ public class Controller : MonoBehaviour
         hookShotMove = false;
         hookShotFiring = false;
         hookShotSize = 0;
+        currentVelocity.y = 0;
         //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
         hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
@@ -468,7 +470,14 @@ public class Controller : MonoBehaviour
 
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
-            CancelHookShotMomentumWallKick();
+            if (queueJump)
+            {
+                CancelHookShotMomentumWallKick();
+                queueJump = false;
+            }
+            else{
+                CancelHookShot();
+            }
             //currentVelocity.y = yMomentumScalarValue;
         }
         if (hook.wasReleasedThisFrame)
@@ -631,9 +640,6 @@ public class Controller : MonoBehaviour
             return;
         }
         GetMoveDirection();
-        
-        
-       
         if (Mathf.Abs(inputDirection.x) > 0.01 || Math.Abs(inputDirection.y) > 0.01)
         {
             if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
@@ -655,7 +661,9 @@ public class Controller : MonoBehaviour
             currentVelocity = lastMoveDirection * currentSpeed;
 
         }
-        HandleGravity(yspeed);
+
+        
+        HandleGravity(0);
         HandleJump();
         //HandleGravity(0);
     }
@@ -853,6 +861,26 @@ public class Controller : MonoBehaviour
     #region Acceleration and Decelleration Functions
     void Accelerate()
     {
+        if (Mathf.Abs(inputDirection.x) == 1)
+        {
+            if (lastInputDirection.x + inputDirection.x == 0)
+            {
+                currentSpeed = speedDropDirectionChange;
+            }
+
+        }
+        if (Mathf.Abs(inputDirection.y) == 1)
+        {
+            if (lastInputDirection.y + inputDirection.y == 0)
+            {
+                currentSpeed = speedDropDirectionChange;
+            }
+        }
+        //if (Vector3.Dot(lastInputDirection, inputDirection) < 1)
+        //{
+        //    currentSpeed = 10;
+        //}
+
         if (currentSpeed < maxSpeed)
         {
             currentSpeed += accelleration * Time.deltaTime;
@@ -936,6 +964,12 @@ public class Controller : MonoBehaviour
         }
         currentVelocity = lastMoveDirection * currentSpeed;
         currentVelocity.y = yspeed;
+    }
+
+    private void ChangeDirectionDecellerate()
+    {
+
+        
     }
     #endregion
 

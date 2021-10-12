@@ -55,7 +55,7 @@ public class EnemyStats : MonoBehaviour
     public void IsHit()
     {
         //hitAni.Play("Death");
-        if (blood)
+        if (blood != null)
         {
             blood.Play();
         }

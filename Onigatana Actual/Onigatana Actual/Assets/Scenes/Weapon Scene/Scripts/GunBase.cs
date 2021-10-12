@@ -75,10 +75,6 @@ public class GunBase : MonoBehaviour
 
         audioSource = GetComponent<AudioSource>();
     }
-    void Start()
-    {
-
-    }
 
     // Update is called once per frame
     void Update()
@@ -123,9 +119,9 @@ public class GunBase : MonoBehaviour
     }
     protected IEnumerator PrimaryCooldown()
     {
-       // Debug.Log("Fire Rate Started");
+        // Debug.Log("Fire Rate Started");
         yield return new WaitForSeconds(fireRate);
-       // Debug.Log("Ready to Shoot");
+        // Debug.Log("Ready to Shoot");
         isReadyToShoot = true; 
     }
     protected IEnumerator SecondaryCooldown()
