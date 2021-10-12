@@ -8051,6 +8051,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 789977990591147902, guid: b5c37bd85e5cbaf4f826a4ec78788860, type: 3}
+      propertyPath: stopAction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 789977990591147902, guid: b5c37bd85e5cbaf4f826a4ec78788860, type: 3}
       propertyPath: lengthInSec
       value: 2
       objectReference: {fileID: 0}
@@ -8303,6 +8307,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5853662661743159978, guid: b5c37bd85e5cbaf4f826a4ec78788860, type: 3}
+      propertyPath: stopAction
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5853662661743159978, guid: b5c37bd85e5cbaf4f826a4ec78788860, type: 3}
       propertyPath: lengthInSec
       value: 1
       objectReference: {fileID: 0}
@@ -8364,6 +8372,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7839458107546075210, guid: b5c37bd85e5cbaf4f826a4ec78788860, type: 3}
       propertyPath: looping
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7839458107546075210, guid: b5c37bd85e5cbaf4f826a4ec78788860, type: 3}
+      propertyPath: stopAction
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7839458107546075210, guid: b5c37bd85e5cbaf4f826a4ec78788860, type: 3}
