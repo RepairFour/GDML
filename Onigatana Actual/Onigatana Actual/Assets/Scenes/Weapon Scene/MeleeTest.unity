@@ -7073,7 +7073,7 @@ MonoBehaviour:
   strafeAcceleration: 10
   strafeJumpDecelleration: 10
   airControlModifier: 0.2
-  changeDirectionDecelleration: 100
+  speedDropDirectionChange: 10
   dashSpeed: 200
   dashTime: 0.1
   maxDashAmount: 2

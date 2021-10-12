@@ -29,7 +29,7 @@ public class Controller : MonoBehaviour
     public float strafeAcceleration;
     public float strafeJumpDecelleration;
     public float airControlModifier;
-    public float changeDirectionDecelleration;
+    public float speedDropDirectionChange;
     [Space]
     [Header ("Dash Variables")]
     public float dashSpeed;
@@ -857,7 +857,7 @@ public class Controller : MonoBehaviour
         {
             if (lastInputDirection.x + inputDirection.x == 0)
             {
-                currentSpeed = 10;
+                currentSpeed = speedDropDirectionChange;
             }
 
         }
@@ -865,7 +865,7 @@ public class Controller : MonoBehaviour
         {
             if (lastInputDirection.y + inputDirection.y == 0)
             {
-                currentSpeed = 10;
+                currentSpeed = speedDropDirectionChange;
             }
         }
         //if (Vector3.Dot(lastInputDirection, inputDirection) < 1)
