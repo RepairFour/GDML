@@ -469,7 +469,14 @@ public class Controller : MonoBehaviour
 
         if (Vector3.Distance(hookHitPoint, transform.position) < 2)
         {
-            CancelHookShotMomentumWallKick();
+            if (queueJump)
+            {
+                CancelHookShotMomentumWallKick();
+                queueJump = false;
+            }
+            else{
+                CancelHookShot();
+            }
             //currentVelocity.y = yMomentumScalarValue;
         }
         if (hook.wasReleasedThisFrame)
