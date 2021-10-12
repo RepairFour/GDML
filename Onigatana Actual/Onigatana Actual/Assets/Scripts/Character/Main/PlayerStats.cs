@@ -8,6 +8,7 @@ public class PlayerStats : MonoBehaviour
 {
 	[SerializeField] int maxHealth;
 	[SerializeField] int bloodCap;
+	[SerializeField] Animator playerHurtAni;
 	public int health { get; private set; }
 	public int bloodMeter { get; private set; }
 	public int armour { get; private set; }
@@ -57,6 +58,8 @@ public class PlayerStats : MonoBehaviour
 		{
 			Death();
 		}
+		playerHurtAni.SetTrigger("Hurt");
+		AudioHandler.instance.PlaySound("PlayerHurt"); 
 	}
 	private void Death()
 	{
