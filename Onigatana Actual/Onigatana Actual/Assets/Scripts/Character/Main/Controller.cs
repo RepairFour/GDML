@@ -97,6 +97,7 @@ public class Controller : MonoBehaviour
     [Header("Animation Variables")]
     public Animator animator;
     [SerializeField] Animator leanAni;
+    float leanIncrement = 0.05f;
     private bool slideTriggerSet = false;
     #endregion
 
@@ -316,23 +317,23 @@ public class Controller : MonoBehaviour
            // animator.SetFloat("Moving", currentSpeed / maxSpeed);
             if(inputDirection.x > 0)
 			{
-                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + 0.2f);
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + leanIncrement);
 			}
             else if (inputDirection.x < 0)
             {
-                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - 0.2f);
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - leanIncrement);
             }
 			else
 			{
                 if(leanAni.GetFloat("RightLean") > 0)
 				{
-                    leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - 0.2f);
+                    leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - leanIncrement);
                 }
 				else if(leanAni.GetFloat("RightLean") < 0)
 				{
-                    leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + 0.2f);
+                    leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + leanIncrement);
                 }
-                if (Mathf.Abs(leanAni.GetFloat("RightLean")) <= 0.2f)
+                if (Mathf.Abs(leanAni.GetFloat("RightLean")) <= leanIncrement)
                 {
                     leanAni.SetFloat("RightLean", 0);
                 }
@@ -350,13 +351,13 @@ public class Controller : MonoBehaviour
         {
             if (leanAni.GetFloat("RightLean") > 0)
             {
-                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - 0.2f);
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - leanIncrement);
             }
             else if (leanAni.GetFloat("RightLean") < 0)
             {
-                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + 0.2f);
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + leanIncrement);
             }
-            if(Mathf.Abs(leanAni.GetFloat("RightLean")) <= 0.2f)
+            if(Mathf.Abs(leanAni.GetFloat("RightLean")) <= leanIncrement)
 			{
                 leanAni.SetFloat("RightLean", 0);
             }
