@@ -853,12 +853,27 @@ public class Controller : MonoBehaviour
     #region Acceleration and Decelleration Functions
     void Accelerate()
     {
-        if (Vector3.Dot(lastInputDirection, inputDirection) < 1)
+        if (Mathf.Abs(inputDirection.x) == 1)
         {
-            currentSpeed = 10;
-        }
+            if (lastInputDirection.x + inputDirection.x == 0)
+            {
+                currentSpeed = 10;
+            }
 
-        else if (currentSpeed < maxSpeed)
+        }
+        if (Mathf.Abs(inputDirection.y) == 1)
+        {
+            if (lastInputDirection.y + inputDirection.y == 0)
+            {
+                currentSpeed = 10;
+            }
+        }
+        //if (Vector3.Dot(lastInputDirection, inputDirection) < 1)
+        //{
+        //    currentSpeed = 10;
+        //}
+
+        if (currentSpeed < maxSpeed)
         {
             currentSpeed += accelleration * Time.deltaTime;
         }
