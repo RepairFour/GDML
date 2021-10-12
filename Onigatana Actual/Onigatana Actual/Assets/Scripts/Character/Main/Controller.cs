@@ -96,6 +96,7 @@ public class Controller : MonoBehaviour
     #region Animation Variables
     [Header("Animation Variables")]
     public Animator animator;
+    [SerializeField] Animator leanAni;
     private bool slideTriggerSet = false;
     #endregion
 
@@ -313,10 +314,53 @@ public class Controller : MonoBehaviour
         if (currentSpeed > 0)
         {
            // animator.SetFloat("Moving", currentSpeed / maxSpeed);
+            if(inputDirection.x > 0)
+			{
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + 0.2f);
+			}
+            else if (inputDirection.x < 0)
+            {
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - 0.2f);
+            }
+			else
+			{
+                if(leanAni.GetFloat("RightLean") > 0)
+				{
+                    leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - 0.2f);
+                }
+				else if(leanAni.GetFloat("RightLean") < 0)
+				{
+                    leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + 0.2f);
+                }
+                if (Mathf.Abs(leanAni.GetFloat("RightLean")) <= 0.2f)
+                {
+                    leanAni.SetFloat("RightLean", 0);
+                }
+            }
+            if (leanAni.GetFloat("RightLean") > 1)
+			{
+                leanAni.SetFloat("RightLean", 1);
+            }
+            else if(leanAni.GetFloat("RightLean") < -1)
+			{
+                leanAni.SetFloat("RightLean", -1);
+			}
         }
         else
         {
-           // animator.SetFloat("Moving", 0);
+            if (leanAni.GetFloat("RightLean") > 0)
+            {
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") - 0.2f);
+            }
+            else if (leanAni.GetFloat("RightLean") < 0)
+            {
+                leanAni.SetFloat("RightLean", leanAni.GetFloat("RightLean") + 0.2f);
+            }
+            if(Mathf.Abs(leanAni.GetFloat("RightLean")) <= 0.2f)
+			{
+                leanAni.SetFloat("RightLean", 0);
+            }
+            // animator.SetFloat("Moving", 0);
         }
     }
     void HandleSlideAnimation()

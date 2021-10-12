@@ -5685,7 +5685,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1077876823806534700}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 1, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -5695,7 +5695,7 @@ Transform:
   - {fileID: 1077876823228913165}
   - {fileID: 1077876824222929651}
   - {fileID: 780229342}
-  m_Father: {fileID: 1077876824528006220}
+  m_Father: {fileID: 4369951145695074922}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1077876823806534698
@@ -6066,7 +6066,7 @@ Transform:
   m_LocalPosition: {x: -20, y: 21, z: -28}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 1077876823806534699}
+  - {fileID: 4369951145695074922}
   - {fileID: 1077876824428292076}
   - {fileID: 526989682995524695}
   - {fileID: 6673798298669487910}
@@ -8035,6 +8035,37 @@ MonoBehaviour:
   - {fileID: 7397926079580543055}
   - {fileID: 7397926078498584234}
   - {fileID: 6673798297784100284}
+--- !u!1 &8119179984036862706
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4369951145695074922}
+  m_Layer: 7
+  m_Name: CameraParent
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4369951145695074922
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8119179984036862706}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 1077876823806534699}
+  m_Father: {fileID: 1077876824528006220}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &4282829486600073530
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8574,24 +8605,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
---- !u!23 &2421771527699251797 stripped
-MeshRenderer:
-  m_CorrespondingSourceObject: {fileID: 1942308069479345079, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
-  m_PrefabInstance: {fileID: 4282829488340576738}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4012359184679343283 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
-  m_PrefabInstance: {fileID: 4282829488340576738}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &4387935157641203209 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
-  m_PrefabInstance: {fileID: 4282829488340576738}
-  m_PrefabAsset: {fileID: 0}
 --- !u!137 &9016793433359228612 stripped
 SkinnedMeshRenderer:
   m_CorrespondingSourceObject: {fileID: -4157456459163486426, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
+  m_PrefabInstance: {fileID: 4282829488340576738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2421771527699251797 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1942308069479345079, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
   m_PrefabInstance: {fileID: 4282829488340576738}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &7294448414109830816 stripped
@@ -8602,5 +8623,15 @@ Transform:
 --- !u!20 &6712563893129629000 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: -1853094968961178454, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
+  m_PrefabInstance: {fileID: 4282829488340576738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &4387935157641203209 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
+  m_PrefabInstance: {fileID: 4282829488340576738}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &4012359184679343283 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 929de11f5e684124a9ce71fb7b3a3089, type: 3}
   m_PrefabInstance: {fileID: 4282829488340576738}
   m_PrefabAsset: {fileID: 0}
