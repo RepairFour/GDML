@@ -855,10 +855,10 @@ public class Controller : MonoBehaviour
     {
         if (Vector3.Dot(lastInputDirection, inputDirection) < 1)
         {
-            currentSpeed -= changeDirectionDecelleration * Time.deltaTime;
+            currentSpeed = 10;
         }
 
-        if (currentSpeed < maxSpeed)
+        else if (currentSpeed < maxSpeed)
         {
             currentSpeed += accelleration * Time.deltaTime;
         }
