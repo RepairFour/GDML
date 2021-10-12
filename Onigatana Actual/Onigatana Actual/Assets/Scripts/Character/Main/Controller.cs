@@ -430,6 +430,7 @@ public class Controller : MonoBehaviour
         hookShotMove = false;
         hookShotFiring = false;
         hookShotSize = 0;
+        currentVelocity.y = 0;
         //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
         hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
