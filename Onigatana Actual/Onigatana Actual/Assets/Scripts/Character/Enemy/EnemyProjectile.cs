@@ -16,9 +16,10 @@ public class EnemyProjectile : MonoBehaviour
 			if (other.GetComponent<PlayerStats>() != null)
 			{
 				other.GetComponent<PlayerStats>().Hurt(dmg);
+				Destroy(gameObject);
+				hitSomething = true;
 			}
-			Destroy(gameObject);
-			hitSomething = true;
+			
 		}
 	}
 

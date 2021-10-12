@@ -20,10 +20,16 @@ public class GChargeLvl1 : GalahadAction
 
 	Rigidbody rb;
 	float lerpTimer = 0;
+
+	Color objectColor;
+	Material mat;
+	//Vector3 orginalScale;
 	private void Start()
 	{
 		player = FindObjectOfType<PlayerStats>();
 		rb = GetComponent<Rigidbody>();
+		mat = GetComponent<MeshRenderer>().material;
+		objectColor = mat.color;
 	}
 	public override void Perform()
 	{
@@ -34,7 +40,7 @@ public class GChargeLvl1 : GalahadAction
 		if (performAction)
 		{
 			chargeUpTimer += Time.deltaTime;
-
+			mat.color = Color.blue;
 			if (chargeUpTimer >= chargeUpTimerMax)
 			{
 				var hits = Physics.RaycastAll(transform.position, player.transform.position - transform.position);
@@ -48,7 +54,11 @@ public class GChargeLvl1 : GalahadAction
 					}
 				}
 				chargeUpTimer = 0;
+				mat.color = objectColor;
 				rb.AddForce((chargePoint - transform.position)*chargeSpeed);
+				
+				finished = true;
+				performAction = false;
 			}
 			
 		}
@@ -61,8 +71,7 @@ public class GChargeLvl1 : GalahadAction
 			other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
 			other.gameObject.tag != "Player")
 		{
-			finished = true;
-			performAction = false;
+			
 			rb.velocity = Vector3.zero;
 		}
 		if(other.tag == "Player")

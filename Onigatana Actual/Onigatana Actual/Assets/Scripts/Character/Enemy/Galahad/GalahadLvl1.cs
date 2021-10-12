@@ -17,19 +17,33 @@ public class GalahadLvl1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(galahadActions[actionCounter].finished || activate == true)
+        if (actionCounter == 0)
+        {
+            if (activate == true)
+            {
+                PerformAction();
+            }
+        }
+		else if(galahadActions[actionCounter - 1].finished)
 		{
-            activate = false;
-            ++actionCounter;
-            if(actionCounter == galahadActions.Count)
-			{
-                actionCounter = 0;
-                foreach(var action in galahadActions)
-				{
-                    action.finished = false;
-				}
-			}
-            galahadActions[actionCounter].Perform();
+            PerformAction();
 		}
+    }
+
+    void PerformAction()
+	{
+        activate = false;
+        if (actionCounter != 0)
+        {
+            galahadActions[actionCounter - 1].finished = false;
+        }
+        galahadActions[actionCounter].Perform();
+        ++actionCounter;
+        if (actionCounter == galahadActions.Count)
+        {
+            galahadActions[actionCounter-1].finished = false;
+            actionCounter = 0;
+            activate = true;
+        }
     }
 }
