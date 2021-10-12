@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ShotgunCrossBow : GunBase
 {
+    public ParticleSystem blood;
     // Start is called before the first frame update
     protected override void PrimaryFire() {
         isReadyToShoot = false;
@@ -27,6 +28,7 @@ public class ShotgunCrossBow : GunBase
                     {
                         Debug.Log("Enemy hit");
                         hit.collider.GetComponent<EnemyStats>().Hurt((int)dmgPerBullet, EnemyStats.MeleeAnimation.ANIMATION1);
+                        var bloodPoint = Instantiate(blood, hit.point, Quaternion.identity);
                     }
                     else
                     {
@@ -38,6 +40,7 @@ public class ShotgunCrossBow : GunBase
 
             }
             var temp = Instantiate(shotHit, muzzleFlashPoint.position, Quaternion.LookRotation(fpsCamera.transform.forward + spreadVector));
+            
         }
         if (muzzleFlash != null)
         {

@@ -11,10 +11,12 @@ public class BladeAttack : MonoBehaviour
     private ButtonControl meleeButton;
 
     public Animator animator;
+    public ParticleSystem weaponTrail;
 
     public MeshRenderer rangedWeapon;
     public GunBase rangedWeaponScript;
     public MeshRenderer meleeWeapon;
+    public SkinnedMeshRenderer meleeHand;
 
     public BoxCollider attackCollider;
 
@@ -33,6 +35,7 @@ public class BladeAttack : MonoBehaviour
         attackCollider.enabled = false;
 
         meleeWeapon.enabled = false;
+        meleeHand.enabled = false;
         rangedWeapon.enabled = true;
         rangedWeaponScript.enabled = true;
     }
@@ -43,6 +46,7 @@ public class BladeAttack : MonoBehaviour
         if (meleeButton.isPressed)
         {
             meleeWeapon.enabled = true;
+            meleeHand.enabled = true;
             rangedWeapon.enabled = false;
             rangedWeaponScript.enabled = false;
         }
@@ -50,10 +54,10 @@ public class BladeAttack : MonoBehaviour
         if (meleeButton.wasReleasedThisFrame && canAttack)
         {
             //canAttack = false;
+            weaponTrail.Play();
             if (!attackAnimation1)
             {
                 attackCollider.enabled = true;
-
                 animator.SetTrigger("Attack1");
                 attackAnimation1 = true;
                 attackAnimation2 = false;
@@ -87,6 +91,7 @@ public class BladeAttack : MonoBehaviour
         rangedWeapon.enabled = true;
         rangedWeaponScript.enabled = true;
         meleeWeapon.enabled = false;
+        meleeHand.enabled = false;
     }
     IEnumerator CleanUpHitBox(float time)
     {
