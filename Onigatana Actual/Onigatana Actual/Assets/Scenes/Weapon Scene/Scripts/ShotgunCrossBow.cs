@@ -79,7 +79,7 @@ public class ShotgunCrossBow : GunBase
             RaycastHit hit;
 
             //Debug.Log("Firing");
-            if (Physics.Raycast(ray, out hit, secondaryRange))
+            if (Physics.Raycast(ray, out hit, secondaryRange,~LayerMask.NameToLayer("Ignore Raycast"), QueryTriggerInteraction.Ignore))
             {
                 if (hit.collider)
                 {
