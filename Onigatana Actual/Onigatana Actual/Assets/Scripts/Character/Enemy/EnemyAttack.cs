@@ -24,12 +24,17 @@ public class EnemyAttack : MonoBehaviour
     bool chargingAttack = false;
     [SerializeField] Animation chargeAttackAni;
     EnemyChase enemyChase;
+
+    Material mat;
+    Color originalColor;
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<PlayerStats>();
         enemyChase = GetComponent<EnemyChase>();
         attackDistance = enemyChase.attackDistance;
+        mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
+        originalColor = mat.color;
        
     }
 
@@ -62,6 +67,7 @@ public class EnemyAttack : MonoBehaviour
             if(chargingAttack)
 			{
                 attackChargeTimer += Time.deltaTime;
+                mat.color = Color.blue;
                 if(attackChargeTimer > attackChargeTimerMax)
 				{
                     chargingAttack = false;
@@ -70,6 +76,7 @@ public class EnemyAttack : MonoBehaviour
                         chargeAttackAni.Play("Attack2");
                         chargeAttackAni.PlayQueued("Run");
                     }
+                    mat.color = originalColor;
                     attackChargeTimer = 0;
                     attackCDtimer = 0;
                     Vector3 bulletPos = transform.position;

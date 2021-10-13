@@ -87,7 +87,7 @@ public class EnemyStats : MonoBehaviour
             InAnimation2 = true;
             enemyTestAnims.SetTrigger("Attacked2");
         }
-        gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
+        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = hurtMaterial;
 
 
         //Here we calculate from what position the player hits the enemy, in order to calculate what direction the knockback will trigger in later. We also increase the knockback strength, but it is capped at a certain amount.
@@ -118,7 +118,7 @@ public class EnemyStats : MonoBehaviour
 
         InAnimation1 = false;
         InAnimation2 = false;
-        gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
+        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = defaultMaterial;
         enemyTestAnims.SetTrigger("Reset");
 
         Debug.Log(knockbackStrength);
@@ -133,6 +133,6 @@ public class EnemyStats : MonoBehaviour
     //Simple invoked function to reset the material after a short timer.
     private void resetMaterial()
     {
-        gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
+        gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = defaultMaterial;
     }
 }
