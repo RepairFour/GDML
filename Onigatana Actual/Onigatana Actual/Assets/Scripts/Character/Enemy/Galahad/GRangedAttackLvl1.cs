@@ -36,8 +36,10 @@ public class GRangedAttackLvl1 : GalahadAction
             mat.color = Color.magenta;
             if (chargeUpTimer >= chargeUpTimerMax)
             {
-                var proj = Instantiate(projectile, transform.position, projectile.transform.rotation);
-                proj.GetComponent<Rigidbody>().AddForce((playerTrans.position - transform.position).normalized * projectileSpeed);
+                Vector3 pos = transform.position;
+                pos.y += 7;
+                var proj = Instantiate(projectile, pos, projectile.transform.rotation);
+                proj.GetComponent<Rigidbody>().AddForce((playerTrans.position - pos).normalized * projectileSpeed);
                 finished = true;
                 performAction = false;
                 mat.color = objectColor;

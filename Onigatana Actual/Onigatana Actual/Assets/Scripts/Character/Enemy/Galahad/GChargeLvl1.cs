@@ -23,6 +23,9 @@ public class GChargeLvl1 : GalahadAction
 
 	Color objectColor;
 	Material mat;
+
+	float hitBoxLinger = 2;
+	float hitBoxLingerTimer = 2;
 	//Vector3 orginalScale;
 	private void Start()
 	{
@@ -59,24 +62,46 @@ public class GChargeLvl1 : GalahadAction
 				
 				finished = true;
 				performAction = false;
+				hitBoxLingerTimer = 0;
 			}
 			
 		}
+		hitBoxLingerTimer += Time.deltaTime;
 	}
 
 	
-	private void OnTriggerEnter(Collider other)
-	{
-		if (other.tag != "Enemy" &&
-			other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
-			other.gameObject.tag != "Player")
-		{
+	//private void OnCollisionEnter(Collider other)
+	//{
+	//	if (hitBoxLingerTimer < hitBoxLinger)
+	//	{
+	//		if (other.tag != "Enemy" &&
+	//			other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
+	//			other.gameObject.tag != "Player")
+	//		{
+	//			rb.velocity = Vector3.zero;
+	//		}
+	//		if (other.tag == "Player")
+	//		{
+	//			other.GetComponent<PlayerStats>().Hurt(dmg);
+	//		}
 			
-			rb.velocity = Vector3.zero;
-		}
-		if(other.tag == "Player")
+	//	}
+	//}
+	private void OnCollisionEnter(Collision collision)
+	{
+		if (hitBoxLingerTimer < hitBoxLinger)
 		{
-			other.GetComponent<PlayerStats>().Hurt(dmg);
+			if (collision.gameObject.tag != "Enemy" &&
+				collision.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
+				collision.gameObject.tag != "Player")
+			{
+				rb.velocity = Vector3.zero;
+			}
+			if (collision.gameObject.tag == "Player")
+			{
+				collision.gameObject.GetComponent<PlayerStats>().Hurt(dmg);
+			}
+
 		}
 	}
 }
