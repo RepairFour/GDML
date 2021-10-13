@@ -127,7 +127,7 @@ public class WaypointManager : MonoBehaviour
 			}
 		}
 	}
-
+#if UNITY_EDITOR
 	public void BuildWaypoint(int pathId)
 	{
 		Transform sceneCameraTransform = UnityEditor.SceneView.lastActiveSceneView.camera.transform;
@@ -159,6 +159,7 @@ public class WaypointManager : MonoBehaviour
 		}
 		
 	}
+#endif
 
 	private void InstantiateWayPoint(int pathId,Vector3 pos)
 	{
