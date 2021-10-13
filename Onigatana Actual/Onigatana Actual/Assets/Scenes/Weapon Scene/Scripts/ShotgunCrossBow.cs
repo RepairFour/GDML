@@ -5,6 +5,7 @@ using UnityEngine;
 public class ShotgunCrossBow : GunBase
 {
     public ParticleSystem blood;
+    public LayerMask layersToAvoid;
     // Start is called before the first frame update
     protected override void PrimaryFire() {
         isReadyToShoot = false;
@@ -20,7 +21,7 @@ public class ShotgunCrossBow : GunBase
             RaycastHit hit;
 
             //Debug.Log("Firing");
-            if (Physics.Raycast(ray, out hit, range))
+            if (Physics.Raycast(ray, out hit, range, ~layersToAvoid, QueryTriggerInteraction.Ignore))
             {
                 if (hit.collider)
                 {
