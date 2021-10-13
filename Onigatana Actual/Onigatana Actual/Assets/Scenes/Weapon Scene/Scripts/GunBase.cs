@@ -93,17 +93,23 @@ public class GunBase : MonoBehaviour
     protected void HandleInput()
     {
        
-        if (!isReloading && ammoLeft <= 0)
+        if (!isReloading && ammoLeft <= 0 
+            && isReadyToShoot)
         {
             isReloading = true;
-            StartCoroutine(Reload());
+            gunAnimator.SetBool("Reload", true);
         }
-        else if((isReadyToShoot && PrimaryFirePressed()) && !isReloading && ammoLeft > 0)
+
+        else if((isReadyToShoot && PrimaryFirePressed()) 
+            && !isReloading && ammoLeft > 0)
         {
             PrimaryFire();
-            //Debug.Log("Shoot");
         }
-        else if (isReadyToShoot && SecondaryFirePressed() && !OnCooldown && !isShooting && !isReloading)
+
+        else if (isReadyToShoot && SecondaryFirePressed() 
+            && !OnCooldown 
+            && !isShooting 
+            && !isReloading)
         {
             SecondaryFire();
         }
@@ -122,21 +128,43 @@ public class GunBase : MonoBehaviour
         // Debug.Log("Fire Rate Started");
         yield return new WaitForSeconds(fireRate);
         // Debug.Log("Ready to Shoot");
-        isReadyToShoot = true; 
+        //isReadyToShoot = true;
+        //gunAnimator.SetBool("Fire", false);
     }
     protected IEnumerator SecondaryCooldown()
     {
         yield return new WaitForSeconds(cooldown);
         OnCooldown = false;
+        gunAnimator.SetBool("SecondaryFire", false);
     }
     protected IEnumerator Reload()
     {
-        gunAnimator.SetTrigger("Reload");
-        gameObject.GetComponent<AudioSource>().PlayOneShot(reloadSFX, 2);
-        // Debug.Log("Reloading");
+       // gunAnimator.SetBool("Reload", true);
+       // gameObject.GetComponent<AudioSource>().PlayOneShot(reloadSFX, 2);
+       // // Debug.Log("Reloading");
         yield return new WaitForSeconds(reloadTime);
-       // Debug.Log("Reloaded");
+       //// Debug.Log("Reloaded");
+       // isReloading = false;
+       // ammoLeft = magSize;
+       // gunAnimator.SetBool("Reload", false);
+    }
+
+    public void FireAnimationEvent()
+    {
+        gunAnimator.SetBool("Fire", false);
+        Debug.Log("Called");
+        isReadyToShoot = true;
+    }
+    public void ReloadAnimationEventEnd()
+    {
+        
+        gunAnimator.SetBool("Reload", false);
         isReloading = false;
         ammoLeft = magSize;
+        //isReadyToShoot = true;
+    }
+    public void ReloadAnimationEventStart()
+    {
+        gameObject.GetComponent<AudioSource>().PlayOneShot(reloadSFX, 2);
     }
 }
