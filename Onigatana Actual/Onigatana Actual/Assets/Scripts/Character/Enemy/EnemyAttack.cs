@@ -72,9 +72,11 @@ public class EnemyAttack : MonoBehaviour
                     }
                     attackChargeTimer = 0;
                     attackCDtimer = 0;
-                    var bullet = Instantiate(projectile, transform.position, transform.rotation);
+                    Vector3 bulletPos = transform.position;
+                    bulletPos.y += 5;
+                    var bullet = Instantiate(projectile, bulletPos, transform.rotation);
                     bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-                    bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - transform.position).normalized * projectileSpeed);                    
+                    bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - bulletPos).normalized * projectileSpeed);                    
                 }
 			}
         }
