@@ -22,7 +22,10 @@ public class EnemyProjectile : MonoBehaviour
 			
 		}
 	}
-
+	private void Start()
+	{
+		AudioHandler.instance.PlaySound("EnemyProjectile", 0.5f, true, 3);
+	}
 	private void Update()
 	{
 		timeAlive += Time.deltaTime;
