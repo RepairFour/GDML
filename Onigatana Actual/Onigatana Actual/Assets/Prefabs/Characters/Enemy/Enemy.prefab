@@ -789,15 +789,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8003ee8d465a0704fae5d24a1053a02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  melee: 1
-  dmgPerHit: 3
+  melee: 0
+  dmgPerHit: 1
   attackMode: 0
   projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
-  projectileSpeed: 10000
-  attackCDtimerMax: 0.1
+  projectileSpeed: 5000
+  attackCDtimerMax: 0.8
   attackDistance: 0
-  firstAttackDelayMod: 1
-  attackChargeTimerMax: 0.1
+  firstAttackDelayMod: 1.5
+  attackChargeTimerMax: 0.3
   chargeAttackAni: {fileID: 0}
 --- !u!195 &7192277685749173785
 NavMeshAgent:
@@ -834,7 +834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPath: 2
-  attackDistance: 15
+  attackDistance: 25
   leapTimerMax: 0
   leapForce: 0
   visionDistance: 100
