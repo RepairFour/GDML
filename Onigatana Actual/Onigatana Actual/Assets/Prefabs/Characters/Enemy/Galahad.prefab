@@ -36,7 +36,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.25, y: 14.75}
+  m_AnchoredPosition: {x: -0.48, y: 27.84}
   m_SizeDelta: {x: 15, y: 15}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &4207229640499381841
@@ -272,7 +272,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
+  - {fileID: 2100000, guid: e855f073a71257d4d8ddb3af55e16695, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58cd13cc40fa1b45b57b31778653c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  health: 1000
   blood: {fileID: 0}
   enemyTestAnims: {fileID: 4207229641426707694}
   knockBackDirection: {x: 0, y: 0, z: 0}
@@ -948,9 +948,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finished: 0
-  chargeUpTimerMax: 5
-  chargeSpeed: 240
-  dmg: 5
+  chargeUpTimerMax: 2
+  chargeSpeed: 500
+  dmg: 40
 --- !u!114 &4207229641426707672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -964,7 +964,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finished: 0
-  followDuration: 3
+  followDuration: 1.5
 --- !u!114 &4207229641426707675
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -979,9 +979,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finished: 0
   stompHitBox: {fileID: 4207229641179159797}
-  hitBoxSize: 120
-  stompSpeed: 40
-  dmg: 5
+  hitBoxSize: 140
+  stompSpeed: 60
+  dmg: 25
   chargeUpTimerMax: 2
 --- !u!114 &7346323600287916892
 MonoBehaviour:
@@ -997,9 +997,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finished: 0
   projectile: {fileID: 3708793293189853914, guid: b2f9cc43b5930604ea231ba9ff34bb86, type: 3}
-  projectileSpeed: 5000
-  dmg: 3
-  chargeUpTimerMax: 2
+  projectileSpeed: 4000
+  dmg: 25
+  chargeUpTimerMax: 1
 --- !u!65 &4207229641426707673
 BoxCollider:
   m_ObjectHideFlags: 0

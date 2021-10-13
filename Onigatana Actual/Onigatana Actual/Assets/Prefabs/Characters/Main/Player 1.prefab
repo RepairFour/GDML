@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c43059c7a51c0f4fb88698456d3c88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 2
+  damage: 20
   animator: {fileID: 948209838116482813}
   weaponTrail: {fileID: 566933615138905677}
   rangedWeapon:
@@ -6358,7 +6358,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286ad79e02c6150429003a105e0ab069, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
+  maxHealth: 100
   bloodCap: 100
   playerHurtAni: {fileID: 3911127136209331389}
 --- !u!114 &3537334770861536681
@@ -7859,11 +7859,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fireRate: 1
-  spread: 0.09
-  range: 55
+  spread: 0.05
+  range: 200
   burstTime: 1
   reloadTime: 0.75
-  dmgPerBullet: 1
+  dmgPerBullet: 6
   magSize: 1
   bulletsPerTap: 5
   fpsCamera: {fileID: 4085466531584680995}
@@ -7884,6 +7884,9 @@ MonoBehaviour:
   bulletHole: {fileID: 7236500184703529017, guid: 912eebe560fe6154cb3527913eb47947, type: 3}
   bulletFxSpeed: 1
   blood: {fileID: 6985031832804872773, guid: 2b9fa75499d8aa34ab2c0b9407ea11fe, type: 3}
+  layersToAvoid:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &7496965469235530412
 GameObject:
   m_ObjectHideFlags: 0

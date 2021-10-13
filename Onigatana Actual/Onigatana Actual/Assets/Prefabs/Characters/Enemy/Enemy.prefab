@@ -790,7 +790,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   melee: 0
-  dmgPerHit: 1
+  dmgPerHit: 15
   attackMode: 0
   projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
   projectileSpeed: 2000
@@ -834,7 +834,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPath: 2
-  attackDistance: 150
+  attackDistance: 50
   leapTimerMax: 0
   leapForce: 0
   visionDistance: 250
@@ -858,7 +858,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58cd13cc40fa1b45b57b31778653c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 10
+  health: 50
   blood: {fileID: 0}
   enemyTestAnims: {fileID: 7192277685749173782}
   knockBackDirection: {x: 0, y: 0, z: 0}
