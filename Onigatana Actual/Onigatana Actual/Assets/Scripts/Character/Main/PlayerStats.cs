@@ -57,6 +57,7 @@ public class PlayerStats : MonoBehaviour
 		if(health <= 0)
 		{
 			Death();
+			AudioHandler.instance.PlaySound("PlayerDeath");
 		}
 		playerHurtAni.SetTrigger("Hurt");
 		AudioHandler.instance.PlaySound("PlayerHurt"); 

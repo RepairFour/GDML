@@ -49,6 +49,7 @@ public class EnemyStats : MonoBehaviour
         if (isDead())
 		{
             HUDCon.instance.UpdateKillCount();
+            AudioHandler.instance.PlaySound("EnemyDeath",1f,true,1);
             Destroy(gameObject);
 		}
 	}

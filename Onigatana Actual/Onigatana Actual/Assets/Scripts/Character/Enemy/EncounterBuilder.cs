@@ -85,6 +85,10 @@ public class EncounterBuilder : MonoBehaviour
 			return;
 		}
 		enemiesInWave.Clear();
+		if (waveTracker != 0)
+		{
+			AudioHandler.instance.PlaySound("WaveSpawn", 1, true, 2);
+		}
 		foreach (var enemyType in encounter[waveTracker].spawns)
 		{
 			for (int i = 0; i < enemyType.spawnNumber; ++i)

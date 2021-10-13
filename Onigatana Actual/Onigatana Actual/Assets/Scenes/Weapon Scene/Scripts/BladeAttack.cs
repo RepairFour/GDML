@@ -66,6 +66,7 @@ public class BladeAttack : MonoBehaviour
             weaponTrail.Play();
             if (!attackAnimation1)
             {
+                AudioHandler.instance.PlaySound("SwordSlash1",1,true,2);
                 attackCollider.enabled = true;
                 animator.SetTrigger("Attack1");
                 attackAnimation1 = true;
@@ -77,6 +78,7 @@ public class BladeAttack : MonoBehaviour
             else if (!attackAnimation2)
             {
                 attackCollider.enabled = true;
+                AudioHandler.instance.PlaySound("SwordSlash2",1,true,2);
 
                 animator.SetTrigger("Attack2");
                 attackAnimation1 = false;
