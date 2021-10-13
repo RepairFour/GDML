@@ -27,7 +27,10 @@ public class ParticleLauncher : MonoBehaviour
 
     void EmitAtLocation(ParticleCollisionEvent particleCollisionEvent)
     {
-        Instantiate(decal, particleCollisionEvent.intersection, Quaternion.LookRotation(particleCollisionEvent.normal), particleCollisionEvent.colliderComponent.gameObject.transform);
+        var temp = Instantiate(decal, particleCollisionEvent.intersection, Quaternion.LookRotation(particleCollisionEvent.normal), particleCollisionEvent.colliderComponent.gameObject.transform);
+        //var rotation = temp.transform.localRotation;
+        //rotation.y = Random.Range(0, 360);
+        //temp.transform.localRotation = rotation;
     }
     // Update is called once per frame
 }

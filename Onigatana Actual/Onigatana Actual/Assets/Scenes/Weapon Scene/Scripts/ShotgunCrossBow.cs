@@ -61,9 +61,10 @@ public class ShotgunCrossBow : GunBase
             audioSource.PlayOneShot(gunShotSFXAlt, 0.1f);
         }
 
-        gunAnimator.SetTrigger("Fire");
+        gunAnimator.SetBool("Fire", true);
+        //gunAnimator.SetFloat("FireLength", fireRate);
         ammoLeft--;
-        StartCoroutine(PrimaryCooldown());
+        //StartCoroutine(PrimaryCooldown());
 
     }
 
@@ -119,7 +120,7 @@ public class ShotgunCrossBow : GunBase
             audioSource.PlayOneShot(secondaryFireSFXAlt, 0.075f);
         }
 
-        gunAnimator.SetTrigger("SecondaryFire");
+        gunAnimator.SetBool("SecondaryFire", true);
         OnCooldown = true;
         StartCoroutine(SecondaryCooldown());
     }

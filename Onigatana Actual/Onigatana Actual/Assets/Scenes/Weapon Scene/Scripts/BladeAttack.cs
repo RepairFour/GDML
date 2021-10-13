@@ -13,7 +13,7 @@ public class BladeAttack : MonoBehaviour
     public Animator animator;
     public ParticleSystem weaponTrail;
 
-    public MeshRenderer rangedWeapon;
+    public List<MeshRenderer> rangedWeapon =  new List<MeshRenderer>();
     public GunBase rangedWeaponScript;
     public MeshRenderer meleeWeapon;
     public SkinnedMeshRenderer meleeHand;
@@ -23,6 +23,9 @@ public class BladeAttack : MonoBehaviour
     private bool attackAnimation1;
     private bool attackAnimation2;
     bool canAttack = true;
+
+    public ParticleSystem attackHitEffect;
+    public ParticleSystem blood;
 
     // Start is called before the first frame update
     void Start()
@@ -36,7 +39,10 @@ public class BladeAttack : MonoBehaviour
 
         meleeWeapon.enabled = false;
         meleeHand.enabled = false;
-        rangedWeapon.enabled = true;
+        foreach (MeshRenderer r in rangedWeapon)
+        {
+            r.enabled = true;
+        }
         rangedWeaponScript.enabled = true;
     }
 
@@ -47,7 +53,10 @@ public class BladeAttack : MonoBehaviour
         {
             meleeWeapon.enabled = true;
             meleeHand.enabled = true;
-            rangedWeapon.enabled = false;
+            foreach (MeshRenderer r in rangedWeapon)
+            {
+                r.enabled = false;
+            }
             rangedWeaponScript.enabled = false;
         }
 
@@ -88,7 +97,10 @@ public class BladeAttack : MonoBehaviour
         attackAnimation2 = false;
         animator.SetTrigger("reset");
 
-        rangedWeapon.enabled = true;
+        foreach (MeshRenderer r in rangedWeapon)
+        {
+            r.enabled = true;
+        }
         rangedWeaponScript.enabled = true;
         meleeWeapon.enabled = false;
         meleeHand.enabled = false;
@@ -111,11 +123,17 @@ public class BladeAttack : MonoBehaviour
             if (attackAnimation1)
             {
                 other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                
             }
             else if(attackAnimation2)
 			{
                 other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION2);
+                
             }
+
+
+            Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
+            Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
         }
 	}
 }
