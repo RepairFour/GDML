@@ -673,12 +673,12 @@ public class Controller : MonoBehaviour
             
             
             slidingTimer += Time.deltaTime;
-            currentSpeed = currentSpeed + slideMomentum;
+            currentSpeed = maxSpeed + slideMomentum;
             
-            if (currentSpeed > globalMaxSpeed)
-            {
-                currentSpeed = globalMaxSpeed;
-            }
+            //if (currentSpeed > globalMaxSpeed)
+            //{
+            //    currentSpeed = globalMaxSpeed;
+            //}
             
             HandleSlideVelocity();
             HandleMomentumSpeed();
