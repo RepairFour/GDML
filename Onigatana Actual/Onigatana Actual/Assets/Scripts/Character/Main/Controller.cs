@@ -1040,6 +1040,7 @@ public class Controller : MonoBehaviour
                 {
                     slideMomentum = 0;
                     maxSlideSpeedHit = true;
+                    CancelSlide();
                     //slideMomentum = 0;
                 }
             }
