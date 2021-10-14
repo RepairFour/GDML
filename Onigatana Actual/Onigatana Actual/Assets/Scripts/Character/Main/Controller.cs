@@ -670,7 +670,7 @@ public class Controller : MonoBehaviour
 
         if (sliding)
         {
-            HandleMomentumSpeed();
+            
             
             slidingTimer += Time.deltaTime;
             currentSpeed = currentSpeed + slideMomentum;
@@ -681,6 +681,7 @@ public class Controller : MonoBehaviour
             }
             
             HandleSlideVelocity();
+            HandleMomentumSpeed();
             HandleGravity(yspeed);
             HandleJump();
             return;
@@ -804,6 +805,7 @@ public class Controller : MonoBehaviour
             if(currentSpeed > 0)
             {
                 slideQueued = true;
+                slideMomentum = maxSlideMomentum;
             }
         }
         
@@ -1027,12 +1029,18 @@ public class Controller : MonoBehaviour
         {
             if (!maxSlideSpeedHit)
             {
-                slideMomentum += slideAccelerate * Time.deltaTime;
-                if(slideMomentum >= maxSlideMomentum)
+                slideMomentum -= slideAccelerate * Time.deltaTime;
+                //if(slideMomentum >= maxSlideMomentum)
+                //{
+                //    slideMomentum = maxSlideMomentum;
+                //    maxSlideSpeedHit = true;
+                //    slideMomentum = 0;
+                //}
+                if (slideMomentum <= 0)
                 {
-                    slideMomentum = maxSlideMomentum;
-                    maxSlideSpeedHit = true;
                     slideMomentum = 0;
+                    maxSlideSpeedHit = true;
+                    //slideMomentum = 0;
                 }
             }
             else
