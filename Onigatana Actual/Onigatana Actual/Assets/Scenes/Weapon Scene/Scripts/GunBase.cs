@@ -149,7 +149,7 @@ public class GunBase : MonoBehaviour
        // gunAnimator.SetBool("Reload", false);
     }
 
-    public void FireAnimationEvent()
+    public void FireAnimationEventEnd()
     {
         gunAnimator.SetBool("Fire", false);
         Debug.Log("Called");

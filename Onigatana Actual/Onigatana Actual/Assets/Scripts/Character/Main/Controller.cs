@@ -41,6 +41,7 @@ public class Controller : MonoBehaviour
     public float jumpSpeed;
     public float gravity;
     public float groundedTime;
+    public float minJumpingTimer;
     public int maxJumpNumber = 2;
     public LayerMask layerMask;
 
@@ -110,7 +111,7 @@ public class Controller : MonoBehaviour
     [Header("Debugging Variables")]
     [SerializeField] bool queueJump;
     [SerializeField] float jumpingTimer;
-    [SerializeField] float minJumpingTimer = 0.01f;
+    
     [SerializeField] int jumpNumber = 0;
 
     [SerializeField] Vector3 currentMoveDirection;
@@ -723,6 +724,7 @@ public class Controller : MonoBehaviour
             grounded = false;
             groundedTimer = 0;
             CancelSlideForHookShot();
+            //CancelSlide();
             jumps++;
             //animator.SetTrigger("Jump");
             
@@ -821,9 +823,9 @@ public class Controller : MonoBehaviour
     {
         Ray ray = new Ray(transform.position, transform.up * -1);
 
-        hit = Physics.SphereCastAll(ray, 0.1f, cc.height / 2 + 0.1f, layerMask);
+        hit = Physics.SphereCastAll(ray, 0.5f * cc.height/normalHeight, cc.height / 2 + 0.1f, layerMask);
 
-        if (hit.Length > 0 || sliding)
+        if (hit.Length > 0)
         {
             if (jumpingTimer >= minJumpingTimer)
             {
@@ -848,14 +850,14 @@ public class Controller : MonoBehaviour
         
         
 
-        RaycastHit gHit;
-        if (Physics.Raycast(ray, out gHit, cc.height / 2, layerMask))
-        {
-            if (gHit.distance < cc.height / 2)
-            {
-                cc.Move(Vector3.up * 2 * Time.deltaTime);
-            }
-        }
+        //RaycastHit gHit;
+        //if (Physics.Raycast(ray, out gHit, cc.height / 2, layerMask))
+        //{
+        //    if (gHit.distance < cc.height / 2)
+        //    {
+        //        cc.Move(Vector3.up * 2 * Time.deltaTime);
+        //    }
+        //}
     }
     #endregion
 

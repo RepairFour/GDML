@@ -204,9 +204,9 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.33333334
-    functionName: FireAnimationEvent
+    functionName: FireAnimationEventEnd
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: ae8ca68094eec4f42bb1d2777505b2f0, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
