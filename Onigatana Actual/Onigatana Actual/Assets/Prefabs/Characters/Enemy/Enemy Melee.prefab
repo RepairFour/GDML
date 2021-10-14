@@ -253,7 +253,7 @@ GameObject:
   - component: {fileID: 7192277685749173778}
   - component: {fileID: 7192277685749173779}
   m_Layer: 8
-  m_Name: Enemy
+  m_Name: Enemy Melee
   m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -789,14 +789,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8003ee8d465a0704fae5d24a1053a02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  melee: 0
+  melee: 1
   dmgPerHit: 15
   attackMode: 0
   projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
-  projectileSpeed: 2000
-  attackCDtimerMax: 3
+  projectileSpeed: 6000
+  attackCDtimerMax: 0.1
   attackDistance: 0
-  firstAttackDelayMod: 3
+  firstAttackDelayMod: 1
   attackChargeTimerMax: 0.6
   chargeAttackAni: {fileID: 0}
 --- !u!195 &7192277685749173785
@@ -834,18 +834,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPath: 2
-  attackDistance: 50
+  attackDistance: 130
   leapTimerMax: 0
   leapForce: 0
   visionDistance: 250
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 260
-  aknowledgementTimerMax: 1
-  runawayDistance: 80
-  runawayCooldown: 2
+  aknowledgementTimerMax: 0.3
+  runawayDistance: 10
+  runawayCooldown: 1
   runawayTimer: 0
-  loseInterestTimerMax: 2
+  loseInterestTimerMax: 8
 --- !u!114 &7192277685749173779
 MonoBehaviour:
   m_ObjectHideFlags: 0
