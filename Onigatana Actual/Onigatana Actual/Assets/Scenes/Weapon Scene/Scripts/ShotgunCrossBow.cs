@@ -54,12 +54,12 @@ public class ShotgunCrossBow : GunBase
 
         if (ShootingSound <= 5)
         {
-            audioSource.PlayOneShot(gunShotSFX, 0.4f);
+            audioSource.PlayOneShot(gunShotSFX, 0.7f);
 
         }
         else
         {
-            audioSource.PlayOneShot(gunShotSFXAlt, 0.4f);
+            audioSource.PlayOneShot(gunShotSFXAlt, 0.7f);
         }
 
         gunAnimator.SetBool("Fire", true);
@@ -113,12 +113,12 @@ public class ShotgunCrossBow : GunBase
 
         if (ShootingSound <= 5)
         {
-            audioSource.PlayOneShot(secondaryFireSFX, 0.075f);
+            audioSource.PlayOneShot(secondaryFireSFX, 0.2f);
 
         }
         else
         {
-            audioSource.PlayOneShot(secondaryFireSFXAlt, 0.075f);
+            audioSource.PlayOneShot(secondaryFireSFXAlt, 0.2f);
         }
 
         gunAnimator.SetBool("SecondaryFire", true);

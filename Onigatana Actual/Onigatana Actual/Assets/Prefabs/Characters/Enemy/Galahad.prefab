@@ -908,7 +908,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58cd13cc40fa1b45b57b31778653c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 1000
+  health: 2000
   blood: {fileID: 0}
   enemyTestAnims: {fileID: 4207229641426707694}
   knockBackDirection: {x: 0, y: 0, z: 0}
