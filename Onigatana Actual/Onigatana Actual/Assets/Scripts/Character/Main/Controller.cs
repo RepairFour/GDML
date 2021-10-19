@@ -845,8 +845,11 @@ public class Controller : MonoBehaviour
         }
         else
         {
-            grounded = false;
-            groundedTimer = 0;
+            if (!sliding)
+            {
+                grounded = false;
+                groundedTimer = 0;
+            }
             //animator.SetBool("Falling", true);
         }
         
