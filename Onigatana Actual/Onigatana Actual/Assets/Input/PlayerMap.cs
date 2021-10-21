@@ -229,7 +229,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""3d015508-b62c-412e-a666-161da4e7b6b8"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/y"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -251,7 +251,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""95849a1c-41d3-45a8-92aa-4b0377ce7b8e"",
-                    ""path"": ""<Mouse>/leftButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -284,7 +284,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""ff3ad0d5-ffef-4e73-b0bb-9d2b91a45c19"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/leftButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

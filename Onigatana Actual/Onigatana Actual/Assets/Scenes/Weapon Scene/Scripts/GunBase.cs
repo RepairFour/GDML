@@ -59,6 +59,11 @@ public class GunBase : MonoBehaviour
     public ParticleSystem bulletHole;
     public float bulletFxSpeed;
 
+    public List<MeshRenderer> rangedWeapon = new List<MeshRenderer>();
+    public GunBase rangedWeaponScript;
+    public MeshRenderer meleeWeapon;
+    public SkinnedMeshRenderer meleeHand;
+
 
 
     private void Awake()
@@ -74,6 +79,14 @@ public class GunBase : MonoBehaviour
         isReadyToShoot = true;
 
         audioSource = GetComponent<AudioSource>();
+        
+        meleeWeapon.enabled = true;
+        meleeHand.enabled = true;
+        foreach (MeshRenderer r in rangedWeapon)
+        {
+            r.enabled = false;
+        }
+        rangedWeaponScript.enabled = true;
     }
 
     // Update is called once per frame
@@ -103,6 +116,13 @@ public class GunBase : MonoBehaviour
         else if((isReadyToShoot && PrimaryFirePressed()) 
             && !isReloading && ammoLeft > 0)
         {
+            meleeWeapon.enabled = false;
+            meleeHand.enabled = false;
+            foreach (MeshRenderer r in rangedWeapon)
+            {
+                r.enabled = true;
+            }
+            rangedWeaponScript.enabled = true;
             PrimaryFire();
         }
 
@@ -111,6 +131,13 @@ public class GunBase : MonoBehaviour
             && !isShooting 
             && !isReloading)
         {
+            meleeWeapon.enabled = false;
+            meleeHand.enabled = false;
+            foreach (MeshRenderer r in rangedWeapon)
+            {
+                r.enabled = true;
+            }
+            rangedWeaponScript.enabled = true;
             SecondaryFire();
         }
     }
@@ -154,6 +181,13 @@ public class GunBase : MonoBehaviour
         gunAnimator.SetBool("Fire", false);
         Debug.Log("Called");
         isReadyToShoot = true;
+        meleeWeapon.enabled = true;
+        meleeHand.enabled = true;
+        foreach (MeshRenderer r in rangedWeapon)
+        {
+            r.enabled = false;
+        }
+        rangedWeaponScript.enabled = true;
     }
     public void ReloadAnimationEventEnd()
     {

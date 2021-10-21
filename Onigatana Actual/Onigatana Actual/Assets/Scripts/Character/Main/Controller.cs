@@ -152,6 +152,9 @@ public class Controller : MonoBehaviour
     [SerializeField] bool hookOnCooldown;
 
     [SerializeField] bool blinkStrikeActivated = false;
+    public bool isBlinkStrikeActivated { get => blinkStrikeActivated; }
+    Vector3 positionToTeleport;
+    float blinkSpeed;
     
 
     [SerializeField] RaycastHit[] hit;
@@ -214,7 +217,7 @@ public class Controller : MonoBehaviour
         
         if (blinkStrikeActivated)
         {
-            HandleBlinkStrike();
+            HandleBlinkStrike(positionToTeleport);
             return;
         }
         timeSpentAlive += Time.deltaTime;
@@ -1182,25 +1185,36 @@ public class Controller : MonoBehaviour
         var direction = positionToTeleport - currentPosition;
         direction.Normalize();
         Physics.IgnoreLayerCollision(7, 0, true);
-        cc.Move(direction * 1000 * Time.deltaTime);
-
-        if(Vector3.Distance(currentPosition, positionToTeleport) < 10)
+        cc.Move(direction * blinkSpeed * Time.deltaTime);
+        if(Vector3.Distance(currentPosition, positionToTeleport) < 20)
         {
             Physics.IgnoreLayerCollision(7, 0, false);
             //cc.detectCollisions = true;
             blinkStrikeActivated = false;
-            markedEnemy.BlinkMarkApplied();
+            if (markedEnemy != null)
+            {
+                markedEnemy.BlinkMarkApplied();
+            }
             Debug.Log("Function Called");
         }
 
 
         //gameObject.transform.position = positionToTeleport;
     }
+    public void BlinkToPosition(Vector3 positionToBlink, float speed)
+    {
+        blinkStrikeActivated = true;
+        positionToTeleport = positionToBlink;
+        blinkSpeed = speed;
+
+    }
     public void HandleBlinkStrikeInput()
     {
         if (blinkStrike.wasPressedThisFrame && markedEnemy != null && InRangeForBlink())
         {
             blinkStrikeActivated = true;
+            positionToTeleport = markedEnemy.transform.position;
+            blinkSpeed = 1000;
         }
     }
 
@@ -1229,9 +1243,9 @@ public class Controller : MonoBehaviour
         return false;
     }
 
-    public void HandleBlinkStrike()
+    public void HandleBlinkStrike(Vector3 positionToBlink)
     {
-        TeleportToPosition(markedEnemy.transform.position);
+        TeleportToPosition(positionToBlink);
     }
 
     #endregion
