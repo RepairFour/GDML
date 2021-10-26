@@ -1186,7 +1186,7 @@ public class Controller : MonoBehaviour
         direction.Normalize();
         Physics.IgnoreLayerCollision(7, 0, true);
         cc.Move(direction * blinkSpeed * Time.deltaTime);
-        if(Vector3.Distance(currentPosition, positionToTeleport) < 20)
+        if(Vector3.Distance(currentPosition, positionToTeleport) < 5)
         {
             Physics.IgnoreLayerCollision(7, 0, false);
             //cc.detectCollisions = true;

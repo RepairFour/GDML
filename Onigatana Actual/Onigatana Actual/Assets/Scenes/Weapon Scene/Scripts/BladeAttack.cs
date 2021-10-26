@@ -6,6 +6,7 @@ using UnityEngine.InputSystem.Controls;
 
 public class BladeAttack : MonoBehaviour
 {
+    public Material highlight;
     [SerializeField] int damage;
     PlayerMap input;
     private ButtonControl meleeButton;
@@ -20,6 +21,7 @@ public class BladeAttack : MonoBehaviour
 
     public BoxCollider attackCollider;
     public Transform feelerPoint;
+    GameObject blinkTarget;
     public Vector3 feelerHalfExtents;
     public float feelerRange;
     public LayerMask feelerMask;
@@ -30,12 +32,18 @@ public class BladeAttack : MonoBehaviour
     private bool attackAnimation1;
     private bool attack1Queued;
     private bool attack2Queued;
+    private bool chargeAttackQueued;
     private bool attackAnimation2;
+    private bool chargeAttackAnimation;
     private float cleanUpTimer;
     public float cleanUpTime;
     public float attackSpeed;
     private float attackTimer;
     bool canAttack = true;
+
+    public float chargeAttackTime;
+    float chargeAttackTimer;
+    bool attackCharged;
 
     public ParticleSystem attackHitEffect;
     public ParticleSystem blood;
@@ -81,6 +89,7 @@ public class BladeAttack : MonoBehaviour
         HandleStrikeLocked();
         RunAnimation1();
         RunAnimation2();
+        RunChargeAnimation();
         AttackTimer();
         CleanUpAttack();
     }
@@ -99,7 +108,7 @@ public class BladeAttack : MonoBehaviour
     }
     void CleanUpAttack()
     {
-        if(attackAnimation1 || attackAnimation2)
+        if(attackAnimation1 || attackAnimation2 || chargeAttackAnimation)
         {
             cleanUpTimer += Time.deltaTime;
             if(cleanUpTimer >= cleanUpTime)
@@ -112,10 +121,13 @@ public class BladeAttack : MonoBehaviour
                 
                 attack1Queued = false;
                 attack2Queued = false;
+                chargeAttackQueued = false;
+                
                 foreach (MeshRenderer r in rangedWeapon)
                 {
                     r.enabled = false;
                 }
+                
                 rangedWeaponScript.enabled = true;
                 meleeWeapon.enabled = true;
                 meleeHand.enabled = true;
@@ -155,22 +167,51 @@ public class BladeAttack : MonoBehaviour
     }
     private void FeelerRay()
     {
-        if ((attack1Queued || attack2Queued) && !strikeLocked && canAttack)
+        if (attackCharged && !strikeLocked && canAttack)
         {
+
             RaycastHit hit;
             if (Physics.BoxCast(feelerPoint.position, feelerHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
             {
-                strikeHit = hit.point;
-                strikeLocked = true;
+                if (blinkTarget != hit.collider.gameObject)
+                {
+                    if (blinkTarget != null)
+                    {
+                        blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                    }
+                    blinkTarget = hit.collider.gameObject;
+                    blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
+                }
+
+                if (chargeAttackQueued)
+                {
+                    strikeLocked = true;
+                    chargeAttackAnimation = true;
+                    chargeAttackQueued = false;
+                }
+            }
+            else 
+            {
+                if (blinkTarget != null)
+                {
+                    blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                    blinkTarget = null;
+                }
+                if (chargeAttackQueued)
+                {
+                    chargeAttackQueued = false;
+                    chargeAttackAnimation = true;
+                    
+                }
             }
         }
         
     }
     private void HandleStrikeLocked()
     {
-        if (strikeLocked)
+        if (strikeLocked || controller.isBlinkStrikeActivated)
         {
-            controller.BlinkToPosition(strikeHit, blinkSpeed);
+            controller.BlinkToPosition(blinkTarget.transform.position, blinkSpeed);
         }
        
     }
@@ -222,21 +263,67 @@ public class BladeAttack : MonoBehaviour
             canAttack = false;
         }
     }
+    private void RunChargeAnimation()
+    {
+        if (controller.isBlinkStrikeActivated == false
+           && chargeAttackAnimation
+           && !strikeLocked)
+        {
+            weaponTrail.Play();
+            attack1Queued = false;
+            attack2Queued = false;
+            chargeAttackQueued = false;
+            attackCollider.enabled = true;
+            attackAnimation1 = true;
+            attackAnimation2 = false;
+            chargeAttackAnimation = false;
+            attackCharged = false;
+            cleanUpTimer = 0;
+            canAttack = false;
+            animator.SetTrigger("Attack1");
+            AudioHandler.instance.PlaySound("SwordSlash1", 1, true, 2);
+            
+            if (blinkTarget != null)
+            {
+                blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+            }
+            blinkTarget = null;
+        }
+    }
     private void QueueAttack()
     {
+        if (meleeButton.isPressed)
+        {
+            chargeAttackTimer += Time.deltaTime;
+            if(chargeAttackTimer >= chargeAttackTime)
+            {
+                chargeAttackTimer = chargeAttackTime;
+                attackCharged = true;
+
+            }
+        }
         if (meleeButton.wasReleasedThisFrame && canAttack)
         {
-            
-            if (!attackAnimation1)
+            if (attackCharged)
             {
-                attack1Queued = true;
-                attack2Queued = false;
+                chargeAttackQueued = true;
+                chargeAttackTimer = 0f;
             }
-            else if (!attackAnimation2)
+
+            else
             {
-                attack1Queued = false;
-                attack2Queued = true;
+                if (!attackAnimation1)
+                {
+                    attack1Queued = true;
+                    attack2Queued = false;
+                }
+                else if (!attackAnimation2)
+                {
+                    attack1Queued = false;
+                    attack2Queued = true;
+                }
             }
+            chargeAttackTimer = 0;
 
         }
     }
