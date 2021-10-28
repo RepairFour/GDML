@@ -46,6 +46,18 @@ public class EnemyChase : MonoBehaviour
     [SerializeField] float loseInterestTimerMax;
     float loseInterestTimer = 0;
     bool wasChasing = false;
+
+    Vector3 lastLocation = Vector3.zero;
+    bool relocate = false;
+    Vector3 relocatePos;
+    [SerializeField]float relocateTimerMax;
+    float relocateTimer = 0;
+    float standingStillTimerMax = 0.8f;
+    float standingStillTimer = 0;
+
+    [SerializeField] Transform debugDestination;
+    float debugTimer = 0;
+    float debugTimerMax = 1;
     // Start is called before the first frame update
     void Start()
     {
@@ -67,41 +79,85 @@ public class EnemyChase : MonoBehaviour
 		{
             player = FindObjectOfType<PlayerStats>();
         }
-        CanISeeThePlayer(); // fills out chasePlayer bool 
-        if (chasePlayer == false)
+        if (debugDestination == null)
         {
-            if (wasChasing)
+            CanISeeThePlayer(); // fills out chasePlayer bool 
+            if (chasePlayer == false)
             {
-                loseInterestTimer += Time.deltaTime;
-                if(loseInterestTimer >= loseInterestTimerMax)
-				{
-                    wasChasing = false;
-                    loseInterestTimer = 0;
-                    ChasePlayer();
-				}
+                if (wasChasing)
+                {
+                    loseInterestTimer += Time.deltaTime;
+                    if (loseInterestTimer >= loseInterestTimerMax)
+                    {
+                        wasChasing = false;
+                        loseInterestTimer = 0;
+                        ChasePlayer();
+                    }
+                }
+                else
+                {
+                    FollowPatrol();
+                }
             }
-            else
+            else // get to optimal attack range
             {
-                FollowPatrol();
+                wasChasing = true;
+                enemyAttack.attackMode = true;
+                ChasePlayer();
             }
         }
-        else // get to optimal attack range
+		else
 		{
-            wasChasing = true;
-            enemyAttack.attackMode = true;
-            ChasePlayer();
-        }
-        
+            debugTimer += Time.deltaTime;
+            if (debugTimer >= debugTimerMax)
+            {
+                debugTimer = 0;
+                FindPath(debugDestination.position);
+            }
+		}
     }
 
     void FindPath(Vector3 desiredDestination)
 	{
-        agent.SetDestination(desiredDestination);
-        if(agent.pathStatus != NavMeshPathStatus.PathComplete)
-		{
-            agent.destination = Quaternion.Euler(0, 45, 0) * agent.destination;
-        }
        
+		if (!relocate)
+		{
+			agent.destination = desiredDestination;
+		}
+		else
+		{
+            relocateTimer += Time.deltaTime;
+            if (relocateTimer >= relocateTimerMax)
+            {
+                relocateTimer = 0;
+                relocate = false;                
+            }
+            agent.destination = relocatePos;
+        }
+
+        
+        standingStillTimer += Time.deltaTime;
+        if(standingStillTimer >= standingStillTimerMax)
+		{
+            lastLocation = transform.position;
+            standingStillTimer = 0;
+        }
+
+        if (Vector3.Distance(transform.position, lastLocation) < 0.05f &&
+            Vector3.Distance(transform.position, desiredDestination) > 1f &&
+            standingStillTimer > (standingStillTimerMax / 2))
+        {
+            if (relocate == false)
+            {
+                
+                agent.destination = Quaternion.Euler(0, Random.Range(100, 260) , 0) * desiredDestination;
+                relocatePos = agent.destination;
+                relocate = true;
+            }
+        }
+
+        
+
     }
 
     private void CanISeeThePlayer()
@@ -182,13 +238,16 @@ public class EnemyChase : MonoBehaviour
                     runawayTimer = runawayCooldown;
                     runawayDistance = runawayDistanceMax;
                     FindPath(transform.position);
+                    Debug.Log("Wating");
                 }
 
             }
             if (runawayTimer < 0)
             {
                 //the desired distance away from the player to shoot hit
-                FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
+                //FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
+                FindPath(playerPos + ((transform.position - playerPos).normalized * attackDistance));
+                //FindPath(playerPos * attackDistance);
             }
         }
         Debug.DrawLine(transform.position, agent.destination, Color.green);
