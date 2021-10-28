@@ -57,7 +57,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c43059c7a51c0f4fb88698456d3c88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  damage: 50
   animator: {fileID: 948209838116482813}
   weaponTrail: {fileID: 566933615138905677}
   rangedWeapon:
@@ -6265,7 +6265,8 @@ MonoBehaviour:
   dashCooldown: 1
   jumpSpeed: 27
   gravity: 65
-  groundedTime: 0.1
+  groundedTime: 0.001
+  minJumpingTimer: 0.05
   maxJumpNumber: 2
   layerMask:
     serializedVersion: 2
@@ -6274,9 +6275,9 @@ MonoBehaviour:
   slideDirectionalScalar: 0.5
   slideHeight: 1.5
   normalHeight: 3
-  slideAccelerate: 35
+  slideAccelerate: 50
   slideDeccelerate: 225
-  minSlideTime: 0.35
+  minSlideTime: 0.5
   slideCooldown: 0.1
   hookShotDistance: 60
   hookShotSpeed: 75
@@ -6302,7 +6303,6 @@ MonoBehaviour:
   leanAni: {fileID: 3911127137506613000}
   queueJump: 0
   jumpingTimer: 0
-  minJumpingTimer: 0.01
   jumpNumber: 0
   currentMoveDirection: {x: 0, y: 0, z: 0}
   lastMoveDirection: {x: 0, y: 0, z: 0}
@@ -7863,8 +7863,8 @@ MonoBehaviour:
   range: 200
   burstTime: 1
   reloadTime: 0.75
-  dmgPerBullet: 6
-  magSize: 1
+  dmgPerBullet: 5
+  magSize: 2
   bulletsPerTap: 5
   fpsCamera: {fileID: 4085466531584680995}
   cooldown: 1
