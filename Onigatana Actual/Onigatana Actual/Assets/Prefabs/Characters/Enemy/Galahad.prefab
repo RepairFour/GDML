@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4207229640499381841}
   - component: {fileID: 4207229640499381854}
   - component: {fileID: 4207229640499381855}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -112,7 +112,7 @@ GameObject:
   - component: {fileID: 4207229641046863444}
   - component: {fileID: 4207229641046863442}
   - component: {fileID: 4207229641046863445}
-  m_Layer: 8
+  m_Layer: 5
   m_Name: markDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -223,7 +223,7 @@ GameObject:
   - component: {fileID: 4207229641179159798}
   - component: {fileID: 4207229641179159799}
   - component: {fileID: 455881196}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: StompHitbox
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -349,6 +349,7 @@ GameObject:
   - component: {fileID: 4207229641426707675}
   - component: {fileID: 7346323600287916892}
   - component: {fileID: 4207229641426707673}
+  - component: {fileID: 4041922768648043645}
   m_Layer: 8
   m_Name: Galahad
   m_TagString: Enemy
@@ -1013,3 +1014,21 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 4.6000047, y: 6.026765, z: 4.130249}
   m_Center: {x: -0.17586446, y: 3.2367177, z: 0.04953766}
+--- !u!114 &4041922768648043645
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4207229641426707689}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  outlineMode: 1
+  outlineColor: {r: 1, g: 0, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

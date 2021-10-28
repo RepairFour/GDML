@@ -57,7 +57,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c43059c7a51c0f4fb88698456d3c88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 20
+  highlight: {fileID: 0}
+  damage: 50
   animator: {fileID: 948209838116482813}
   weaponTrail: {fileID: 566933615138905677}
   rangedWeapon:
@@ -87,8 +88,19 @@ MonoBehaviour:
   meleeWeapon: {fileID: 1719461600083837532}
   meleeHand: {fileID: 5432758087401660109}
   attackCollider: {fileID: 81832046088313694}
+  feelerPoint: {fileID: 81832046088313689}
+  feelerHalfExtents: {x: 30, y: 30, z: 1}
+  feelerRange: 100
+  feelerMask:
+    serializedVersion: 2
+    m_Bits: 256
+  blinkSpeed: 100
+  cleanUpTime: 1
+  attackSpeed: 0
+  chargeAttackTime: 0
   attackHitEffect: {fileID: 2840070882530968802, guid: f551937ab5aa58244912f15eec13b53a, type: 3}
   blood: {fileID: 6985031832804872773, guid: 2b9fa75499d8aa34ab2c0b9407ea11fe, type: 3}
+  controller: {fileID: 4488488878788681392}
 --- !u!95 &948209838116482813
 Animator:
   serializedVersion: 3
@@ -6265,7 +6277,8 @@ MonoBehaviour:
   dashCooldown: 1
   jumpSpeed: 27
   gravity: 65
-  groundedTime: 0.1
+  groundedTime: 0.001
+  minJumpingTimer: 0.05
   maxJumpNumber: 2
   layerMask:
     serializedVersion: 2
@@ -6274,9 +6287,9 @@ MonoBehaviour:
   slideDirectionalScalar: 0.5
   slideHeight: 1.5
   normalHeight: 3
-  slideAccelerate: 35
+  slideAccelerate: 50
   slideDeccelerate: 225
-  minSlideTime: 0.35
+  minSlideTime: 0.5
   slideCooldown: 0.1
   hookShotDistance: 60
   hookShotSpeed: 75
@@ -6302,7 +6315,6 @@ MonoBehaviour:
   leanAni: {fileID: 3911127137506613000}
   queueJump: 0
   jumpingTimer: 0
-  minJumpingTimer: 0.01
   jumpNumber: 0
   currentMoveDirection: {x: 0, y: 0, z: 0}
   lastMoveDirection: {x: 0, y: 0, z: 0}
@@ -7863,8 +7875,8 @@ MonoBehaviour:
   range: 200
   burstTime: 1
   reloadTime: 0.75
-  dmgPerBullet: 6
-  magSize: 1
+  dmgPerBullet: 5
+  magSize: 2
   bulletsPerTap: 5
   fpsCamera: {fileID: 4085466531584680995}
   cooldown: 1
@@ -7883,6 +7895,32 @@ MonoBehaviour:
   shotHit: {fileID: 1680604443028805316, guid: 92451be089b26e747ab5fcc8352248ac, type: 3}
   bulletHole: {fileID: 7236500184703529017, guid: 912eebe560fe6154cb3527913eb47947, type: 3}
   bulletFxSpeed: 1
+  rangedWeapon:
+  - {fileID: 9027303893030858768}
+  - {fileID: 9124906392022610570}
+  - {fileID: 5153628951929975103}
+  - {fileID: 5425200010667111932}
+  - {fileID: 6295248849958743211}
+  - {fileID: 1765250834595838382}
+  - {fileID: 7566761224830353835}
+  - {fileID: 502196192655500213}
+  - {fileID: 8224885150520521323}
+  - {fileID: 6108053177221687758}
+  - {fileID: 34919720502287632}
+  - {fileID: 2112543135488612556}
+  - {fileID: 2238690675520394879}
+  - {fileID: 4659919824306282311}
+  - {fileID: 948298206426003122}
+  - {fileID: 3915960415520405710}
+  - {fileID: 1996532576246309050}
+  - {fileID: 7295782402443125539}
+  - {fileID: 9107686174787646508}
+  - {fileID: 2099465378871240803}
+  - {fileID: 592208155742456286}
+  - {fileID: 4352980948088806011}
+  rangedWeaponScript: {fileID: 7765447744685349408}
+  meleeWeapon: {fileID: 1719461600083837532}
+  meleeHand: {fileID: 5432758087401660109}
   blood: {fileID: 6985031832804872773, guid: 2b9fa75499d8aa34ab2c0b9407ea11fe, type: 3}
   layersToAvoid:
     serializedVersion: 2

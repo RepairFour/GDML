@@ -43,6 +43,7 @@ public class Controller : MonoBehaviour
     public float groundedTime;
     public float minJumpingTimer;
     public int maxJumpNumber = 2;
+    public float minAirTimeForDoubleJump;
     public LayerMask layerMask;
 
     [Space]
@@ -111,14 +112,20 @@ public class Controller : MonoBehaviour
     [Header("Debugging Variables")]
     [SerializeField] bool queueJump;
     [SerializeField] float jumpingTimer;
+    float timeInAir;
     
+
     [SerializeField] int jumpNumber = 0;
+    
 
     [SerializeField] Vector3 currentMoveDirection;
     [SerializeField] Vector3 lastMoveDirection;
     [SerializeField] Vector3 inputDirection;
     [SerializeField] Vector3 lastInputDirection;
     [SerializeField] bool airControl;
+    [SerializeField] bool chargingStrongAttack;
+    float chargeSlowDown;
+
 
     [SerializeField] Vector3 currentVelocity;
     [SerializeField] float currentSpeed;
@@ -711,11 +718,25 @@ public class Controller : MonoBehaviour
             currentVelocity = lastMoveDirection * currentSpeed;
 
         }
-
+        HandleChargingAttack();
         
         HandleGravity(0);
         HandleJump();
         //HandleGravity(0);
+    }
+
+    public void ToggleChargingAttack(float slowdown, bool toggle)
+    {
+        chargingStrongAttack = toggle;
+        chargeSlowDown = slowdown;
+    }
+
+    void HandleChargingAttack()
+    {
+        if (chargingStrongAttack)
+        {
+            currentVelocity /= chargeSlowDown;
+        }
     }
 
     void HandleJump()
@@ -792,7 +813,10 @@ public class Controller : MonoBehaviour
             queueJump = true;
             if (!grounded && jumpNumber != maxJumpNumber)
             {
-                jumpNumber = 1;
+                if (timeInAir >= minAirTimeForDoubleJump)
+                {
+                    jumpNumber = 1;
+                }
             }
         }
 
@@ -842,6 +866,7 @@ public class Controller : MonoBehaviour
                     jumpNumber = 0;
                     //animator.SetTrigger("HitGround");
                     //animator.SetBool("Falling", false);
+                    timeInAir = 0;
                 }
             }
             
@@ -852,6 +877,7 @@ public class Controller : MonoBehaviour
             {
                 grounded = false;
                 groundedTimer = 0;
+                timeInAir += Time.deltaTime;
             }
             //animator.SetBool("Falling", true);
         }
@@ -1186,7 +1212,7 @@ public class Controller : MonoBehaviour
         direction.Normalize();
         Physics.IgnoreLayerCollision(7, 0, true);
         cc.Move(direction * blinkSpeed * Time.deltaTime);
-        if(Vector3.Distance(currentPosition, positionToTeleport) < 5)
+        if(Vector3.Distance(currentPosition, positionToTeleport) < 10)
         {
             Physics.IgnoreLayerCollision(7, 0, false);
             //cc.detectCollisions = true;

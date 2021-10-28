@@ -6,7 +6,9 @@ using UnityEngine.InputSystem.Controls;
 
 public class BladeAttack : MonoBehaviour
 {
-    public Material highlight;
+    public float slowdownOnCharge;
+    public ParticleSystem chargeParticles;
+    public ParticleSystem chargedParticles;
     [SerializeField] int damage;
     PlayerMap input;
     private ButtonControl meleeButton;
@@ -22,7 +24,9 @@ public class BladeAttack : MonoBehaviour
     public BoxCollider attackCollider;
     public Transform feelerPoint;
     GameObject blinkTarget;
-    public Vector3 feelerHalfExtents;
+    public Vector3 feelerLowTierHalfExtents;
+    public Vector3 feelerMidTierExtents;
+    public Vector3 feelerOuterTierExtents;
     public float feelerRange;
     public LayerMask feelerMask;
     private Vector3 strikeHit;
@@ -138,12 +142,6 @@ public class BladeAttack : MonoBehaviour
         }
     }
 
-    IEnumerator CleanUpHitBox(float time)
-    {
-        yield return new WaitForSeconds(time);
-        attackCollider.enabled = false;
-    }
-
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Enemy")
@@ -171,7 +169,7 @@ public class BladeAttack : MonoBehaviour
         {
 
             RaycastHit hit;
-            if (Physics.BoxCast(feelerPoint.position, feelerHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
+            if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
             {
                 if (blinkTarget != hit.collider.gameObject)
                 {
@@ -190,7 +188,45 @@ public class BladeAttack : MonoBehaviour
                     chargeAttackQueued = false;
                 }
             }
-            else 
+            else if (Physics.BoxCast(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
+            {
+                if (blinkTarget != hit.collider.gameObject)
+                {
+                    if (blinkTarget != null)
+                    {
+                        blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                    }
+                    blinkTarget = hit.collider.gameObject;
+                    blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
+                }
+
+                if (chargeAttackQueued)
+                {
+                    strikeLocked = true;
+                    chargeAttackAnimation = true;
+                    chargeAttackQueued = false;
+                }
+            }
+            else if (Physics.BoxCast(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
+            {
+                if (blinkTarget != hit.collider.gameObject)
+                {
+                    if (blinkTarget != null)
+                    {
+                        blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                    }
+                    blinkTarget = hit.collider.gameObject;
+                    blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
+                }
+
+                if (chargeAttackQueued)
+                {
+                    strikeLocked = true;
+                    chargeAttackAnimation = true;
+                    chargeAttackQueued = false;
+                }
+            }
+            else
             {
                 if (blinkTarget != null)
                 {
@@ -201,7 +237,7 @@ public class BladeAttack : MonoBehaviour
                 {
                     chargeAttackQueued = false;
                     chargeAttackAnimation = true;
-                    
+
                 }
             }
         }
@@ -295,15 +331,25 @@ public class BladeAttack : MonoBehaviour
         if (meleeButton.isPressed)
         {
             chargeAttackTimer += Time.deltaTime;
+            if(chargeAttackTimer >= 0.05)
+            {
+                chargeParticles.gameObject.SetActive(true); 
+            }
             if(chargeAttackTimer >= chargeAttackTime)
             {
                 chargeAttackTimer = chargeAttackTime;
                 attackCharged = true;
+                chargeParticles.gameObject.SetActive(false);
+                chargedParticles.gameObject.SetActive(true);
 
             }
+            controller.ToggleChargingAttack(slowdownOnCharge, true);
         }
         if (meleeButton.wasReleasedThisFrame && canAttack)
         {
+            controller.ToggleChargingAttack(1, false);
+            chargeParticles.gameObject.SetActive(false);
+            chargedParticles.gameObject.SetActive(false);
             if (attackCharged)
             {
                 chargeAttackQueued = true;
