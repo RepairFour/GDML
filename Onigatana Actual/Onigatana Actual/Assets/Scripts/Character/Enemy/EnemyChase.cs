@@ -124,8 +124,7 @@ public class EnemyChase : MonoBehaviour
             standingStillTimer > (standingStillTimerMax / 2) &&
             relocate == false)
         {
-            //agent.destination = Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination;
-            Debug.LogError(agent.SetDestination(Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination));
+            agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * attackDistance);
             relocatePos = agent.destination;
             relocate = true;
         }
@@ -142,7 +141,7 @@ public class EnemyChase : MonoBehaviour
                 relocateTimer = 0;
                 relocate = false;                
             }
-            agent.destination = relocatePos;
+            //agent.destination = relocatePos;
         }
 
         
@@ -152,10 +151,6 @@ public class EnemyChase : MonoBehaviour
             lastLocation = transform.position;
             standingStillTimer = 0;
         }
-
-       
-
-        
 
     }
 

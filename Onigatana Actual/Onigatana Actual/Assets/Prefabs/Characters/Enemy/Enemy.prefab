@@ -835,7 +835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPath: 2
-  attackDistance: 50
+  attackDistance: 30
   leapTimerMax: 0
   leapForce: 0
   visionDistance: 250
@@ -847,7 +847,7 @@ MonoBehaviour:
   runawayCooldown: 2
   runawayTimer: 0
   loseInterestTimerMax: 2
-  relocateTimerMax: 3
+  relocateTimerMax: 1.5
   debugDestination: {fileID: 0}
 --- !u!114 &7192277685749173779
 MonoBehaviour:
