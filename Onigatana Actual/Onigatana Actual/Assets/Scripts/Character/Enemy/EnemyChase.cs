@@ -119,8 +119,18 @@ public class EnemyChase : MonoBehaviour
 
     void FindPath(Vector3 desiredDestination)
 	{
-       
-		if (!relocate)
+        if (Vector3.Distance(transform.position, lastLocation) < 0.7f &&
+            Vector3.Distance(transform.position, desiredDestination) > 1f &&
+            standingStillTimer > (standingStillTimerMax / 2) &&
+            relocate == false)
+        {
+            //agent.destination = Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination;
+            Debug.LogError(agent.SetDestination(Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination));
+            relocatePos = agent.destination;
+            relocate = true;
+        }
+
+        if (!relocate)
 		{
 			agent.destination = desiredDestination;
 		}
@@ -143,18 +153,7 @@ public class EnemyChase : MonoBehaviour
             standingStillTimer = 0;
         }
 
-        if (Vector3.Distance(transform.position, lastLocation) < 0.05f &&
-            Vector3.Distance(transform.position, desiredDestination) > 1f &&
-            standingStillTimer > (standingStillTimerMax / 2))
-        {
-            if (relocate == false)
-            {
-                
-                agent.destination = Quaternion.Euler(0, Random.Range(100, 260) , 0) * desiredDestination;
-                relocatePos = agent.destination;
-                relocate = true;
-            }
-        }
+       
 
         
 
