@@ -835,7 +835,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPath: 2
-  attackDistance: 30
+  attackDistance: 50
   leapTimerMax: 0
   leapForce: 0
   visionDistance: 250
@@ -1360,6 +1360,10 @@ PrefabInstance:
     - target: {fileID: 4447791509398709176, guid: 07f20b3ffd441804b8f5c97951b17427, type: 3}
       propertyPath: m_Name
       value: PathDebugger
+      objectReference: {fileID: 0}
+    - target: {fileID: 4447791509398709176, guid: 07f20b3ffd441804b8f5c97951b17427, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4447791509398709181, guid: 07f20b3ffd441804b8f5c97951b17427, type: 3}
       propertyPath: m_RootOrder
