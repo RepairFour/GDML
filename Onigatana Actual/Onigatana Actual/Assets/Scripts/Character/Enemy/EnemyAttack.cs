@@ -35,7 +35,6 @@ public class EnemyAttack : MonoBehaviour
         attackDistance = enemyChase.attackDistance;
         mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
         originalColor = mat.color;
-       
     }
 
     // Update is called once per frame

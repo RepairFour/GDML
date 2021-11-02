@@ -5,4 +5,5 @@ using UnityEngine;
 public class ObjectProperties : MonoBehaviour
 {
     public bool grapplable;
+    public bool enemy;
 }

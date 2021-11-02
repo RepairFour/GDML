@@ -71,6 +71,10 @@ public class Controller : MonoBehaviour
     public float hookShotFloatTime = 0.25f;
     public LayerMask hookShotMask;
     public Transform hookShotHand;
+    public float whipForce;
+    public float stoppingWhipDistance;
+    public float whipPullDelay;
+    
 
    
     public float hookCooldown;
@@ -157,6 +161,8 @@ public class Controller : MonoBehaviour
     [SerializeField] Vector3 momentum;
     [SerializeField] float hookCooldownTimer;
     [SerializeField] bool hookOnCooldown;
+    [SerializeField] float whipDelayTimer;
+    [SerializeField] GameObject enemyStruck;
 
     [SerializeField] bool blinkStrikeActivated = false;
     public bool isBlinkStrikeActivated { get => blinkStrikeActivated; }
@@ -394,7 +400,8 @@ public class Controller : MonoBehaviour
         {
             if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
             {
-                if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
+                if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable ||
+                    hit.collider.gameObject.GetComponent<ObjectProperties>().enemy)
                 {
                     crossHair.gameObject.SetActive(true);
                 }
@@ -436,6 +443,10 @@ public class Controller : MonoBehaviour
         {
             hookShotMove = true;
             hookShotFiring = false;
+            if(enemyStruck != null)
+            {
+                hookShotMove = false;
+            }
             //hookShotHand.position = hookHitPoint;
         }
         
@@ -464,6 +475,15 @@ public class Controller : MonoBehaviour
                     hookShotTransform.LookAt(hookHitPoint);
                     
                 }
+                else if (hit.collider.gameObject.GetComponent<ObjectProperties>().enemy)
+                {
+                    hookHitPoint = hit.point;
+                    hookShotFiring = true;
+                    HookShotEnemyDirection();
+                    hookShotSize = 0f;
+                    hookShotTransform.LookAt(hookHitPoint);
+                    enemyStruck = hit.collider.gameObject;
+                }
                 else
                 {
                     return;
@@ -481,6 +501,10 @@ public class Controller : MonoBehaviour
     {
         hookShotDirection = (hookHitPoint - transform.position).normalized;
     }
+    private void HookShotEnemyDirection()
+    {
+        hookShotDirection = (transform.position - hookHitPoint).normalized;
+    }
     private void CancelHookShot()
     {
         hookShotMove = false;
@@ -490,6 +514,7 @@ public class Controller : MonoBehaviour
         //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
         hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
+        enemyStruck = null;
         //lr.positionCount = 0;
     }
 
@@ -542,6 +567,45 @@ public class Controller : MonoBehaviour
             //currentVelocity.y = 0;
             //momentum.y = 0;
         }
+    }
+    
+
+    void HookShotWhip()
+    {
+        if(whipDelayTimer <= whipPullDelay)
+        {
+            whipDelayTimer += Time.deltaTime;
+        }
+        else
+        {
+            timeSpentInHookShot += Time.deltaTime;
+            HookShotEnemyDirection();
+            hookShotTransform.LookAt(hookHitPoint);
+
+            lr.SetPosition(0, hookShotTransform.position);
+            lr.SetPosition(1, hookShotHand.position);
+
+            enemyStruck.GetComponent<EnemyChase>().enabled = false;
+            enemyStruck.GetComponent<EnemyAttack>().enabled = false;
+            ApplyForceToEnemy(enemyStruck.GetComponent<Rigidbody>(), hookShotDirection, whipForce, stoppingWhipDistance);
+        }
+    }
+
+    void ApplyForceToEnemy(Rigidbody enemy,Vector3 direction, float force, float distanceToPlayer)
+    {
+        enemy.velocity = direction * force;
+        if(Vector3.Distance(transform.position, enemyStruck.transform.position) <= distanceToPlayer)
+        {
+            enemy.velocity = Vector3.zero;
+            enemyStruck.GetComponent<EnemyChase>().enabled = true;
+            enemyStruck.GetComponent<EnemyAttack>().enabled = true;
+            whipDelayTimer = 0;
+            CancelHookShot();
+        }
+
+        
+        //enemy.AddForce(direction * force, ForceMode.Acceleration);
+        //enemy.AddForce(Vector3.up * upWardsWhipForce, ForceMode.Acceleration);
     }
     #endregion
 
@@ -608,6 +672,11 @@ public class Controller : MonoBehaviour
             HookShotMove();
             return;
         }
+        if(enemyStruck != null && !hookShotFiring)
+        {
+            HookShotWhip();
+        }
+        
 
 
         /* Input is read in on the x and y axis and stored in the variable inputDirection
@@ -676,6 +745,10 @@ public class Controller : MonoBehaviour
             CancelSlideForHookShot();
             HookShotMove();
             return;
+        }
+        if(enemyStruck != null && !hookShotFiring)
+        {
+            HookShotWhip();
         }
 
         if (sliding)
