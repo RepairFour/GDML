@@ -342,6 +342,7 @@ public class BladeAttack : MonoBehaviour
         if (meleeButton.wasReleasedThisFrame)
         {
             buttonPressed = false;
+            
         }
         if (!meleeButton.isPressed)
         {

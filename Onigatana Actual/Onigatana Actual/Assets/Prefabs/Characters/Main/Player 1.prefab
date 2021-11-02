@@ -11172,8 +11172,8 @@ MonoBehaviour:
     m_Bits: 247
   hookShotHand: {fileID: 4085466532833144512}
   whipForce: 200
-  stoppingWhipDistance: 10
-  whipPullDelay: 0.5
+  stoppingWhipDistance: 12.5
+  whipPullDelay: 0.25
   hookCooldown: 0.5
   blinkStrikeRange: 100
   blinkAngleModifier: 0.8
