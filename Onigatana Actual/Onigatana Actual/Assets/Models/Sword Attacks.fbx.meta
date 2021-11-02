@@ -9,6 +9,15 @@ ModelImporter:
   - first:
       74: 4968605132831584382
     second: R_hand|attack 2
+  - first:
+      74: 4722430738562651001
+    second: R_hand|charge attack
+  - first:
+      74: 6712703662785184500
+    second: R_hand|charge start
+  - first:
+      74: 8398196665061164327
+    second: R_hand|charging
   externalObjects: {}
   materials:
     materialImportMode: 2
