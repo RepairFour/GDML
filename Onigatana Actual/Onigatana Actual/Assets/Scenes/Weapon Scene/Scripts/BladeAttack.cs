@@ -12,6 +12,7 @@ public class BladeAttack : MonoBehaviour
     [SerializeField] int damage;
     PlayerMap input;
     private ButtonControl meleeButton;
+    bool buttonPressed;
 
     public Animator animator;
     public ParticleSystem weaponTrail;
@@ -42,6 +43,7 @@ public class BladeAttack : MonoBehaviour
     private float cleanUpTimer;
     public float cleanUpTime;
     public float attackSpeed;
+    public float chargeAttackStoppingDistance;
     private float attackTimer;
     bool canAttack = true;
 
@@ -86,7 +88,7 @@ public class BladeAttack : MonoBehaviour
             }
 
         }
-        
+        AttackButtonHeld();
         QueueAttack();
         CheckStrikeLocked();
         FeelerRay();
@@ -167,7 +169,9 @@ public class BladeAttack : MonoBehaviour
     {
         if (attackCharged && !strikeLocked && canAttack)
         {
-
+            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerLowTierHalfExtents,transform.rotation, transform.forward, feelerRange, Color.red);
+            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerMidTierExtents, transform.rotation, transform.forward, feelerRange, Color.blue);
+            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerOuterTierExtents, transform.rotation, transform.forward, feelerRange, Color.green);
             RaycastHit hit;
             if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
             {
@@ -247,7 +251,7 @@ public class BladeAttack : MonoBehaviour
     {
         if (strikeLocked || controller.isBlinkStrikeActivated)
         {
-            controller.BlinkToPosition(blinkTarget.transform.position, blinkSpeed);
+            controller.BlinkToPosition(blinkTarget.transform.position, blinkSpeed, chargeAttackStoppingDistance);
         }
        
     }
@@ -277,6 +281,7 @@ public class BladeAttack : MonoBehaviour
             canAttack = false;
             animator.SetTrigger("Attack1");
             AudioHandler.instance.PlaySound("SwordSlash1", 1, true, 2);
+            chargeAttackTimer = 0;
         }
     }
     private void RunAnimation2()
@@ -297,6 +302,7 @@ public class BladeAttack : MonoBehaviour
             attackAnimation2 = true;
             cleanUpTimer = 0;
             canAttack = false;
+            chargeAttackTimer = 0;
         }
     }
     private void RunChargeAnimation()
@@ -324,6 +330,24 @@ public class BladeAttack : MonoBehaviour
                 blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
             }
             blinkTarget = null;
+            chargeAttackTimer = 0;
+        }
+    }
+    private void AttackButtonHeld()
+    {
+        if (meleeButton.wasPressedThisFrame)
+        {
+            buttonPressed = true;
+        }
+        if (meleeButton.wasReleasedThisFrame)
+        {
+            buttonPressed = false;
+            
+        }
+        if (!meleeButton.isPressed)
+        {
+            chargeAttackTimer = 0f;
+            controller.ToggleChargingAttack(1, false);
         }
     }
     private void QueueAttack()
@@ -331,9 +355,11 @@ public class BladeAttack : MonoBehaviour
         if (meleeButton.isPressed)
         {
             chargeAttackTimer += Time.deltaTime;
-            if(chargeAttackTimer >= 0.05)
+            
+            if (chargeAttackTimer >= 0.09)
             {
-                chargeParticles.gameObject.SetActive(true); 
+                chargeParticles.gameObject.SetActive(true);
+                controller.ToggleChargingAttack(slowdownOnCharge, true);
             }
             if(chargeAttackTimer >= chargeAttackTime)
             {
@@ -343,11 +369,10 @@ public class BladeAttack : MonoBehaviour
                 chargedParticles.gameObject.SetActive(true);
 
             }
-            controller.ToggleChargingAttack(slowdownOnCharge, true);
+            
         }
-        if (meleeButton.wasReleasedThisFrame && canAttack)
+        if (meleeButton.wasPressedThisFrame && canAttack)
         {
-            controller.ToggleChargingAttack(1, false);
             chargeParticles.gameObject.SetActive(false);
             chargedParticles.gameObject.SetActive(false);
             if (attackCharged)
@@ -371,6 +396,17 @@ public class BladeAttack : MonoBehaviour
             }
             chargeAttackTimer = 0;
 
+        }
+        if(meleeButton.wasReleasedThisFrame && canAttack)
+        {
+            chargeParticles.gameObject.SetActive(false);
+            chargedParticles.gameObject.SetActive(false);
+            if (attackCharged)
+            {
+                chargeAttackQueued = true;
+                chargeAttackTimer = 0f;
+            }
+            chargeAttackTimer = 0;
         }
     }
 }

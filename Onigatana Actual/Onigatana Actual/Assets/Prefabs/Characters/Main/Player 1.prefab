@@ -976,7 +976,7 @@ ParticleSystem:
       countCurve:
         serializedVersion: 2
         minMaxState: 0
-        scalar: 100
+        scalar: 50
         minScalar: 30
         maxCurve:
           serializedVersion: 2
@@ -4965,6 +4965,7 @@ MonoBehaviour:
   blinkSpeed: 100
   cleanUpTime: 1
   attackSpeed: 0.25
+  chargeAttackStoppingDistance: 12.5
   chargeAttackTime: 1
   attackHitEffect: {fileID: 2840070882530968802, guid: f551937ab5aa58244912f15eec13b53a, type: 3}
   blood: {fileID: 6985031832804872773, guid: 2b9fa75499d8aa34ab2c0b9407ea11fe, type: 3}
@@ -11170,6 +11171,9 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 247
   hookShotHand: {fileID: 4085466532833144512}
+  whipForce: 200
+  stoppingWhipDistance: 12.5
+  whipPullDelay: 0.25
   hookCooldown: 0.5
   blinkStrikeRange: 100
   blinkAngleModifier: 0.8
@@ -11218,7 +11222,10 @@ MonoBehaviour:
   momentum: {x: 0, y: 0, z: 0}
   hookCooldownTimer: 0
   hookOnCooldown: 0
+  whipDelayTimer: 0
+  enemyStruck: {fileID: 0}
   blinkStrikeActivated: 0
+  blinkStoppingDistance: 0
   jumps: 0
   timeSpentInHookShot: 0
   timeSpentDashing: 0
