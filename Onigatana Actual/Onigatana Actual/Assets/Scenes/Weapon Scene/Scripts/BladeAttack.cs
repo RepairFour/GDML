@@ -167,7 +167,9 @@ public class BladeAttack : MonoBehaviour
     {
         if (attackCharged && !strikeLocked && canAttack)
         {
-
+            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerLowTierHalfExtents,transform.rotation, transform.forward, feelerRange, Color.red);
+            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerMidTierExtents, transform.rotation, transform.forward, feelerRange, Color.blue);
+            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerOuterTierExtents, transform.rotation, transform.forward, feelerRange, Color.green);
             RaycastHit hit;
             if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
             {
