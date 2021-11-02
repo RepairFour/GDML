@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7387636527587031868}
   - component: {fileID: 7236500184703529017}
   - component: {fileID: 1864135822454712891}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: BulletHoles
   m_TagString: Untagged
   m_Icon: {fileID: 0}

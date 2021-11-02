@@ -64,7 +64,8 @@ public class GChargeLvl1 : GalahadAction
 				}
 				chargeUpTimer = 0;
 				mat.color = objectColor;
-				boxCollider.isTrigger = true;
+				Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), true);
+				//boxCollider.isTrigger = true;
 				navMeshAgent.enabled = false;
 				rb.AddForce((chargePoint - transform.position).normalized * chargeSpeed);
 				
@@ -77,30 +78,55 @@ public class GChargeLvl1 : GalahadAction
 		hitBoxLingerTimer += Time.deltaTime;
 	}
 
-	private void OnTriggerEnter(Collider other)
+	private void OnCollisionEnter(Collision collision)
 	{
 		if (hitBoxLingerTimer < hitBoxLinger)
 		{
-			if (other.gameObject.tag != "Enemy" &&
-				other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
-				other.gameObject.tag != "Player")
+			if (collision.gameObject.tag != "Enemy" &&
+				collision.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
+				collision.gameObject.tag != "Player")
 			{
 				rb.velocity = Vector3.zero;
-				boxCollider.isTrigger = false;
+				Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), false);
 				navMeshAgent.enabled = true;
 				finished = true;
 			}
-			if (other.gameObject.tag == "Player")
+			if (collision.gameObject.tag == "Player")
 			{
 				rb.velocity = Vector3.zero;
-				boxCollider.isTrigger = false;
+				Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), false);
 				navMeshAgent.enabled = true;
-				other.gameObject.GetComponent<PlayerStats>().Hurt(dmg);
+				collision.gameObject.GetComponent<PlayerStats>().Hurt(dmg);
 				finished = true;
 			}
 
 		}
 	}
+
+	//private void OnTriggerEnter(Collider other)
+	//{
+	//	if (hitBoxLingerTimer < hitBoxLinger)
+	//	{
+	//		if (other.gameObject.tag != "Enemy" &&
+	//			other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
+	//			other.gameObject.tag != "Player")
+	//		{
+	//			rb.velocity = Vector3.zero;
+	//			boxCollider.isTrigger = false;
+	//			navMeshAgent.enabled = true;
+	//			finished = true;
+	//		}
+	//		if (other.gameObject.tag == "Player")
+	//		{
+	//			rb.velocity = Vector3.zero;
+	//			boxCollider.isTrigger = false;
+	//			navMeshAgent.enabled = true;
+	//			other.gameObject.GetComponent<PlayerStats>().Hurt(dmg);
+	//			finished = true;
+	//		}
+
+	//	}
+	//}
 }
 
 
