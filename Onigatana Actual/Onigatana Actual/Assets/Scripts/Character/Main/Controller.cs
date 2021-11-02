@@ -165,6 +165,7 @@ public class Controller : MonoBehaviour
     [SerializeField] GameObject enemyStruck;
 
     [SerializeField] bool blinkStrikeActivated = false;
+    [SerializeField] float blinkStoppingDistance;
     public bool isBlinkStrikeActivated { get => blinkStrikeActivated; }
     Vector3 positionToTeleport;
     float blinkSpeed;
@@ -1285,7 +1286,7 @@ public class Controller : MonoBehaviour
         direction.Normalize();
         Physics.IgnoreLayerCollision(7, 0, true);
         cc.Move(direction * blinkSpeed * Time.deltaTime);
-        if(Vector3.Distance(currentPosition, positionToTeleport) < 10)
+        if(Vector3.Distance(currentPosition, positionToTeleport) < blinkStoppingDistance)
         {
             Physics.IgnoreLayerCollision(7, 0, false);
             //cc.detectCollisions = true;
@@ -1300,11 +1301,13 @@ public class Controller : MonoBehaviour
 
         //gameObject.transform.position = positionToTeleport;
     }
-    public void BlinkToPosition(Vector3 positionToBlink, float speed)
+    public void BlinkToPosition(Vector3 positionToBlink, float speed, float stoppingDistance)
     {
         blinkStrikeActivated = true;
         positionToTeleport = positionToBlink;
         blinkSpeed = speed;
+        blinkStoppingDistance = stoppingDistance;
+        
 
     }
     public void HandleBlinkStrikeInput()
