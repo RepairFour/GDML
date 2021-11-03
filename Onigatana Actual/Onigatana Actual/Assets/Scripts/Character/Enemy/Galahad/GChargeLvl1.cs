@@ -27,12 +27,17 @@ public class GChargeLvl1 : GalahadAction
 	float hitBoxLinger = 2;
 	float hitBoxLingerTimer = 2;
 	//Vector3 orginalScale;
+
+	BoxCollider boxCollider;
+	NavMeshAgent navMeshAgent;
 	private void Start()
 	{
 		player = FindObjectOfType<PlayerStats>();
 		rb = GetComponent<Rigidbody>();
 		mat = GetComponent<MeshRenderer>().material;
 		objectColor = mat.color;
+		boxCollider = GetComponent<BoxCollider>();
+		navMeshAgent = GetComponent<NavMeshAgent>();
 	}
 	public override void Perform()
 	{
@@ -50,7 +55,8 @@ public class GChargeLvl1 : GalahadAction
 				foreach(var hit in hits)
 				{
 					if(hit.collider.gameObject.tag != "Enemy" &&
-					   hit.collider.gameObject.tag != "Player")
+					   hit.collider.gameObject.tag != "Player" &&
+					   hit.collider.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast"))
 					{
 						chargePoint = hit.point;
 						break;
@@ -58,9 +64,12 @@ public class GChargeLvl1 : GalahadAction
 				}
 				chargeUpTimer = 0;
 				mat.color = objectColor;
-				rb.AddForce((chargePoint - transform.position)*chargeSpeed);
+				Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), true);
+				//boxCollider.isTrigger = true;
+				navMeshAgent.enabled = false;
+				rb.AddForce((chargePoint - transform.position).normalized * chargeSpeed);
 				
-				finished = true;
+				
 				performAction = false;
 				hitBoxLingerTimer = 0;
 			}
@@ -69,24 +78,6 @@ public class GChargeLvl1 : GalahadAction
 		hitBoxLingerTimer += Time.deltaTime;
 	}
 
-	
-	//private void OnCollisionEnter(Collider other)
-	//{
-	//	if (hitBoxLingerTimer < hitBoxLinger)
-	//	{
-	//		if (other.tag != "Enemy" &&
-	//			other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
-	//			other.gameObject.tag != "Player")
-	//		{
-	//			rb.velocity = Vector3.zero;
-	//		}
-	//		if (other.tag == "Player")
-	//		{
-	//			other.GetComponent<PlayerStats>().Hurt(dmg);
-	//		}
-			
-	//	}
-	//}
 	private void OnCollisionEnter(Collision collision)
 	{
 		if (hitBoxLingerTimer < hitBoxLinger)
@@ -96,14 +87,46 @@ public class GChargeLvl1 : GalahadAction
 				collision.gameObject.tag != "Player")
 			{
 				rb.velocity = Vector3.zero;
+				Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), false);
+				navMeshAgent.enabled = true;
+				finished = true;
 			}
 			if (collision.gameObject.tag == "Player")
 			{
+				rb.velocity = Vector3.zero;
+				Physics.IgnoreLayerCollision(LayerMask.NameToLayer("Enemy"), LayerMask.NameToLayer("Enemy"), false);
+				navMeshAgent.enabled = true;
 				collision.gameObject.GetComponent<PlayerStats>().Hurt(dmg);
+				finished = true;
 			}
 
 		}
 	}
+
+	//private void OnTriggerEnter(Collider other)
+	//{
+	//	if (hitBoxLingerTimer < hitBoxLinger)
+	//	{
+	//		if (other.gameObject.tag != "Enemy" &&
+	//			other.gameObject.layer != LayerMask.NameToLayer("Ignore Raycast") &&
+	//			other.gameObject.tag != "Player")
+	//		{
+	//			rb.velocity = Vector3.zero;
+	//			boxCollider.isTrigger = false;
+	//			navMeshAgent.enabled = true;
+	//			finished = true;
+	//		}
+	//		if (other.gameObject.tag == "Player")
+	//		{
+	//			rb.velocity = Vector3.zero;
+	//			boxCollider.isTrigger = false;
+	//			navMeshAgent.enabled = true;
+	//			other.gameObject.GetComponent<PlayerStats>().Hurt(dmg);
+	//			finished = true;
+	//		}
+
+	//	}
+	//}
 }
 
 

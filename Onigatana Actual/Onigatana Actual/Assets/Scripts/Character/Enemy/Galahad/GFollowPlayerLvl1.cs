@@ -27,13 +27,16 @@ public class GFollowPlayerLvl1 : GalahadAction
     {
         if(performAction == true)
 		{
-            nav.destination = player.position;
-            followDurationTimer += Time.deltaTime;
-            if(followDurationTimer >= followDuration)
-			{
-                followDurationTimer = 0;
-                performAction = false;
-                finished = true;
+            if (nav.enabled)
+            {
+                nav.destination = player.position;
+                followDurationTimer += Time.deltaTime;
+                if (followDurationTimer >= followDuration)
+                {
+                    followDurationTimer = 0;
+                    performAction = false;
+                    finished = true;
+                }
             }
 
         }
