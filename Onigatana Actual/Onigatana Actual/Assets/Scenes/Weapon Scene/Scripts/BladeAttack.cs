@@ -40,6 +40,8 @@ public class BladeAttack : MonoBehaviour
     private bool chargeAttackQueued;
     private bool attackAnimation2;
     private bool chargeAttackAnimation;
+    private bool startChargeAnimation;
+    private bool chargingAnimation;
     private float cleanUpTimer;
     public float cleanUpTime;
     public float attackSpeed;
@@ -101,10 +103,10 @@ public class BladeAttack : MonoBehaviour
     }
     void AttackTimer()
     {
-        if(canAttack == false)
+        if (canAttack == false)
         {
             attackTimer += Time.deltaTime;
-            if(attackTimer >= attackSpeed)
+            if (attackTimer >= attackSpeed)
             {
                 canAttack = true;
                 attackTimer = 0;
@@ -114,299 +116,320 @@ public class BladeAttack : MonoBehaviour
     }
     void CleanUpAttack()
     {
-        if(attackAnimation1 || attackAnimation2 || chargeAttackAnimation)
+        if ((attackAnimation1 || attackAnimation2 || chargeAttackAnimation))
         {
             cleanUpTimer += Time.deltaTime;
-            if(cleanUpTimer >= cleanUpTime)
+            if (cleanUpTimer >= cleanUpTime)
             {
-                animator.SetTrigger("reset");
-                cleanUpTimer = 0;
-                
-                attackAnimation1 = false;
-                attackAnimation2 = false;
-                
-                attack1Queued = false;
-                attack2Queued = false;
-                chargeAttackQueued = false;
-                
-                foreach (MeshRenderer r in rangedWeapon)
-                {
-                    r.enabled = false;
-                }
-                
-                rangedWeaponScript.enabled = true;
-                meleeWeapon.enabled = true;
-                meleeHand.enabled = true;
-                canAttack = true;
-                attackTimer = 0;
-                attackCollider.enabled = false;
+                ForceCleanUp();
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Enemy")
+        void ForceCleanUp()
         {
-            if (attackAnimation1)
-            {
-                other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-
-            }
-            else if (attackAnimation2)
-            {
-                other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION2);
-
-            }
-
-
-            Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
-            Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
-            attackCollider.enabled = false;
-        }
-    }
-    private void FeelerRay()
-    {
-        if (attackCharged && !strikeLocked && canAttack)
-        {
-            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerLowTierHalfExtents,transform.rotation, transform.forward, feelerRange, Color.red);
-            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerMidTierExtents, transform.rotation, transform.forward, feelerRange, Color.blue);
-            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerOuterTierExtents, transform.rotation, transform.forward, feelerRange, Color.green);
-            RaycastHit hit;
-            if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
-            {
-                if (blinkTarget != hit.collider.gameObject)
-                {
-                    if (blinkTarget != null)
-                    {
-                        blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
-                    }
-                    blinkTarget = hit.collider.gameObject;
-                    blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
-                }
-
-                if (chargeAttackQueued)
-                {
-                    strikeLocked = true;
-                    chargeAttackAnimation = true;
-                    chargeAttackQueued = false;
-                }
-            }
-            else if (Physics.BoxCast(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
-            {
-                if (blinkTarget != hit.collider.gameObject)
-                {
-                    if (blinkTarget != null)
-                    {
-                        blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
-                    }
-                    blinkTarget = hit.collider.gameObject;
-                    blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
-                }
-
-                if (chargeAttackQueued)
-                {
-                    strikeLocked = true;
-                    chargeAttackAnimation = true;
-                    chargeAttackQueued = false;
-                }
-            }
-            else if (Physics.BoxCast(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
-            {
-                if (blinkTarget != hit.collider.gameObject)
-                {
-                    if (blinkTarget != null)
-                    {
-                        blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
-                    }
-                    blinkTarget = hit.collider.gameObject;
-                    blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
-                }
-
-                if (chargeAttackQueued)
-                {
-                    strikeLocked = true;
-                    chargeAttackAnimation = true;
-                    chargeAttackQueued = false;
-                }
-            }
-            else
-            {
-                if (blinkTarget != null)
-                {
-                    blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
-                    blinkTarget = null;
-                }
-                if (chargeAttackQueued)
-                {
-                    chargeAttackQueued = false;
-                    chargeAttackAnimation = true;
-
-                }
-            }
-        }
-        
-    }
-    private void HandleStrikeLocked()
-    {
-        if (strikeLocked || controller.isBlinkStrikeActivated)
-        {
-            controller.BlinkToPosition(blinkTarget.transform.position, blinkSpeed, chargeAttackStoppingDistance);
-        }
-       
-    }
-    private void CheckStrikeLocked()
-    {
-        Debug.Log(strikeLocked);
-        if (strikeLocked == true && controller.isBlinkStrikeActivated == false)
-        {
-            strikeLocked = false;
-        }
-    }
-
-    private void RunAnimation1()
-    {
-        if (controller.isBlinkStrikeActivated == false 
-            && attack1Queued 
-            && !attackAnimation1
-            && !strikeLocked)
-        {
-            weaponTrail.Play();
-            attack1Queued = false;
-            attack2Queued = false;
-            attackCollider.enabled = true;
-            attackAnimation1 = true;
-            attackAnimation2 = false;
+            animator.SetTrigger("reset");
+            animator.SetBool("ChargeAttack", false);
             cleanUpTimer = 0;
-            canAttack = false;
-            animator.SetTrigger("Attack1");
-            AudioHandler.instance.PlaySound("SwordSlash1", 1, true, 2);
-            chargeAttackTimer = 0;
-        }
-    }
-    private void RunAnimation2()
-    {
-        if (GetComponentInParent<Controller>().isBlinkStrikeActivated == false 
-            && attack2Queued 
-            && !attackAnimation2
-            && !strikeLocked)
-        {
-            weaponTrail.Play();
-            strikeLocked = false;
-            attackCollider.enabled = true;
-            AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
-            animator.SetTrigger("Attack2");
-            attack1Queued = false;
-            attack2Queued = false;
+
             attackAnimation1 = false;
-            attackAnimation2 = true;
-            cleanUpTimer = 0;
-            canAttack = false;
-            chargeAttackTimer = 0;
-        }
-    }
-    private void RunChargeAnimation()
-    {
-        if (controller.isBlinkStrikeActivated == false
-           && chargeAttackAnimation
-           && !strikeLocked)
-        {
-            weaponTrail.Play();
+            attackAnimation2 = false;
             attack1Queued = false;
             attack2Queued = false;
             chargeAttackQueued = false;
-            attackCollider.enabled = true;
-            attackAnimation1 = true;
-            attackAnimation2 = false;
-            chargeAttackAnimation = false;
-            attackCharged = false;
-            cleanUpTimer = 0;
-            canAttack = false;
-            animator.SetTrigger("Attack1");
-            AudioHandler.instance.PlaySound("SwordSlash1", 1, true, 2);
-            
-            if (blinkTarget != null)
+
+            foreach (MeshRenderer r in rangedWeapon)
             {
-                blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                r.enabled = false;
             }
-            blinkTarget = null;
-            chargeAttackTimer = 0;
+
+            rangedWeaponScript.enabled = true;
+            meleeWeapon.enabled = true;
+            meleeHand.enabled = true;
+            canAttack = true;
+            attackTimer = 0;
+            attackCollider.enabled = false;
         }
-    }
-    private void AttackButtonHeld()
-    {
-        if (meleeButton.wasPressedThisFrame)
+    
+
+        private void OnTriggerEnter(Collider other)
         {
-            buttonPressed = true;
-        }
-        if (meleeButton.wasReleasedThisFrame)
-        {
-            buttonPressed = false;
-            
-        }
-        if (!meleeButton.isPressed)
-        {
-            chargeAttackTimer = 0f;
-            controller.ToggleChargingAttack(1, false);
-        }
-    }
-    private void QueueAttack()
-    {
-        if (meleeButton.isPressed)
-        {
-            chargeAttackTimer += Time.deltaTime;
-            
-            if (chargeAttackTimer >= 0.09)
+            if (other.gameObject.tag == "Enemy")
             {
-                chargeParticles.gameObject.SetActive(true);
-                controller.ToggleChargingAttack(slowdownOnCharge, true);
+                if (attackAnimation1)
+                {
+                    other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+
+                }
+                else if (attackAnimation2)
+                {
+                    other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION2);
+
+                }
+                else if (chargeAttackAnimation)
+                {
+                    other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION2);
+                }
+
+
+                Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
+                Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
+                attackCollider.enabled = false;
             }
-            if(chargeAttackTimer >= chargeAttackTime)
+        }
+        private void FeelerRay()
+        {
+            if (attackCharged && !strikeLocked && canAttack)
             {
-                chargeAttackTimer = chargeAttackTime;
-                attackCharged = true;
+                DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerLowTierHalfExtents, transform.rotation, transform.forward, feelerRange, Color.red);
+                DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerMidTierExtents, transform.rotation, transform.forward, feelerRange, Color.blue);
+                DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerOuterTierExtents, transform.rotation, transform.forward, feelerRange, Color.green);
+                RaycastHit hit;
+                if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
+                {
+                    if (blinkTarget != hit.collider.gameObject)
+                    {
+                        if (blinkTarget != null)
+                        {
+                            blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                        }
+                        blinkTarget = hit.collider.gameObject;
+                        blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
+                    }
+
+                    if (chargeAttackQueued)
+                    {
+                        strikeLocked = true;
+                        return;
+                    }
+                }
+                else if (Physics.BoxCast(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
+                {
+                    if (blinkTarget != hit.collider.gameObject)
+                    {
+                        if (blinkTarget != null)
+                        {
+                            blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                        }
+                        blinkTarget = hit.collider.gameObject;
+                        blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
+                    }
+
+                    if (chargeAttackQueued)
+                    {
+                        strikeLocked = true;
+                        return;
+                    }
+                }
+                else if (Physics.BoxCast(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
+                {
+                    if (blinkTarget != hit.collider.gameObject)
+                    {
+                        if (blinkTarget != null)
+                        {
+                            blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                        }
+                        blinkTarget = hit.collider.gameObject;
+                        blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
+                    }
+
+                    if (chargeAttackQueued)
+                    {
+                        strikeLocked = true;
+                        return;
+                    }
+                }
+                else
+                {
+                    if (blinkTarget != null)
+                    {
+                        blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                        blinkTarget = null;
+                    }
+                    if (chargeAttackQueued)
+                    {
+                        strikeLocked = false;
+                    }
+                }
+            }
+        }
+        private void HandleStrikeLocked()
+        {
+            if (strikeLocked || controller.isBlinkStrikeActivated)
+            {
+                controller.BlinkToPosition(blinkTarget.transform.position, blinkSpeed, chargeAttackStoppingDistance);
+            }
+
+        }
+        private void CheckStrikeLocked()
+        {
+            Debug.Log(strikeLocked);
+            if (strikeLocked == true && controller.isBlinkStrikeActivated == false)
+            {
+                strikeLocked = false;
+            }
+        }
+
+        private void RunAnimation1()
+        {
+            if (controller.isBlinkStrikeActivated == false
+                && attack1Queued
+                && !attackAnimation1
+                && !strikeLocked)
+            {
+                weaponTrail.Play();
+                attack1Queued = false;
+                attack2Queued = false;
+                attackCollider.enabled = true;
+                attackAnimation1 = true;
+                attackAnimation2 = false;
+                cleanUpTimer = 0;
+                canAttack = false;
+                animator.SetTrigger("Attack1");
+                AudioHandler.instance.PlaySound("SwordSlash1", 1, true, 2);
+                chargeAttackTimer = 0;
+            }
+        }
+        private void RunAnimation2()
+        {
+            if (GetComponentInParent<Controller>().isBlinkStrikeActivated == false
+                && attack2Queued
+                && !attackAnimation2
+                && !strikeLocked)
+            {
+                weaponTrail.Play();
+                strikeLocked = false;
+                attackCollider.enabled = true;
+                AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
+                animator.SetTrigger("Attack2");
+                attack1Queued = false;
+                attack2Queued = false;
+                attackAnimation1 = false;
+                attackAnimation2 = true;
+                cleanUpTimer = 0;
+                canAttack = false;
+                chargeAttackTimer = 0;
+            }
+        }
+        private void RunChargeAnimation()
+        {
+            if (controller.isBlinkStrikeActivated == false
+               && chargeAttackQueued
+               && !chargeAttackAnimation
+               && !strikeLocked)
+            {
+                weaponTrail.Play();
+                attack1Queued = false;
+                attack2Queued = false;
+                chargeAttackQueued = false;
+                attackCollider.enabled = true;
+                attackAnimation1 = false;
+                attackAnimation2 = false;
+                chargeAttackAnimation = false;
+                attackCharged = false;
+                cleanUpTimer = 0;
+                canAttack = false;
+
+                animator.SetTrigger("ChargeAttack");
+                AudioHandler.instance.PlaySound("SwordSlash1", 1, true, 2);
+                animator.SetBool("Charging", false);
+                startChargeAnimation = false;
+                if (blinkTarget != null)
+                {
+                    blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
+                }
+                blinkTarget = null;
+                chargeAttackTimer = 0;
+            }
+        }
+        private void AttackButtonHeld()
+        {
+            if (meleeButton.wasPressedThisFrame)
+            {
+                buttonPressed = true;
+            }
+            if (meleeButton.wasReleasedThisFrame)
+            {
+                buttonPressed = false;
+                chargeAttackTimer = 0;
+
+            }
+            if (buttonPressed == true)
+            {
+                chargeAttackTimer += Time.deltaTime;
+            }
+            if (!meleeButton.isPressed)
+            {
+                chargeAttackTimer = 0f;
+                controller.ToggleChargingAttack(1, false);
+                if (animator.GetBool("Charging") == true)
+                {
+                    animator.SetBool("Charging", false);
+                    ForceCleanUp();
+                }
+            }
+        }
+        private void QueueAttack()
+        {
+            if (buttonPressed)
+            {
+                if (chargeAttackTimer >= 0.3)
+                {
+                    chargeParticles.gameObject.SetActive(true);
+                    controller.ToggleChargingAttack(slowdownOnCharge, true);
+                    if (startChargeAnimation == false)
+                    {
+                        animator.SetTrigger("ChargeStart");
+                        startChargeAnimation = true;
+                        animator.SetBool("Charging", true);
+                    }
+                }
+                if (chargeAttackTimer >= chargeAttackTime + 0.3f)
+                {
+                    chargeAttackTimer = chargeAttackTime + 0.3f;
+                    attackCharged = true;
+                    chargeParticles.gameObject.SetActive(false);
+                    chargedParticles.gameObject.SetActive(true);
+
+                }
+
+            }
+            if (meleeButton.wasPressedThisFrame && canAttack)
+            {
                 chargeParticles.gameObject.SetActive(false);
-                chargedParticles.gameObject.SetActive(true);
-
-            }
-            
-        }
-        if (meleeButton.wasPressedThisFrame && canAttack)
-        {
-            chargeParticles.gameObject.SetActive(false);
-            chargedParticles.gameObject.SetActive(false);
-            if (attackCharged)
-            {
-                chargeAttackQueued = true;
-                chargeAttackTimer = 0f;
-            }
-
-            else
-            {
-                if (!attackAnimation1)
+                chargedParticles.gameObject.SetActive(false);
+                if (attackCharged)
                 {
-                    attack1Queued = true;
-                    attack2Queued = false;
+                    chargeAttackQueued = true;
+                    chargeAttackTimer = 0f;
                 }
-                else if (!attackAnimation2)
-                {
-                    attack1Queued = false;
-                    attack2Queued = true;
-                }
-            }
-            chargeAttackTimer = 0;
 
-        }
-        if(meleeButton.wasReleasedThisFrame && canAttack)
-        {
-            chargeParticles.gameObject.SetActive(false);
-            chargedParticles.gameObject.SetActive(false);
-            if (attackCharged)
-            {
-                chargeAttackQueued = true;
-                chargeAttackTimer = 0f;
+                else
+                {
+                    if (!attackAnimation1)
+                    {
+                        attack1Queued = true;
+                        attack2Queued = false;
+                    }
+                    else if (!attackAnimation2)
+                    {
+                        attack1Queued = false;
+                        attack2Queued = true;
+                    }
+                }
+                chargeAttackTimer = 0;
+
             }
-            chargeAttackTimer = 0;
+            if (meleeButton.wasReleasedThisFrame && canAttack)
+            {
+                chargeParticles.gameObject.SetActive(false);
+                chargedParticles.gameObject.SetActive(false);
+                if (attackCharged)
+                {
+                    chargeAttackQueued = true;
+                    chargeAttackTimer = 0f;
+                }
+                chargeAttackTimer = 0;
+            }
         }
-    }
 }
