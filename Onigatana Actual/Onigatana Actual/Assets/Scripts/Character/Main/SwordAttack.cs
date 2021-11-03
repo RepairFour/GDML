@@ -99,6 +99,11 @@ public class SwordAttack : MonoBehaviour
     {
         if (meleeButton.wasReleasedThisFrame && canAttack)
         {
+            if (!attackCharged)
+            {
+                animator.SetBool("ChargeStart", false);
+                animator.SetBool("Charging", false);
+            }
             attackQueued = true;
             buttonHeldTime = 0;
             chargingTimer = 0;
