@@ -41,7 +41,8 @@ public class BladeAttack : MonoBehaviour
     private bool attackAnimation2;
     private bool chargeAttackAnimation;
     private bool startChargeAnimation;
-    private bool chargingAnimation;
+    private bool chargeDamage;
+
     private float cleanUpTimer;
     public float cleanUpTime;
     public float attackSpeed;
@@ -166,9 +167,10 @@ public class BladeAttack : MonoBehaviour
                     other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION2);
 
                 }
-                else if (chargeAttackAnimation)
+                else if (chargeDamage)
                 {
                     other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION2);
+                    chargeDamage = false;
                 }
 
 
@@ -329,6 +331,7 @@ public class BladeAttack : MonoBehaviour
                 attackCharged = false;
                 cleanUpTimer = 0;
                 canAttack = false;
+            chargeDamage = true;
 
                 animator.SetTrigger("ChargeAttack");
                 AudioHandler.instance.PlaySound("SwordSlash1", 1, true, 2);
