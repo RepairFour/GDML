@@ -40,12 +40,14 @@ public class SwordAttack : MonoBehaviour
     public float chargeAttackStoppingDistance;
     public float timeToCharge;
     public float slowdownOnCharge;
+    public float attackResetDelay;
 
     private bool attackQueued;
     private bool chargingAttack;
     private bool canAttack = true;
     private bool attackCharged;
     private float coolDownTimer;
+    private float inputTimer;
     //private bool isButtonHeld;
     private float buttonHeldTime;
     private float chargingTimer;
@@ -119,6 +121,12 @@ public class SwordAttack : MonoBehaviour
                 animator.SetBool("ChargeStart", true);
             }
         }
+        if (!meleeButton.isPressed)
+        {
+            chargingAttack = false;
+            chargingTimer = 0;
+            
+        }
     }
 
     void FeelerRay()
@@ -185,13 +193,13 @@ public class SwordAttack : MonoBehaviour
         if (chargingAttack)
         {
             FeelerRay();
-
-            if(chargingTimer >= timeToCharge)
+            animator.SetBool("Charging", true);
+            
+            if (chargingTimer >= timeToCharge)
             {
                 chargingAttack = false;
                 attackCharged = true;
-                animator.SetBool("Charging", true);
-                animator.SetBool("ChargeStart", false);
+                
             }
         }
     }
@@ -221,6 +229,7 @@ public class SwordAttack : MonoBehaviour
         {
             animator.SetTrigger("ChargeAttack");
             animator.SetBool("Charging", false);
+            animator.SetBool("ChargeStart", false);
             Debug.Log("Charge Attacked");
             weaponTrail.Play();
             attackCollider.enabled = true;
@@ -229,12 +238,15 @@ public class SwordAttack : MonoBehaviour
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
+            chargingTimer = 0;
             //animator.SetBool("ChargeAttack", false);
 
         }
         else if (attackQueued && !attackCharged && !chargingAttack)
         {
+            animator.SetBool("Attacking", true);
             animator.SetTrigger(attacks[animationCounter]);
+            inputTimer = 0;
             animationCounter++;
             if(animationCounter > attacks.Count - 1)
             {
@@ -243,11 +255,9 @@ public class SwordAttack : MonoBehaviour
             weaponTrail.Play();
             attackCollider.enabled = true;
             AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
-
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
-
         }
     }
 
