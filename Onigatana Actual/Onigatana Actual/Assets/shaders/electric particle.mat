@@ -35,7 +35,7 @@ Material:
     m_Floats:
     - electric_amount: 8
     m_Colors:
-    - _Color: {r: 8.470589, g: 0, b: 0, a: 0}
+    - _Color: {r: 20.865906, g: 0, b: 0, a: 0}
     - electric_speed: {r: 0, g: 10, b: 0, a: 0}
     - noise_speed: {r: 0, g: -10, b: 0, a: 0}
   m_BuildTextureStacks: []

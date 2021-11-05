@@ -18,6 +18,9 @@ ModelImporter:
   - first:
       74: 8398196665061164327
     second: R_hand|charging
+  - first:
+      74: 1097293005039031746
+    second: R_hand|charging (1)
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -51,7 +54,7 @@ ModelImporter:
       takeName: R_hand|attack 1
       internalID: 0
       firstFrame: 0
-      lastFrame: 31
+      lastFrame: 30
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -109,14 +112,14 @@ ModelImporter:
       takeName: R_hand|charge attack
       internalID: 0
       firstFrame: 0
-      lastFrame: 41
+      lastFrame: 42
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -138,7 +141,7 @@ ModelImporter:
       takeName: R_hand|charge start
       internalID: 0
       firstFrame: 0
-      lastFrame: 58
+      lastFrame: 43
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -167,7 +170,7 @@ ModelImporter:
       takeName: R_hand|charging
       internalID: 0
       firstFrame: 0
-      lastFrame: 59
+      lastFrame: 32
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
