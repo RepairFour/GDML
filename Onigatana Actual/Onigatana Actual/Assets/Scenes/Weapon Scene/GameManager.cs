@@ -6,6 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public Controller playerController;
+    public PlayerStats playerStats;
     // Start is called before the first frame update
     void Start()
     {

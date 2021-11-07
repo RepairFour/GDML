@@ -7,25 +7,15 @@ using UnityEngine.SceneManagement;
 public class PlayerStats : MonoBehaviour
 {
 	[SerializeField] int maxHealth;
-	[SerializeField] int bloodCap;
 	[SerializeField] Animator playerHurtAni;
 	public int health { get; private set; }
-	public int bloodMeter { get; private set; }
 	public int armour { get; private set; }
 
-	//[SerializeField] int bloodHardCap;
 	BloodFuryState bloodFuryState;
-
-	float attackTimer = 0;
-	float attackTimerMax = 10;
-
-	float drainTimer = 0;
-	float drainTimerMax = 0.25f;
 	private void Start()
 	{
 		health = maxHealth;
 		bloodFuryState = GetComponent<BloodFuryState>();
-		HUDCon.instance.Initialise(bloodCap);
 	}
 	///////health stuff/////////
 	public bool IsDead()
@@ -38,7 +28,8 @@ public class PlayerStats : MonoBehaviour
 	}
 	public void Heal(int amount)
 	{
-		health += amount;		
+		health += amount;
+		HUDCon.instance.UpdateHpBar();
 	}
 	public void Hurt(int dmg)
 	{
@@ -56,8 +47,11 @@ public class PlayerStats : MonoBehaviour
 		HUDCon.instance.UpdateHpBar();
 		if(health <= 0)
 		{
-			Death();
-			AudioHandler.instance.PlaySound("PlayerDeath");
+			if (!bloodFuryState.EnterStateCheck()) //if it cannot enter blood fury
+			{
+				Death();
+				AudioHandler.instance.PlaySound("PlayerDeath");
+			}
 		}
 		playerHurtAni.SetTrigger("Hurt");
 		AudioHandler.instance.PlaySound("PlayerHurt"); 
@@ -73,53 +67,5 @@ public class PlayerStats : MonoBehaviour
 		{
 			armour = 0;
 		}
-	}
-
-	//////blood stuff//////////
-	
-	public void FillBloodMeter(int amount)
-	{
-		bloodMeter += amount;
-		if(bloodMeter > bloodCap)
-		{
-			bloodMeter = bloodCap;
-		}	
-		HUDCon.instance.UpdateBloodBar();
-		////if > than 100 enter blood fury state
-		//if(amount >= bloodSoftCap && !bloodFuryState.active)
-		//{
-		//	bloodFuryState.EnterState();
-		//}
-	}
-	public void DrainBloodMeter(int amount)
-	{
-		bloodMeter -= amount;
-		if (bloodMeter < 0)
-		{
-			bloodMeter = 0;
-		}
-		HUDCon.instance.UpdateBloodBar();
-		//if(bloodMeter < 0)
-		//{
-		//	bloodMeter = 0;
-		//}
-		//if(bloodMeter < bloodSoftCap && bloodFuryState.active)
-		//{
-		//	bloodFuryState.ExitState();
-		//}
-	}
-	public void Update()
-	{
-		attackTimer += Time.deltaTime;
-		//if (attackTimer > attackTimerMax)
-		//{
-		//	//TODO: reset timer upon attacking an enemy
-		//	drainTimer += Time.deltaTime;
-		//	if (drainTimer > drainTimerMax)
-		//	{
-		//		drainTimer = 0;
-		//		DrainBloodMeter(5);
-		//	}
-		//}
-	}
+	}	
 }

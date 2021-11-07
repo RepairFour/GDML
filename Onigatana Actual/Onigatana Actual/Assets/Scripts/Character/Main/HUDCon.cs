@@ -10,6 +10,7 @@ public class HUDCon : MonoBehaviour
     [SerializeField] Slider bloodBar;
     [SerializeField] TextMeshProUGUI killCount;
 	PlayerStats playerStats;
+	BloodFuryState bloodFury;
 	float playerMaxHp;
 	float playerMaxBlood;
 	int killsRecorded = 0;
@@ -31,8 +32,11 @@ public class HUDCon : MonoBehaviour
 	public void Initialise(float bloodMax)
 	{
 		playerStats = FindObjectOfType<PlayerStats>();
+		bloodFury = playerStats.GetComponent<BloodFuryState>();
 		playerMaxHp = playerStats.health;
 		playerMaxBlood = bloodMax;
+		UpdateHpBar();
+		UpdateBloodBar();
 	}
 
 	public void UpdateHpBar()
@@ -42,7 +46,7 @@ public class HUDCon : MonoBehaviour
 
 	public void UpdateBloodBar()
 	{
-		bloodBar.value = (float)playerStats.bloodMeter / playerMaxBlood;
+		bloodBar.value = (float)bloodFury.currentBlood / playerMaxBlood;
 	}
 
 	public void UpdateKillCount()
