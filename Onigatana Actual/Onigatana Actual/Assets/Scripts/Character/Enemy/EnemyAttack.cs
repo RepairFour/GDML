@@ -37,12 +37,14 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] [Range(0, 1)] float leapDistance;
     [SerializeField] float leapCooldown;
     [SerializeField] GameObject shockwaveHitbox;
+    [SerializeField] float slowShockwaveDuration;
 
     //Timers
     float attackCDtimer = 0;
     float attackChargeTimer = 0;
     float leapTimer = 0;
     float leapCDTimer = 0;
+    float slowShockwaveTimer;
 
     //Fetch Vars
     PlayerStats player;
@@ -51,11 +53,14 @@ public class EnemyAttack : MonoBehaviour
     Color originalColor;
     NavMeshAgent agent;
     Vector3 playerJumpPos;
+    Vector3 shockwaveNormalPos;
 
     //States
     bool firstAttack = true;
     bool chargingAttack = false;
     bool leaping = false;
+    bool shockwave = false;
+    bool shockwaveSpawned = false;
 
     void Start()
     {
@@ -65,6 +70,10 @@ public class EnemyAttack : MonoBehaviour
         mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
         originalColor = mat.color;
         agent = GetComponent<NavMeshAgent>();
+        if (type == EnemyType.MELEE_COMBATANT)
+        {
+            shockwaveNormalPos = shockwaveHitbox.transform.localPosition;
+        }
     }
 
     void Update()
@@ -134,13 +143,18 @@ public class EnemyAttack : MonoBehaviour
                     //arc towards player
                     agent.enabled = false;
                     leaping = true;
-                    playerJumpPos = transform .position + ((player.transform.position - transform.position) * leapDistance);
+                    playerJumpPos = transform.position + ((player.transform.position - transform.position) * leapDistance);
+                    playerJumpPos.y = transform.position.y; //bug city
                     leapCDTimer = 0;
                 }
             }
             if(leaping)
 			{
                 LeapSlam();
+			}
+            if(shockwave)
+			{
+                Shockwave();
 			}
         }
     }
@@ -153,8 +167,7 @@ public class EnemyAttack : MonoBehaviour
             leaping = false;
             leapTimer = 0;
             agent.enabled = true;
-            shockwaveHitbox.SetActive(true);
-            shockwaveHitbox.transform.LookAt(player.transform);
+            shockwave = true;
             return;
         }
         //calculate curve positions
@@ -164,14 +177,37 @@ public class EnemyAttack : MonoBehaviour
         Vector3 pos2 = playerJumpPos;
         pos2.y += leapHeight;
         Vector3 pos3 = playerJumpPos;
-
-
-
         Vector3 posToLerpTo = CubicBezier(pos0,pos1,pos2,pos3, leapTimer / leapDuration);
 
         transform.position = Vector3.Lerp(transform.position, posToLerpTo, 1);
 
         
+    }
+
+    void Shockwave()
+	{
+        if (!shockwaveSpawned)
+        {
+            shockwaveSpawned = true;
+            shockwaveHitbox.SetActive(true);
+            Vector3 dir = player.transform.position;
+            dir.y = shockwaveHitbox.transform.position.y;
+            shockwaveHitbox.transform.LookAt(dir);
+            shockwaveHitbox.transform.localScale = Vector3.zero;
+            shockwaveHitbox.transform.SetParent(GameManager.instance.transform); 
+        }
+
+        slowShockwaveTimer += Time.deltaTime;
+        shockwaveHitbox.transform.localScale += (Vector3.one / slowShockwaveDuration) * Time.deltaTime;
+        if (slowShockwaveTimer > slowShockwaveDuration)
+		{
+            slowShockwaveTimer = 0;
+            shockwaveHitbox.SetActive(false);
+            shockwave = false;
+            shockwaveSpawned = false;
+            shockwaveHitbox.transform.SetParent(transform);
+            shockwaveHitbox.transform.localPosition = shockwaveNormalPos;
+        }
     }
 
 	private void OnTriggerEnter(Collider other)
