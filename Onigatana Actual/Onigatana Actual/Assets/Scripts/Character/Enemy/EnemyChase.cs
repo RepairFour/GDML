@@ -6,7 +6,8 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class EnemyChase : MonoBehaviour
 {
-    PlayerStats player;
+	#region Variables
+	PlayerStats player;
     NavMeshAgent agent;
     WaypointManager wayManager;
     [HideInInspector]
@@ -17,7 +18,7 @@ public class EnemyChase : MonoBehaviour
     bool chasePlayer = false;
 
     EnemyAttack enemyAttack;
-    public float attackDistance;
+    public float basicAttackDistance;
 
     //leaping stuff for melee units
     bool leap = false;
@@ -58,8 +59,10 @@ public class EnemyChase : MonoBehaviour
     [SerializeField] Transform debugDestination;
     float debugTimer = 0;
     float debugTimerMax = 1;
-    // Start is called before the first frame update
-    void Start()
+	#endregion
+
+	// Start is called before the first frame update
+	void Start()
     {
         player = FindObjectOfType<PlayerStats>();
         agent = GetComponent<NavMeshAgent>();
@@ -124,7 +127,7 @@ public class EnemyChase : MonoBehaviour
             standingStillTimer > (standingStillTimerMax / 2) &&
             relocate == false)
         {
-            agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * attackDistance);
+            agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * basicAttackDistance);
             relocatePos = agent.destination;
             relocate = true;
         }
@@ -140,10 +143,8 @@ public class EnemyChase : MonoBehaviour
             {
                 relocateTimer = 0;
                 relocate = false;                
-            }
-            //agent.destination = relocatePos;
+            }            
         }
-
         
         standingStillTimer += Time.deltaTime;
         if(standingStillTimer >= standingStillTimerMax)
@@ -160,7 +161,6 @@ public class EnemyChase : MonoBehaviour
         // try to see player 
         RaycastHit hit;
         Vector3 directionToPlayer = player.transform.position - transform.position;
-        //Debug.DrawRay(transform.position, directionToPlayer.normalized * visionDistance, Color.red);
         if (Physics.Raycast(transform.position, directionToPlayer, out hit,visionDistance,~layersToIgnore))
         {
             if (hit.collider.GetComponent<PlayerStats>() != null /*&& Vector3.Dot(transform.forward, directionToPlayer.normalized) > 0*/)
@@ -172,7 +172,7 @@ public class EnemyChase : MonoBehaviour
 
     private void ChasePlayer()
 	{
-        if (enemyAttack.melee)
+        if (enemyAttack.type == EnemyAttack.EnemyType.MELEE_FODDER)
         {
             leapingTimer -= Time.deltaTime;
             if (!leap)
@@ -181,7 +181,7 @@ public class EnemyChase : MonoBehaviour
                 {
                     agent.speed = agentWalkSpeed;
                     agent.acceleration = agentAccelleration;
-                    agent.destination = player.transform.position - ((player.transform.position - transform.position).normalized * attackDistance);
+                    agent.destination = player.transform.position - ((player.transform.position - transform.position).normalized * basicAttackDistance);
                     if (Mathf.Abs(transform.position.x - agent.destination.x) < 1 &&
                        Mathf.Abs(transform.position.z - agent.destination.z) < 1)
                     {
@@ -217,7 +217,7 @@ public class EnemyChase : MonoBehaviour
             }
 
         }
-        else
+        else if(enemyAttack.type == EnemyAttack.EnemyType.RANGED_FODDER)
         {
             aknowledgementTimer += Time.deltaTime;
             runawayTimer -= Time.deltaTime;
@@ -226,7 +226,6 @@ public class EnemyChase : MonoBehaviour
                 runawayDistance -= Vector3.Distance(player.transform.position, playerPos);
                 playerPos = player.transform.position;
                 aknowledgementTimer = 0;
-                //if distance < 0 
                 if (runawayDistance <= 0)
                 {
                     runawayTimer = runawayCooldown;
@@ -239,11 +238,10 @@ public class EnemyChase : MonoBehaviour
             if (runawayTimer < 0)
             {
                 //the desired distance away from the player to shoot hit
-                //FindPath(playerPos - ((playerPos - transform.position).normalized * attackDistance));
-                FindPath(playerPos + ((transform.position - playerPos).normalized * attackDistance));
-                //FindPath(playerPos * attackDistance);
+                FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
             }
         }
+
         Debug.DrawLine(transform.position, agent.destination, Color.green);
     }
     private void FollowPatrol()

@@ -11,9 +11,7 @@ public class EnemyStats : MonoBehaviour
         ANIMATION1,
         ANIMATION2
     }
-    //[SerializeField] Animation hitAni;
-    [SerializeField] ParticleSystem blood;
-    //[SerializeField] AudioSource weaponHit;
+    [SerializeField] ParticleSystem blood;    
     [Header("Animations")]
     public Animator enemyTestAnims;
 
