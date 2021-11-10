@@ -147,7 +147,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &7192277684824787102
 RectTransform:
   m_ObjectHideFlags: 0
@@ -771,7 +771,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7192277685749173776}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c9a7deb7831e4241a3f28bb5801cabe, type: 3}
   m_Name: 
@@ -792,16 +792,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8003ee8d465a0704fae5d24a1053a02f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  melee: 0
+  type: 0
   dmgPerHit: 15
-  attackMode: 0
-  projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
-  projectileSpeed: 2000
   attackCDtimerMax: 3
-  attackDistance: 0
   firstAttackDelayMod: 3
   attackChargeTimerMax: 0.6
   chargeAttackAni: {fileID: 0}
+  attackMode: 0
+  basicAttackDistance: 0
+  projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
+  projectileSpeed: 2000
+  distanceToTriggerLeap: 0
+  leapDuration: 0
+  leapHeight: 0
+  leapDistance: 0
+  leapCooldown: 0
+  shockwaveHitbox: {fileID: 0}
+  slowShockwaveDuration: 0
 --- !u!195 &7192277685749173785
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -837,7 +844,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPath: 2
-  attackDistance: 50
+  basicAttackDistance: 0
   leapTimerMax: 0
   leapForce: 0
   visionDistance: 250
@@ -1360,14 +1367,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e618abff5b6880a4bba6e880ed5420f2, type: 3}
---- !u!1 &1971929601467796801 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e618abff5b6880a4bba6e880ed5420f2, type: 3}
-  m_PrefabInstance: {fileID: 1701474829617459216}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1159222989407950843 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e618abff5b6880a4bba6e880ed5420f2, type: 3}
+  m_PrefabInstance: {fileID: 1701474829617459216}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &1971929601467796801 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e618abff5b6880a4bba6e880ed5420f2, type: 3}
   m_PrefabInstance: {fileID: 1701474829617459216}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8567465153593578230

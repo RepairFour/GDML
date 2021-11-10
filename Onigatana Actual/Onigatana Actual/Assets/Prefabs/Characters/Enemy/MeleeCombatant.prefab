@@ -581,7 +581,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1534
+  m_VersionIndex: 1537
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -810,7 +810,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4852428030859007892
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1324,7 +1324,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 87d84526bf183544abbed3787528b2d0, type: 2}
+  - {fileID: 2100000, guid: b7e3105a8a1e6ed42bb3391d2b9177ab, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1435,7 +1435,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4852428031798595866}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5c9a7deb7831e4241a3f28bb5801cabe, type: 3}
   m_Name: 
@@ -1469,10 +1469,10 @@ MonoBehaviour:
   distanceToTriggerLeap: 0
   leapDuration: 1
   leapHeight: 6
-  leapDistance: 0.8
-  leapCooldown: 2
+  leapDistance: 0.55
+  leapCooldown: 3
   shockwaveHitbox: {fileID: 2343934384602370307}
-  slowShockwaveDuration: 1
+  slowShockwaveDuration: 0.5
 --- !u!195 &4852428031798595859
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   blood: {fileID: 0}
   enemyTestAnims: {fileID: 4852428031798595868}
   knockBackDirection: {x: 0, y: 0, z: 0}
-  defaultMaterial: {fileID: 2100000, guid: 87d84526bf183544abbed3787528b2d0, type: 2}
+  defaultMaterial: {fileID: 2100000, guid: b7e3105a8a1e6ed42bb3391d2b9177ab, type: 2}
   hurtMaterial: {fileID: 2100000, guid: ea0e498927196204dbf49c90b00bd75e, type: 2}
 --- !u!114 &2343934384517755550
 MonoBehaviour:
@@ -1780,7 +1780,7 @@ PrefabInstance:
     - target: {fileID: -777403382233774048, guid: e618abff5b6880a4bba6e880ed5420f2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 87d84526bf183544abbed3787528b2d0, type: 2}
+      objectReference: {fileID: 2100000, guid: b7e3105a8a1e6ed42bb3391d2b9177ab, type: 2}
     - target: {fileID: 919132149155446097, guid: e618abff5b6880a4bba6e880ed5420f2, type: 3}
       propertyPath: m_Name
       value: scuffed demo enemy

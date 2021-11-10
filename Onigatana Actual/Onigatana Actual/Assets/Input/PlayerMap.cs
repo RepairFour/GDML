@@ -218,7 +218,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""5ac31871-6ada-4362-8c26-7dcb247480fd"",
-                    ""path"": ""<Mouse>/rightButton"",
+                    ""path"": ""<Keyboard>/e"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
@@ -251,7 +251,7 @@ public class @PlayerMap : IInputActionCollection, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""95849a1c-41d3-45a8-92aa-4b0377ce7b8e"",
-                    ""path"": ""<Keyboard>/e"",
+                    ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",

@@ -807,6 +807,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   grapplable: 1
+  enemy: 0
 --- !u!33 &4207229641426707680
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -909,7 +910,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58cd13cc40fa1b45b57b31778653c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 2000
+  health: 1200
   blood: {fileID: 0}
   enemyTestAnims: {fileID: 4207229641426707694}
   knockBackDirection: {x: 0, y: 0, z: 0}
@@ -950,8 +951,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finished: 0
   chargeUpTimerMax: 2
-  chargeSpeed: 20000
-  dmg: 40
+  chargeSpeed: 8000
+  dmg: 25
 --- !u!114 &4207229641426707672
 MonoBehaviour:
   m_ObjectHideFlags: 0
