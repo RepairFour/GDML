@@ -43,9 +43,16 @@ public class PlayerStats : MonoBehaviour
 			int dmgRemaining = dmg - armour;
 			armour = 0;
 			health -= dmgRemaining;
+			IsDeadCheck();
 		}
 		HUDCon.instance.UpdateHpBar();
-		if(health <= 0)
+		
+		playerHurtAni.SetTrigger("Hurt");
+		AudioHandler.instance.PlaySound("PlayerHurt"); 
+	}
+	public void IsDeadCheck()
+	{
+		if (health <= 0)
 		{
 			if (!bloodFuryState.EnterStateCheck()) //if it cannot enter blood fury
 			{
@@ -53,8 +60,6 @@ public class PlayerStats : MonoBehaviour
 				AudioHandler.instance.PlaySound("PlayerDeath");
 			}
 		}
-		playerHurtAni.SetTrigger("Hurt");
-		AudioHandler.instance.PlaySound("PlayerHurt"); 
 	}
 	private void Death()
 	{

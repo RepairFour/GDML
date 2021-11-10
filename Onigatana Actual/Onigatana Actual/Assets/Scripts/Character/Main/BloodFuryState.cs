@@ -20,8 +20,7 @@ public class BloodFuryState : MonoBehaviour
 	{
 		if(lateStart)
 		{
-			lateStart = false;
-			currentBlood = 50;
+			lateStart = false;			
 			HUDCon.instance.Initialise(maxBlood);
 		}
 		if(active)
@@ -51,6 +50,7 @@ public class BloodFuryState : MonoBehaviour
 	{
 		Debug.Log("Exiting BloodFury");
 		active = false;
+		GameManager.instance.playerStats.IsDeadCheck();
 	}
 	public void FillBloodMeter(float amount)
 	{
@@ -77,11 +77,13 @@ public class BloodFuryState : MonoBehaviour
 		if (currentBlood == 0)
 		{
 			ExitState();
+			
 		}
 	}
 
 	public void Revive()
 	{
 		GameManager.instance.playerStats.Heal(Mathf.RoundToInt(currentBlood));
+		DrainBloodMeter(currentBlood + 1);
 	}
 }

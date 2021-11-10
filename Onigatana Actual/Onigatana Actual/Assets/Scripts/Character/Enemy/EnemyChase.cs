@@ -247,14 +247,18 @@ public class EnemyChase : MonoBehaviour
     private void FollowPatrol()
     {
         enemyAttack.attackMode = false;
-        agent.destination = path[pathNode].position;
-        if (Mathf.Abs(transform.position.x - path[pathNode].position.x) < 1 &&
-           Mathf.Abs(transform.position.z - path[pathNode].position.z) < 1)
+        if (agent.enabled && agent.isOnNavMesh)
         {
-            ++pathNode;
-            if (pathNode == path.Count)
+            agent.destination = path[pathNode].position;
+
+            if (Mathf.Abs(transform.position.x - path[pathNode].position.x) < 1 &&
+               Mathf.Abs(transform.position.z - path[pathNode].position.z) < 1)
             {
-                pathNode = 0;
+                ++pathNode;
+                if (pathNode == path.Count)
+                {
+                    pathNode = 0;
+                }
             }
         }
         Debug.DrawLine(transform.position, agent.destination, Color.green);

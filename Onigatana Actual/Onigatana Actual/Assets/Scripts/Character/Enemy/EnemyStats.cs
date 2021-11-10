@@ -48,6 +48,11 @@ public class EnemyStats : MonoBehaviour
 		{
             HUDCon.instance.UpdateKillCount();
             AudioHandler.instance.PlaySound("EnemyDeath",1f,true,1);
+            GameManager.instance.bloodFuryState.FillBloodMeter(3.5f);
+            if(GameManager.instance.bloodFuryState.active)
+			{
+                GameManager.instance.bloodFuryState.Revive();
+            }
             Destroy(gameObject);
 		}
 	}
@@ -59,11 +64,13 @@ public class EnemyStats : MonoBehaviour
             blood.Play();
         }
         AudioHandler.instance.PlaySound("SwordSlashHit");
+        GameManager.instance.bloodFuryState.FillBloodMeter(1.5f);
     }
 
     private bool isDead()
 	{
-        if(Health <= 0)
+        
+        if (Health <= 0)
 		{
             return true;
 		}
