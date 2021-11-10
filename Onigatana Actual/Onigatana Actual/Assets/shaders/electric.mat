@@ -36,6 +36,6 @@ Material:
     - electric_amount: 5
     m_Colors:
     - _Color: {r: 11.984314, g: 0, b: 0, a: 0}
-    - electric_speed: {r: 0, g: 0.4, b: 0, a: 0}
-    - noise_speed: {r: 0, g: -0.4, b: 0, a: 0}
+    - electric_speed: {r: 0, g: 0.6, b: 0, a: 0}
+    - noise_speed: {r: 0, g: -0.6, b: 0, a: 0}
   m_BuildTextureStacks: []

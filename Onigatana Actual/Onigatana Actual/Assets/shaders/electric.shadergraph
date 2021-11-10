@@ -2207,7 +2207,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Scale",
     "m_StageCapability": 3,
-    "m_Value": 50.0,
+    "m_Value": 70.0,
     "m_DefaultValue": 500.0,
     "m_Labels": []
 }
@@ -2509,7 +2509,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Scale",
     "m_StageCapability": 3,
-    "m_Value": 50.0,
+    "m_Value": 70.0,
     "m_DefaultValue": 500.0,
     "m_Labels": []
 }
@@ -2524,7 +2524,7 @@
     "m_Hidden": false,
     "m_ShaderOutputName": "Height",
     "m_StageCapability": 3,
-    "m_Value": 10.0,
+    "m_Value": 100.0,
     "m_DefaultValue": 0.5,
     "m_Labels": []
 }
