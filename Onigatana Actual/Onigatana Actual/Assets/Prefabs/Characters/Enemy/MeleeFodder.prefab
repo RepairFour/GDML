@@ -609,7 +609,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3757
+  m_VersionIndex: 3760
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -710,7 +710,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 658a1548f56d882448da03b67e57982a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grapplable: 1
+  grapplable: 0
+  enemy: 1
 --- !u!33 &7192277685749173771
 MeshFilter:
   m_ObjectHideFlags: 0
