@@ -12,6 +12,8 @@ public class PlayerStats : MonoBehaviour
 	public int armour { get; private set; }
 
 	BloodFuryState bloodFuryState;
+
+	
 	private void Start()
 	{
 		health = maxHealth;
@@ -63,7 +65,8 @@ public class PlayerStats : MonoBehaviour
 	}
 	private void Death()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+		//GameManager.instance.gameOverCanvas.SetActive(true);
 	}
 	public void ModArmour(int amount)
 	{

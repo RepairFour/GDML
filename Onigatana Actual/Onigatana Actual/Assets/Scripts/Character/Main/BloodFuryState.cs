@@ -83,7 +83,7 @@ public class BloodFuryState : MonoBehaviour
 
 	public void Revive()
 	{
-		GameManager.instance.playerStats.Heal(Mathf.RoundToInt(currentBlood));
+		GameManager.instance.playerStats.Heal((int)currentBlood);
 		DrainBloodMeter(currentBlood + 1);
 	}
 }

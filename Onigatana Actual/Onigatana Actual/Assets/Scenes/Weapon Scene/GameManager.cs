@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public Controller playerController;
     public PlayerStats playerStats;
     public BloodFuryState bloodFuryState;
+    public CanvasManager gameOverCanvas;
     // Start is called before the first frame update
     void Start()
     {

@@ -12,7 +12,9 @@ public class quickRespawn : MonoBehaviour
         if (other.gameObject.GetComponent<PlayerStats>())
         {
             AudioHandler.instance.PlaySound("PlayerDeath");
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);            
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            GameManager.instance.gameOverCanvas.ShowCanvas();
         }
     }
+    
 }

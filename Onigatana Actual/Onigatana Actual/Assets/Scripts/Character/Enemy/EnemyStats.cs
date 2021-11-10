@@ -46,9 +46,10 @@ public class EnemyStats : MonoBehaviour
         EnemyAnimateHit(ani);
         if (isDead())
 		{
+            GetComponent<EnemyAttack>().DisposeShockwave();
             HUDCon.instance.UpdateKillCount();
             AudioHandler.instance.PlaySound("EnemyDeath",1f,true,1);
-            GameManager.instance.bloodFuryState.FillBloodMeter(3.5f);
+            GameManager.instance.bloodFuryState.FillBloodMeter(6f);
             if(GameManager.instance.bloodFuryState.active)
 			{
                 GameManager.instance.bloodFuryState.Revive();
@@ -64,7 +65,7 @@ public class EnemyStats : MonoBehaviour
             blood.Play();
         }
         AudioHandler.instance.PlaySound("SwordSlashHit");
-        GameManager.instance.bloodFuryState.FillBloodMeter(1.5f);
+        GameManager.instance.bloodFuryState.FillBloodMeter(2f);
     }
 
     private bool isDead()

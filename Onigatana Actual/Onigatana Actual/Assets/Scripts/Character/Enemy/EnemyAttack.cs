@@ -210,6 +210,14 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
+    public void DisposeShockwave()
+	{
+        if (shockwaveHitbox != null)
+        {
+            Destroy(shockwaveHitbox);
+        }
+    }
+
 	private void OnTriggerEnter(Collider other)
     {
         if (type == EnemyType.MELEE_FODDER )

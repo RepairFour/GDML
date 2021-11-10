@@ -8,8 +8,9 @@ public class ShotgunCrossBow : GunBase
     public LayerMask layersToAvoid;
     // Start is called before the first frame update
     protected override void PrimaryFire() {
-        isReadyToShoot = false;
 
+        GameManager.instance.bloodFuryState.DrainBloodMeter(12);
+        isReadyToShoot = false;
         //Ray ray = fpsCamera.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
         for (int i = 0; i < bulletsPerTap; i++)
         {
@@ -41,7 +42,7 @@ public class ShotgunCrossBow : GunBase
 
             }
             var temp = Instantiate(shotHit, muzzleFlashPoint.position, Quaternion.LookRotation(fpsCamera.transform.forward + spreadVector));
-            
+
         }
         if (muzzleFlash != null)
         {
@@ -66,7 +67,7 @@ public class ShotgunCrossBow : GunBase
         //gunAnimator.SetFloat("FireLength", fireRate);
         ammoLeft--;
         //StartCoroutine(PrimaryCooldown());
-
+        
     }
 
     protected override void SecondaryFire()

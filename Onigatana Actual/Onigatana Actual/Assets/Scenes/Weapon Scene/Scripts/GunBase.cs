@@ -114,7 +114,7 @@ public class GunBase : MonoBehaviour
         }
 
         else if((isReadyToShoot && PrimaryFirePressed()) 
-            && !isReloading && ammoLeft > 0)
+            && !isReloading && ammoLeft > 0 && GameManager.instance.bloodFuryState.currentBlood >= 12)
         {
             meleeWeapon.enabled = false;
             meleeHand.enabled = false;
