@@ -56,7 +56,7 @@ public class SwordAttack : MonoBehaviour
     GameObject blinkTarget;
 
     private bool strikeLocked;
-
+    bool blocked = false;
 
 
 
@@ -235,6 +235,7 @@ public class SwordAttack : MonoBehaviour
             attackCollider.enabled = true;
             AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
 
+            blocked = false;
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
@@ -258,6 +259,7 @@ public class SwordAttack : MonoBehaviour
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
+            blocked = false;
         }
     }
 
@@ -265,10 +267,41 @@ public class SwordAttack : MonoBehaviour
     {
         if (other.gameObject.tag == "Enemy")
         {
-            other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-            Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
-            Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
-            attackCollider.enabled = false;
+            var enemyStats = other.gameObject.GetComponent<EnemyStats>();
+            if (enemyStats.hasShield == false)
+            {
+                enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
+                Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
+            }
+			else
+			{
+                //Is player infront of enemy
+                if(Vector3.Dot((GameManager.instance.playerStats.transform.position - other.gameObject.transform.position).normalized,
+                               other.gameObject.transform.forward) > 0)
+				{
+                    var shield = other.gameObject.GetComponentInChildren<ShieldHealth>();
+                    if(shield.Hurt(damage))//if the shield dies then
+					{
+                        enemyStats.hasShield = false;
+                    }
+                }
+				else
+				{
+                    enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                    Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
+                    Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
+                }
+            }                          
         }
+        else if(other.gameObject.tag == "Shield")
+		{
+            var shield = other.gameObject.GetComponentInParent<ShieldHealth>();
+            if (shield.Hurt(damage))//if the shield dies then
+            {
+                shield.GetComponentInParent<EnemyStats>().hasShield = false;
+            }
+        }
+        attackCollider.enabled = false;
     }
 }

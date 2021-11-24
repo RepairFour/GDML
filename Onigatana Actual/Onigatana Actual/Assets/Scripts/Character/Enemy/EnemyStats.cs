@@ -26,11 +26,16 @@ public class EnemyStats : MonoBehaviour
 
     public Material defaultMaterial;
     public Material hurtMaterial;
+    [HideInInspector] public bool hasShield = false;
 
 	private void Start()
 	{
         Player = GameObject.FindGameObjectWithTag("Player");
         enemyRigidbody = gameObject.GetComponent<Rigidbody>();
+        if(GetComponentInChildren<ShieldHealth>())
+		{
+            hasShield = true;
+		}
     }
 	public int Health
 	{
