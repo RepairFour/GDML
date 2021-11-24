@@ -6,7 +6,9 @@ using UnityEngine.InputSystem.Controls;
 public class SwordAttack : MonoBehaviour
 {
     
-    [SerializeField] int damage;
+    [SerializeField] int normalDamage;
+    [SerializeField] int chargeAttackDamage;
+    int damage;
 
 
     PlayerMap input;
@@ -241,7 +243,7 @@ public class SwordAttack : MonoBehaviour
             canAttack = false;
             chargingTimer = 0;
             //animator.SetBool("ChargeAttack", false);
-
+            damage = chargeAttackDamage;
         }
         else if (attackQueued && !attackCharged && !chargingAttack)
         {
@@ -260,6 +262,7 @@ public class SwordAttack : MonoBehaviour
             attackQueued = false;
             canAttack = false;
             blocked = false;
+            damage = normalDamage;
         }
     }
 
