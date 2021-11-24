@@ -57,7 +57,10 @@ public class Controller : MonoBehaviour
     public float minSlideTime;
     public float slideCooldown;
 
-    [Header ("Hookshot Variables")]
+    [Header("Hookshot Variables")]
+    public GrappleTargetting grappleSystem;
+    
+    
     [Tooltip("Range of the hookshot")]
     public float hookShotDistance;
     [Tooltip("How fast you travel when hookshoting")]
@@ -264,10 +267,8 @@ public class Controller : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         cameraTransform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
-        if (!hookOnCooldown)
-        {
-            CheckGrappleHook();
-        }
+       
+        CheckGrappleHook();
 
         HandleBlinkStrikeInput();
 
@@ -397,35 +398,45 @@ public class Controller : MonoBehaviour
     #region HookShot Functions
     private void CheckGrappleHook()
     {
-        if (Physics.Raycast(hookShotHand.transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance, hookShotMask))
+        if(grappleSystem.StartGrapple == true)
         {
-            if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
-            {
-                if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable ||
-                    hit.collider.gameObject.GetComponent<ObjectProperties>().enemy)
-                {
-                    crossHair.gameObject.SetActive(true);
-                }
-                else
-                {
-                    crossHair.gameObject.SetActive(false);
-                }
-            }
+            hookHitPoint = grappleSystem.currentTargettedObject.transform.position;
+            //Debug.Log(hit.collider.name);
+            hookShotFiring = true;
+            HookShotDirection();
+            hookShotSize = 0f;
+            hookShotTransform.LookAt(hookHitPoint);
+        }
+        
+        //if (Physics.Raycast(hookShotHand.transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance, hookShotMask))
+        //{
+        //    if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
+        //    {
+        //        if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable ||
+        //            hit.collider.gameObject.GetComponent<ObjectProperties>().enemy)
+        //        {
+        //            crossHair.gameObject.SetActive(true);
+        //        }
+        //        else
+        //        {
+        //            crossHair.gameObject.SetActive(false);
+        //        }
+        //    }
 
-            else
-            {
-                crossHair.gameObject.SetActive(false);
-            }
-        }
-        else
-        {
-            crossHair.gameObject.SetActive(false);
-        }
+        //    else
+        //    {
+        //        crossHair.gameObject.SetActive(false);
+        //    }
+        //}
+        //else
+        //{
+        //    crossHair.gameObject.SetActive(false);
+        //}
 
-        if (input.Player.Hook.triggered)
-        {
-            CheckHookShotHit();
-        }
+        //if (input.Player.Hook.triggered)
+        //{
+          //CheckHookShotHit();
+        //}
         
     }
 
@@ -453,48 +464,6 @@ public class Controller : MonoBehaviour
         
         lr.SetPosition(0, hookShotTransform.position);
         lr.SetPosition(1, hookShotHand.position);
-        
-        if (hook.wasReleasedThisFrame)
-        {
-            CancelHookShot();
-        }
-    }
-    private void CheckHookShotHit()
-    {
-        if(Physics.Raycast(hookShotHand.transform.position, cameraTransform.forward, out RaycastHit hit, hookShotDistance))
-        {
-
-            if (hit.collider.gameObject.GetComponent<ObjectProperties>() != null)
-            {
-                if (hit.collider.gameObject.GetComponent<ObjectProperties>().grapplable)
-                {
-                    hookHitPoint = hit.point;
-                    Debug.Log(hit.collider.name);
-                    hookShotFiring = true;
-                    HookShotDirection();
-                    hookShotSize = 0f;
-                    hookShotTransform.LookAt(hookHitPoint);
-                    
-                }
-                else if (hit.collider.gameObject.GetComponent<ObjectProperties>().enemy)
-                {
-                    hookHitPoint = hit.point;
-                    hookShotFiring = true;
-                    HookShotEnemyDirection();
-                    hookShotSize = 0f;
-                    hookShotTransform.LookAt(hookHitPoint);
-                    enemyStruck = hit.collider.gameObject;
-                }
-                else
-                {
-                    return;
-                }
-            }
-            else
-            {
-                return;
-            }
-        }
         
     }
 
@@ -550,23 +519,24 @@ public class Controller : MonoBehaviour
         lr.SetPosition(0, hookShotTransform.position);
         lr.SetPosition(1, hookShotHand.position);
 
-        if (Vector3.Distance(hookHitPoint, transform.position) < 2)
+        if (Vector3.Distance(hookHitPoint, transform.position) < 5)
         {
             if (queueJump)
             {
-                CancelHookShotMomentumWallKick();
+                CancelHookShot();
+                grappleSystem.currentTargettedObject.GetComponent<Outline>().OutlineWidth = 0f;
+                grappleSystem.currentTargettedObject = null;
+                grappleSystem.StartGrapple = false;
+                //CancelHookShotMomentumWallKick();
                 queueJump = false;
             }
-            else{
+            else {
                 CancelHookShot();
+                grappleSystem.currentTargettedObject.GetComponent<Outline>().OutlineWidth = 0f;
+                grappleSystem.currentTargettedObject = null;
+                grappleSystem.StartGrapple = false;
+                
             }
-            //currentVelocity.y = yMomentumScalarValue;
-        }
-        if (hook.wasReleasedThisFrame)
-        {
-            CancelHookShotMomentum();
-            //currentVelocity.y = 0;
-            //momentum.y = 0;
         }
     }
     
