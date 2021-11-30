@@ -10,9 +10,9 @@ public class SwordAttack : MonoBehaviour
     [SerializeField] int chargeAttackDamage;
     int damage;
 
-
     PlayerMap input;
     private ButtonControl meleeButton;
+    private ButtonControl parryButton;
 
     [Header("Input")]
     public float holdButtonDelay;
@@ -60,16 +60,94 @@ public class SwordAttack : MonoBehaviour
     private bool strikeLocked;
     bool blocked = false;
 
+    [Header("Parry")]
+    bool parrying;
 
+    bool canParry = true;
+    
+    public enum parryState { START, PERFECT, NORMAL, RECOVERY}
+    parryState ParryState;
 
+    public float parryWindUpTime;
+    public float perfectParryTime;
+    public float normalParryTime;
+    public float recoveryTime;
 
-    // Start is called before the first frame update
+    float parryTimer;
+
+    bool perfectParrySuccess = false;
+    bool normalParrySuccess= false;
+
+    public bool getParrying { get => parrying; set => parrying = value; }
+    public parryState getParryState { get => ParryState; set => ParryState = value; }
+
+    void HandleParrying()
+    {
+        if (parrying)
+        {
+            switch (ParryState)
+            {
+                case parryState.START:
+                    parryTimer += Time.deltaTime;
+                    Debug.Log("Parry Starting");
+                    if(parryTimer >= parryWindUpTime)
+                    {
+                        ParryState = parryState.PERFECT;
+                        parryTimer = 0;
+                    }
+                    break;
+                case parryState.PERFECT:
+                    Debug.Log("Perfect Parry");
+                    parryTimer += Time.deltaTime;
+                    if(parryTimer >= perfectParryTime)
+                    {
+                        ParryState = parryState.NORMAL;
+                        parryTimer = 0;
+                    }
+                    break;
+                case parryState.NORMAL:
+                    
+                    Debug.Log("Normal Parry");
+                    parryTimer += Time.deltaTime;
+                    canParry = false;
+                     
+                    if(parryTimer >= normalParryTime)
+                    {
+                        ParryState = parryState.RECOVERY;
+                        parryTimer = 0;
+                    }
+                    break;
+                case parryState.RECOVERY:
+                    Debug.Log("Recovery");
+
+                    parryTimer += Time.deltaTime;
+                    
+                    if(parryTimer >= recoveryTime)
+                    {
+                        ResetParry();
+                    }
+                    break;
+            }
+        }
+    }
+
+    public void ResetParry()
+    {
+        ParryState = parryState.START;
+        parrying = false;
+        parryTimer = 0;
+        canParry = true;
+        canAttack = true;
+    }
+
+        // Start is called before the first frame update
     void Start()
     {
         input = new PlayerMap();
         input.Enable();
 
         meleeButton = (ButtonControl)input.Player.Melee.controls[0];
+        parryButton = (ButtonControl)input.Player.Parry.controls[0];
 
         attackCollider.enabled = false;
     }
@@ -78,6 +156,7 @@ public class SwordAttack : MonoBehaviour
     void Update()
     {
         QueryInput();
+        HandleParrying();
         HandleChargingAttack();
         HandleDashToTarget();
         CheckIfDashing();
@@ -101,6 +180,34 @@ public class SwordAttack : MonoBehaviour
 
     void QueryInput()
     {
+        QueryMeleeInput();
+
+        QueryParryInput();
+    }
+
+    void QueryParryInput()
+    {
+        if (parryButton.wasPressedThisFrame && canParry)
+        {
+            parrying = true;
+            ParryState = parryState.START;
+            canParry = false;
+            canAttack = false;
+        }
+        if(!parryButton.isPressed && ParryState != parryState.START && ParryState != parryState.PERFECT && ParryState != parryState.RECOVERY)
+        {
+            if(ParryState == parryState.NORMAL)
+            {
+                canParry = false;
+                ParryState = parryState.RECOVERY;
+                return;
+            }
+            parrying = false;
+            parryTimer = 0;
+        }
+    }
+    void QueryMeleeInput()
+    {
         if (meleeButton.wasReleasedThisFrame && canAttack)
         {
             if (!attackCharged)
@@ -115,11 +222,11 @@ public class SwordAttack : MonoBehaviour
         if (meleeButton.isPressed)
         {
             buttonHeldTime += Time.deltaTime;
-            if(buttonHeldTime >= holdButtonDelay)
+            if (buttonHeldTime >= holdButtonDelay)
             {
                 chargingAttack = true;
                 chargingTimer += Time.deltaTime;
-                
+
                 animator.SetBool("ChargeStart", true);
             }
         }
@@ -127,7 +234,7 @@ public class SwordAttack : MonoBehaviour
         {
             chargingAttack = false;
             chargingTimer = 0;
-            
+
         }
     }
 
@@ -307,4 +414,5 @@ public class SwordAttack : MonoBehaviour
         }
         attackCollider.enabled = false;
     }
+    
 }
