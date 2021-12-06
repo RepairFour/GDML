@@ -51,7 +51,11 @@ public class EnemyStats : MonoBehaviour
         EnemyAnimateHit(ani);
         if (isDead())
 		{
-            GetComponent<EnemyAttack>().DisposeShockwave();
+            var enemyAttackScript = GetComponent<EnemyAttack>();
+            if (enemyAttackScript != null)
+            {
+                enemyAttackScript.DisposeShockwave();
+            }
             HUDCon.instance.UpdateKillCount();
             AudioHandler.instance.PlaySound("EnemyDeath",1f,true,1);
             GameManager.instance.bloodFuryState.FillBloodMeter(6f);
