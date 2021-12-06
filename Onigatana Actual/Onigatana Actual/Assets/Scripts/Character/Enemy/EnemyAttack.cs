@@ -38,6 +38,11 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float leapCooldown;
     [SerializeField] GameObject shockwaveHitbox;
     [SerializeField] float slowShockwaveDuration;
+    [SerializeField] float distanceToTriggerSwipe;
+    [SerializeField] int swipeDamage;
+    [SerializeField] LayerMask layersAttackMiss;
+    [Tooltip("The hitbox distance")]
+    [SerializeField] float swipeDistance;
 
     //Timers
     float attackCDtimer = 0;
@@ -61,6 +66,7 @@ public class EnemyAttack : MonoBehaviour
     bool leaping = false;
     bool shockwave = false;
     bool shockwaveSpawned = false;
+    bool swiping = false;
 
     void Start()
     {
@@ -147,7 +153,19 @@ public class EnemyAttack : MonoBehaviour
                     playerJumpPos.y = transform.position.y; //bug city
                     leapCDTimer = 0;
                 }
+				else
+				{
+                    if (Vector3.Distance(transform.position, player.transform.position) > distanceToTriggerSwipe)
+					{
+                        swiping = true;
+					}
+
+                }
             }
+            if(swiping)
+			{
+                SwipeAttack();
+			}
             if(leaping)
 			{
                 LeapSlam();
@@ -159,6 +177,35 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
+    void SwipeAttack()
+	{
+        //play animation
+        //box cast
+        attackChargeTimer += Time.deltaTime;
+        mat.color = Color.red;
+        if (attackChargeTimer > attackChargeTimerMax)
+        {
+            RaycastHit hit;
+            if (Physics.BoxCast(transform.position, Vector3.one, player.transform.position - transform.position, out hit, transform.rotation, swipeDistance,~layersAttackMiss))
+            {
+                player = hit.collider.GetComponent<PlayerStats>();
+                if (player != null)
+                {
+                    player.Hurt(swipeDamage); //need to update to new hurt
+                }                
+            }
+            attackChargeTimer = 0;
+            attackCDtimer = 0;
+            mat.color = originalColor;
+            swiping = false;
+            //if (hit.collider != null)
+            //{
+            //    Debug.Log(hit.collider.gameObject.name + " on the " + hit.collider.gameObject.layer + " layer.");
+            //}
+        }
+
+        //if hit deal dmg
+	}
     void LeapSlam()
 	{
         leapTimer += Time.deltaTime;

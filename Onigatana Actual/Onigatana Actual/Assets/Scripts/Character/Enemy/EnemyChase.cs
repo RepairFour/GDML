@@ -94,12 +94,14 @@ public class EnemyChase : MonoBehaviour
                     {
                         wasChasing = false;
                         loseInterestTimer = 0;
-                        ChasePlayer();
                     }
+                    ChasePlayer();
+                    Debug.Log("Chasing player");
                 }
                 else
                 {
                     FollowPatrol();
+                    Debug.Log("Following patrol");
                 }
             }
             else // get to optimal attack range
@@ -107,6 +109,7 @@ public class EnemyChase : MonoBehaviour
                 wasChasing = true;
                 enemyAttack.attackMode = true;
                 ChasePlayer();
+                Debug.Log("Chasing player 2");
             }
         }
 		else
@@ -127,9 +130,13 @@ public class EnemyChase : MonoBehaviour
             standingStillTimer > (standingStillTimerMax / 2) &&
             relocate == false)
         {
-            agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * basicAttackDistance);
-            relocatePos = agent.destination;
-            relocate = true;
+            if (enemyAttack.type != EnemyAttack.EnemyType.MELEE_COMBATANT)
+            {
+                agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * basicAttackDistance);
+                relocatePos = agent.destination;
+                relocate = true;
+                Debug.Log("Relocate to " + agent.destination);
+            }
         }
 
         if (!relocate)
@@ -219,30 +226,42 @@ public class EnemyChase : MonoBehaviour
         }
         else if(enemyAttack.type == EnemyAttack.EnemyType.RANGED_FODDER)
         {
-            aknowledgementTimer += Time.deltaTime;
-            runawayTimer -= Time.deltaTime;
-            if (aknowledgementTimer > aknowledgementTimerMax && runawayTimer < 0)
-            {
-                runawayDistance -= Vector3.Distance(player.transform.position, playerPos);
-                playerPos = player.transform.position;
-                aknowledgementTimer = 0;
-                if (runawayDistance <= 0)
-                {
-                    runawayTimer = runawayCooldown;
-                    runawayDistance = runawayDistanceMax;
-                    FindPath(transform.position);
-                    Debug.Log("Wating");
-                }
-
-            }
+            DistanceAndAknowledgementTracker();
             if (runawayTimer < 0)
             {
                 //the desired distance away from the player to shoot hit
                 FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
             }
         }
-
+        else if(enemyAttack.type == EnemyAttack.EnemyType.MELEE_COMBATANT)
+		{
+            DistanceAndAknowledgementTracker();
+            if (runawayTimer < 0) //if I can move
+            {
+                //the desired distance away from the player to shoot hit
+                FindPath(transform.position + ((playerPos - transform.position)* 0.5f));
+            }
+        }
         Debug.DrawLine(transform.position, agent.destination, Color.green);
+    }
+    private void DistanceAndAknowledgementTracker()
+	{
+        aknowledgementTimer += Time.deltaTime;
+        runawayTimer -= Time.deltaTime;
+        if (aknowledgementTimer > aknowledgementTimerMax && runawayTimer < 0)
+        {
+            runawayDistance -= Vector3.Distance(player.transform.position, playerPos);
+            playerPos = player.transform.position;
+            aknowledgementTimer = 0;
+            if (runawayDistance <= 0)
+            {
+                runawayTimer = runawayCooldown;
+                runawayDistance = runawayDistanceMax;
+                FindPath(transform.position);
+                Debug.Log("Wating");
+            }
+
+        }
     }
     private void FollowPatrol()
     {
