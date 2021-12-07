@@ -70,10 +70,17 @@ public class EnemyChase : MonoBehaviour
         agentWalkSpeed = agent.speed;
         agentAccelleration = agent.acceleration;
         wayManager = FindObjectOfType<WaypointManager>();
-        path = new List<Transform>(wayManager.paths[patrolPath].waypoints);
+
+        if (enemyAttack.turretMode == false)
+        {
+            path = new List<Transform>(wayManager.paths[patrolPath].waypoints);
+        }
+
         NavMeshAgent = GetComponent<NavMeshAgent>();
         runawayDistanceMax = runawayDistance;
+
         if(enemyAttack.turretMode)
+
 		{
             visionDistance *= 500;
             basicAttackDistance *= 500;
