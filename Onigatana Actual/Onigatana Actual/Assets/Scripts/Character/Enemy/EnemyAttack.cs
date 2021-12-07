@@ -6,12 +6,13 @@ using UnityEngine.AI;
 public class EnemyAttack : MonoBehaviour
 {
     public enum EnemyType
-	{
+    {
         MELEE_FODDER,
         RANGED_FODDER,
         RANGED_COMBATANT,
-        MELEE_COMBATANT
-	}
+        SHIELD_COMBATANT,
+        JUMPER_COMBATANT
+    }
 
     [Header("General Enemy Variables")]
     public EnemyType type;
@@ -19,7 +20,7 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float attackCDtimerMax;
     [SerializeField] [Range(1, 3)] float firstAttackDelayMod = 1;
     [SerializeField] float attackChargeTimerMax;
-    [SerializeField] Animation chargeAttackAni;    
+    [SerializeField] Animation chargeAttackAni;
     //Hiddens
     [HideInInspector] public bool attackMode = false;
     [HideInInspector] public float basicAttackDistance;
@@ -29,8 +30,8 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed;
 
-    [Header("Melee Combatant Variables")]
-    [SerializeField] float distanceToTriggerLeap;    
+    [Header("Jumper Combatant Variables")]
+    [SerializeField] float distanceToTriggerLeap;
     [SerializeField] float leapDuration;
     [SerializeField] float leapHeight;
     [Tooltip("Percentage of the distance between this and the player")]
@@ -38,6 +39,7 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float leapCooldown;
     [SerializeField] GameObject shockwaveHitbox;
     [SerializeField] float slowShockwaveDuration;
+    [Header("Shield Combatant Variables")]
     [SerializeField] float distanceToTriggerSwipe;
     [SerializeField] int swipeDamage;
     [SerializeField] LayerMask layersAttackMiss;
@@ -76,7 +78,7 @@ public class EnemyAttack : MonoBehaviour
         mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
         originalColor = mat.color;
         agent = GetComponent<NavMeshAgent>();
-        if (type == EnemyType.MELEE_COMBATANT)
+        if (type == EnemyType.JUMPER_COMBATANT)
         {
             shockwaveNormalPos = shockwaveHitbox.transform.localPosition;
         }
@@ -135,7 +137,7 @@ public class EnemyAttack : MonoBehaviour
             }
         }
 
-        if(type == EnemyType.MELEE_COMBATANT)
+        else if(type == EnemyType.JUMPER_COMBATANT)
 		{
             leapCDTimer += Time.deltaTime;
             if (attackMode && attackCDtimer > attackCDtimerMax)
@@ -153,19 +155,19 @@ public class EnemyAttack : MonoBehaviour
                     playerJumpPos.y = transform.position.y; //bug city
                     leapCDTimer = 0;
                 }
-				else
-				{
-                    if (Vector3.Distance(transform.position, player.transform.position) > distanceToTriggerSwipe)
-					{
-                        swiping = true;
-					}
+				//else
+				//{
+    //                if (Vector3.Distance(transform.position, player.transform.position) > distanceToTriggerSwipe)
+				//	{
+    //                    swiping = true;
+				//	}
 
-                }
+    //            }
             }
-            if(swiping)
-			{
-                SwipeAttack();
-			}
+   //         if(swiping)
+			//{
+   //             SwipeAttack();
+			//}
             if(leaping)
 			{
                 LeapSlam();
@@ -174,6 +176,22 @@ public class EnemyAttack : MonoBehaviour
 			{
                 Shockwave();
 			}
+        }
+        else if(type == EnemyType.SHIELD_COMBATANT)
+		{
+            if (attackMode && attackCDtimer > attackCDtimerMax)
+			{
+                if (Vector3.Distance(transform.position, player.transform.position) > distanceToTriggerSwipe)
+				{
+                    swiping = true;
+				}
+
+            }
+            if (swiping)
+            {
+                SwipeAttack();
+            }
+
         }
     }
 

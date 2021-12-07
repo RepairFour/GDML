@@ -130,7 +130,7 @@ public class EnemyChase : MonoBehaviour
             standingStillTimer > (standingStillTimerMax / 2) &&
             relocate == false)
         {
-            if (enemyAttack.type != EnemyAttack.EnemyType.MELEE_COMBATANT)
+            if (enemyAttack.type != EnemyAttack.EnemyType.SHIELD_COMBATANT)
             {
                 agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * basicAttackDistance);
                 relocatePos = agent.destination;
@@ -233,13 +233,22 @@ public class EnemyChase : MonoBehaviour
                 FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
             }
         }
-        else if(enemyAttack.type == EnemyAttack.EnemyType.MELEE_COMBATANT)
+        else if(enemyAttack.type == EnemyAttack.EnemyType.SHIELD_COMBATANT)
 		{
             DistanceAndAknowledgementTracker();
             if (runawayTimer < 0) //if I can move
             {
                 //the desired distance away from the player to shoot hit
                 FindPath(transform.position + ((playerPos - transform.position)* 0.5f));
+            }
+        }
+        else if (enemyAttack.type == EnemyAttack.EnemyType.JUMPER_COMBATANT)
+        {
+            DistanceAndAknowledgementTracker();
+            if (runawayTimer < 0) //if I can move
+            {
+                //the desired distance away from the player to shoot hit
+                FindPath(transform.position + ((playerPos - transform.position) * 0.5f));
             }
         }
         Debug.DrawLine(transform.position, agent.destination, Color.green);
