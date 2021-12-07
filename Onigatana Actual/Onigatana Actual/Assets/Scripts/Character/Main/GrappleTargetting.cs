@@ -21,8 +21,9 @@ public class GrappleTargetting : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        input = new PlayerMap();
-        input.Enable();
+        
+        input = InputManager.instance.input;
+        //input.Enable();
 
         grappleButton = (ButtonControl)input.Player.Hook.controls[0];
     }

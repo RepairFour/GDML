@@ -26,7 +26,7 @@ public class SwordAttack : MonoBehaviour
     public List<string> attacks = new List<string>();
 
     [Header("Player")]
-    public Controller controller;
+    public MainCharacterController controller;
 
     [Header("AttackColliders")]
     public BoxCollider attackCollider;
@@ -66,8 +66,7 @@ public class SwordAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        input = new PlayerMap();
-        input.Enable();
+        input = InputManager.instance.input;
 
         meleeButton = (ButtonControl)input.Player.Melee.controls[0];
 

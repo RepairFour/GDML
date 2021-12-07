@@ -77,9 +77,7 @@ public class Controller : MonoBehaviour
     public float whipForce;
     public float stoppingWhipDistance;
     public float whipPullDelay;
-    
 
-   
     public float hookCooldown;
     [Space]
     [Header("Blink Strike Variable")]
@@ -96,7 +94,6 @@ public class Controller : MonoBehaviour
     public Image crossHair;
     public Slider dash1;
     public Slider dash2;
-
 
     [Header("Testing Enemy Marks Variables")]
     public Mark markedEnemy;
@@ -724,16 +721,8 @@ public class Controller : MonoBehaviour
 
         if (sliding)
         {
-            
-            
             slidingTimer += Time.deltaTime;
             currentSpeed = maxSpeed + slideMomentum;
-            
-            //if (currentSpeed > globalMaxSpeed)
-            //{
-            //    currentSpeed = globalMaxSpeed;
-            //}
-            
             HandleSlideVelocity();
             HandleMomentumSpeed();
             HandleGravity(yspeed);
@@ -1035,7 +1024,6 @@ public class Controller : MonoBehaviour
                 currentSpeed = maxJumpStrafeSpeed;
             }
         }
-
     }
     void StrafeAccelerate()
     {
