@@ -73,6 +73,11 @@ public class EnemyChase : MonoBehaviour
         path = new List<Transform>(wayManager.paths[patrolPath].waypoints);
         NavMeshAgent = GetComponent<NavMeshAgent>();
         runawayDistanceMax = runawayDistance;
+        if(enemyAttack.turretMode)
+		{
+            visionDistance *= 500;
+            basicAttackDistance *= 500;
+		}
     }
 
     // Update is called once per frame
@@ -84,32 +89,43 @@ public class EnemyChase : MonoBehaviour
         }
         if (debugDestination == null)
         {
-            CanISeeThePlayer(); // fills out chasePlayer bool 
-            if (chasePlayer == false)
+            if (enemyAttack.turretMode == false)
             {
-                if (wasChasing)
+                CanISeeThePlayer(); // fills out chasePlayer bool 
+                if (chasePlayer == false)
                 {
-                    loseInterestTimer += Time.deltaTime;
-                    if (loseInterestTimer >= loseInterestTimerMax)
+                    if (wasChasing)
                     {
-                        wasChasing = false;
-                        loseInterestTimer = 0;
+                        loseInterestTimer += Time.deltaTime;
+                        if (loseInterestTimer >= loseInterestTimerMax)
+                        {
+                            wasChasing = false;
+                            loseInterestTimer = 0;
+                        }
+                        ChasePlayer();
+                        Debug.Log("Chasing player");
                     }
-                    ChasePlayer();
-                    Debug.Log("Chasing player");
+                    else
+                    {
+                        FollowPatrol();
+                        Debug.Log("Following patrol");
+                    }
                 }
-                else
+                else // get to optimal attack range
                 {
-                    FollowPatrol();
-                    Debug.Log("Following patrol");
+                    wasChasing = true;
+                    enemyAttack.attackMode = true;
+                    ChasePlayer();
+                    Debug.Log("Chasing player 2");
                 }
             }
-            else // get to optimal attack range
-            {
-                wasChasing = true;
-                enemyAttack.attackMode = true;
-                ChasePlayer();
-                Debug.Log("Chasing player 2");
+			else
+			{
+                CanISeeThePlayer();
+                if(chasePlayer)
+				{
+                    enemyAttack.attackMode = true;
+                }
             }
         }
 		else
@@ -130,7 +146,7 @@ public class EnemyChase : MonoBehaviour
             standingStillTimer > (standingStillTimerMax / 2) &&
             relocate == false)
         {
-            if (enemyAttack.type != EnemyAttack.EnemyType.SHIELD_COMBATANT)
+            if (enemyAttack.type != EnemyAttack.EnemyType.SHIELD_COMBATANT || enemyAttack.turretMode)
             {
                 agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * basicAttackDistance);
                 relocatePos = agent.destination;
@@ -226,11 +242,14 @@ public class EnemyChase : MonoBehaviour
         }
         else if(enemyAttack.type == EnemyAttack.EnemyType.RANGED_FODDER)
         {
-            DistanceAndAknowledgementTracker();
-            if (runawayTimer < 0)
+            if (!enemyAttack.turretMode)
             {
-                //the desired distance away from the player to shoot hit
-                FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
+                DistanceAndAknowledgementTracker();
+                if (runawayTimer < 0)
+                {
+                    //the desired distance away from the player to shoot hit
+                    FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
+                }
             }
         }
         else if(enemyAttack.type == EnemyAttack.EnemyType.SHIELD_COMBATANT)
