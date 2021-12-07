@@ -29,6 +29,8 @@ public class EnemyAttack : MonoBehaviour
     [Header("Ranged Enemy Variables")]
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed;
+    [Tooltip("Turns ranged enemies into stationary shooting enemy")]
+    public bool turretMode;
 
     [Header("Jumper Combatant Variables")]
     [SerializeField] float distanceToTriggerLeap;
@@ -155,19 +157,9 @@ public class EnemyAttack : MonoBehaviour
                     playerJumpPos.y = transform.position.y; //bug city
                     leapCDTimer = 0;
                 }
-				//else
-				//{
-    //                if (Vector3.Distance(transform.position, player.transform.position) > distanceToTriggerSwipe)
-				//	{
-    //                    swiping = true;
-				//	}
 
-    //            }
             }
-   //         if(swiping)
-			//{
-   //             SwipeAttack();
-			//}
+
             if(leaping)
 			{
                 LeapSlam();
