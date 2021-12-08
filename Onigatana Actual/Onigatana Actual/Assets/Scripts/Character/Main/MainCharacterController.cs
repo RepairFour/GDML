@@ -6,29 +6,29 @@ public class MainCharacterController : MonoBehaviour
 {
     #region Inspector Variables
     [Header("Character Variables")]
-    public float normalHeight;
+    public float normalHeight; //Character Controller heights
     public float slideHeight;
     [Space]
 
     [Header("Animation Variables")]
-    public Animator animator;
-    public Animator leanAnimator;
+    public Animator animator; //Character Animations
+    public Animator leanAnimator; //Camera Animations
     [Space]
 
     [Header("Camera Variables")]
     public float cameraHeight = 1f;
     public float slideCameraHeight = 0.5f;
-    public Transform cameraTransform;
+    public Transform cameraTransform; //Highest parent of main camera
     [Space]
 
-    [Header("Mouse sensitivity values")]
+    [Header("Mouse Variables")]
     public float xSensitivity;
     public float ySensitivity;
-    public float yMin;
+    public float yMin; //Locks the rotation up and down
     public float yMax;
     [Space]
 
-    [Header("UI Variables")]
+    [Header("HUD Variables")]
     public ParticleSystem animeLines;
     public Image crossHair;
     public Slider dash1;
@@ -36,34 +36,34 @@ public class MainCharacterController : MonoBehaviour
     [Space]
 
     [Header("Movement Variables")]
-    public float walkingMaxSpeed;
-    public float globalMaxSpeed;
+    public float walkingMaxSpeed; //Max speed when using WASD
+    public float globalMaxSpeed; //Cap on all modifiers
     [Space]
 
     public float deccelleration;
     public float accelleration;
-    public float airControlModifier;
+    public float airControlModifier; //Reduces the players control in the air 
     [Space]
 
-    public float directionChangeSpeed;
+    public float directionChangeSpeed; //Speed player is reduced to when moving in the oppisite direction8
     [Space]
-    
+
     [Header("Strafe Movement Variables")]
-    public float maxJumpStrafeSpeed;
-    public float strafeAcceleration;
-    public float strafeJumpDeccelleration;
+    public float maxJumpStrafeSpeed; //Max speed at which player can strafe jump`
+    public float strafeAcceleration; //How quickly player accelerates with strafejump 
+    public float strafeJumpDeccelleration; //How quickly strafe jump speed falls off once player has stopped strafe jumping
     [Space]
-    
+
     [Header("Jump Variables")]
     public int maxNumberOfJumps;
     public float jumpSpeed;
     public float minAirTimeForDoubleJump;
-    public float minJumpingTime;
+    public float minJumpingTime; //This stops the grounded check for X seconds
     [Space]
-    
+
     [Header("Grounded Variables")]
-    public float timeGroundedOffset;
-    public LayerMask layerMask;
+    public float timeGroundedOffset; //Time player has to be grounded before they are considered to be actually grounded
+    public LayerMask layerMask; //Layer mask that determines what the controller considers as ground
     [Space]
 
     [Header("Gravity Variables")]
@@ -71,13 +71,13 @@ public class MainCharacterController : MonoBehaviour
     [Space]
 
     [Header("Slide Variables")]
-    public float slideDirectionalScalar;
-    public float slideAccelerate;
+    [Range (0, 1)] public float slideDirectionalScalar; //Determines how much left and right movement the player has in slide 
+    public float slideDrag; 
     public float slideDeccelerate;
-    public float maxSlideMomentum;
+    public float maxSlideMomentum; 
     public float minSlideTime;
     public float slideCooldown;
-    public float momentumDrag;
+    public float momentumDrag; //How quickly momentum drops off 
     [Space]
 
     [Header("Dash Variables")]
@@ -85,24 +85,25 @@ public class MainCharacterController : MonoBehaviour
     public float dashTime;
     public int maxDashAmount;
     public float dashCooldown;
+    public bool dashNoMove;
 
     [Space]
     [Header("HookShot Variables")]
-    public GrappleTargetting grappleSystem;
+    public GrappleTargetting grappleSystem; //Targetting
     [Space]
-    public LineRenderer lr;
+    public LineRenderer lr; //Draws the grapple line
+    
+    [Space]
+    public Transform hookShotTransform; //Where the line is drawn from 
+    public Transform hookShotHand; //This may be Depreceated 
 
     [Space]
-    public Transform hookShotTransform;
-    public Transform hookShotHand;
-
-    [Space]
-    public float hookShotThrowSpeed;
-    public float momentumExtraSpeed = 7f;
-    public float hookShotSpeed;
+    public float hookShotThrowSpeed; //How fast the hookshot reaches its destination
+    public float momentumExtraSpeed = 7f; //How much momentum is added at the end of the hookshot
+    public float hookShotSpeed; //How quickly the player travels while hookshoting
     public float hookCooldown;
     [Space]
-    public bool floatAfterHookShot = false;
+    public bool floatAfterHookShot = false; //If there is a small gravity cancel at the end of hookshot movement
 
     #endregion
 
@@ -110,7 +111,7 @@ public class MainCharacterController : MonoBehaviour
     CharacterController cc;
     
     float rotationX;
-    float rotationY;
+    float rotationY; 
 
 
     Vector3 inputDirection;
@@ -121,14 +122,14 @@ public class MainCharacterController : MonoBehaviour
     Vector3 currentVelocity;
     float currentSpeed;
 
-    Vector3 currentMomentum;
+    Vector3 currentMomentum; //Gets added to current velocity in some cases 
 
-    float currentSlideMomentum;
+    float currentSlideMomentum; //Gets added to current speed in some cases
 
-    float groundedTimer;
-    bool airControl;
+    float groundedTimer; //How long you have been grounded for
+    bool airControl; //If air control is activated or not 
     
-    RaycastHit[] hit;
+    RaycastHit[] hit; // Array used to store hit data from the grounded ray cast
 
     #region Jump Variables
     float jumpingTimer;
@@ -142,7 +143,7 @@ public class MainCharacterController : MonoBehaviour
     #endregion
 
     #region Slide Variables
-    bool maxSlideSpeedHit;
+    bool slideMomentumExpended;
     bool slideOnCooldown;
     float slidingTimer;
     float slideCooldownTimer;
@@ -151,14 +152,12 @@ public class MainCharacterController : MonoBehaviour
 
     #region Input
     PlayerMap input;
-    private ButtonControl jump;
-    private ButtonControl slide;
-    private ButtonControl hook;
-    private ButtonControl blinkStrike;
+    private ButtonControl jumpButton;
+    private ButtonControl slideButton;
     #endregion
 
     #region DashVariables
-    bool dashNoMove;
+    //bool dashNoMove;
     Vector3 dashNoMoveDirection;
     int currentNumberOfDashes;
     float dashingTimer;
@@ -174,21 +173,23 @@ public class MainCharacterController : MonoBehaviour
     
     #region AnimationVariables
     private bool slideTriggerSet = false;
-    float leanIncrement = 0.05f;
+    float leanIncrement = 0.05f; //Camera animation variable
     #endregion
 
     #region Blink Variables
+    /*Blink is techinically a dash due to the way 
+     * the character controller works */
     bool blinkStikeActivated = false;
-    float blinkStoppingDistance;
     public bool isBlinkStrikeActivated { get => blinkStikeActivated; }
-    Vector3 positionToTeleport;
+    
+    float blinkStoppingDistance; //How far away from the positionToTeleport the controller will stop
+    Vector3 positionToTeleport; //Intial target area of blink/teleport
     float blinkSpeed;
-
     #endregion
 
     #region Charge Attack Variables
     bool chargingStrongAttack;
-    float chargeSlowDown;
+    float chargeSlowDown; //Value from 0 - 1 that determines how much slower the player goes while chargin and attack
     #endregion
 
     #region HookShot Variables
@@ -202,8 +203,8 @@ public class MainCharacterController : MonoBehaviour
     //bool hookShotMove;
     bool hookOnCooldown;
 
-    float hookShotSize;
-    float hookCooldownTimer;
+    float hookShotSize; //How far hookshot has travelled
+    float hookCooldownTimer; 
     
     #endregion
 
@@ -217,10 +218,9 @@ public class MainCharacterController : MonoBehaviour
         cc = GetComponent<CharacterController>();
         currentNumberOfDashes = maxDashAmount;
 
-        jump = (ButtonControl)input.Player.Jump.controls[0];         //Captures the controls for various button clicks
-        hook = (ButtonControl)input.Player.Hook.controls[0];         //Captures the controls for various button clicks
-        slide = (ButtonControl)input.Player.Slide.controls[0];       //Captures the controls for various button clicks
-        blinkStrike = (ButtonControl)input.Player.Melee.controls[0]; //Captures the controls for various button clicks
+        jumpButton = (ButtonControl)input.Player.Jump.controls[0];         //Captures the controls for various button clicks
+        slideButton = (ButtonControl)input.Player.Slide.controls[0];       //Captures the controls for various button clicks
+        
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -251,6 +251,7 @@ public class MainCharacterController : MonoBehaviour
                 break;
         }
 
+        // Rotation of the player and the camera
         var mouseVector = input.Player.Mouse.ReadValue<Vector2>();
 
         rotationX -= mouseVector.y * Time.deltaTime * xSensitivity;//inputMap.FindAction("MouseLocation").ReadValue<Vector2>().y;
@@ -268,10 +269,12 @@ public class MainCharacterController : MonoBehaviour
         transform.rotation = Quaternion.Euler(0, rotationY, 0);
         cameraTransform.rotation = Quaternion.Euler(rotationX, rotationY, 0);
 
+        //Check inputs this frame
         QueueHookShot();
         QueueJump();
         QueueSlide();
         QueueDash();
+
         HandleCooldowns();
 
         if (hookShotFiring)
@@ -295,13 +298,15 @@ public class MainCharacterController : MonoBehaviour
 
         if(movementState == MovementState.SLIDING)
         {
+            //TODO: Needs to be done as a lerp or animation instead 
+            //Set slide heights
             cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
             cc.height = slideHeight;
         }
         
         if (currentMomentum.magnitude >= 0f)
         {
-
+            //Apply drag to momentum
             currentMomentum -= currentMomentum * momentumDrag * Time.deltaTime;
             if (currentMomentum.magnitude < .01f)
             {
@@ -314,12 +319,12 @@ public class MainCharacterController : MonoBehaviour
     }
     #endregion
 
-    #region Movement Functions8
+    #region Movement Functions
 
     #region Direction Functions
-    void GetMoveDirection()
+    void UpdateMoveDirection()
     {
-        //IF we have input
+        //If we have input
         if (Mathf.Abs(inputDirection.x) > 0 || Mathf.Abs(inputDirection.y) > 0)
         {
             lastInputDirection = inputDirection; 
@@ -333,16 +338,21 @@ public class MainCharacterController : MonoBehaviour
     Vector3 GetSlideMoveDirection()
     {
         var inputS = input.Player.Move.ReadValue<Vector2>();
-        if (Mathf.Abs(inputS.y) > 0)
+        if (Mathf.Abs(inputS.y) > 0)//If the player is holding either w or s
         {
+            //Cache the A and D movement 
             var slideDirection = new Vector3(inputS.x, 0, 0);
+            //Turn that into a direction in world space
             slideDirection = transform.TransformDirection(slideDirection);
+            /*Scale that vector by a number set in the inspector,
+             * This determines how much of an affect the slideDirection will 
+             * have on the current move direction*/
             return slideDirection * slideDirectionalScalar;
         }
         return Vector3.zero;
     }
 
-    private void HookShotDirection()
+    private void UpdateHookShotDirection()
     {
         hookShotDirection = (hookHitPoint - transform.position).normalized;
     }
@@ -352,14 +362,14 @@ public class MainCharacterController : MonoBehaviour
     #region Ground/Air
     void GroundMove()
     {
-        if (currentMoveDirection.magnitude == 0 && movementState == MovementState.NORMAL)
-        {
-            Deccellerate();
-            currentMomentum = Vector3.zero;
-            currentSlideMomentum = 0;
-        }
-        float yspeed = currentVelocity.y;
-        currentVelocity.y = 0;
+        //if (currentMoveDirection.magnitude == 0 && movementState == MovementState.NORMAL)
+        //{
+        //    Deccellerate();
+        //    currentMomentum = Vector3.zero;
+        //    currentSlideMomentum = 0;
+        //}
+        float yspeed = currentVelocity.y; //Capture the y velocity for later
+        currentVelocity.y = 0; //Negate gravity
 
         if (queueSlide)
         {
@@ -378,12 +388,11 @@ public class MainCharacterController : MonoBehaviour
                 return;
                 
             case MovementState.SLIDING:
-               
                 currentSpeed = walkingMaxSpeed + currentSlideMomentum;
                 HandleSlideVelocity();
                 HandleMomentumSpeed();
-                HandleGravity(yspeed);
-                HandleJump();
+                HandleGravity(yspeed); //Increases gravity so player sticks to ground
+                HandleJump(); //Allows us to jump out of slide
                 return;
 
             case MovementState.HOOKSHOT:
@@ -392,13 +401,9 @@ public class MainCharacterController : MonoBehaviour
                 return;
                 
             case MovementState.NORMAL:
-                GetMoveDirection();
+                UpdateMoveDirection();
                 if (Mathf.Abs(inputDirection.x) > 0.01f || Mathf.Abs(inputDirection.y) > 0.01f)
                 {
-                    //if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
-                    //{
-                    //    StrafeAccelerate();
-                    //}
                     Accelerate();
                     HandleVelocity();
                 }
@@ -413,7 +418,7 @@ public class MainCharacterController : MonoBehaviour
 
                 HandleChargingAttack();
 
-                HandleGravity(0);
+                HandleGravity(0); //Basic level of gravity applied
                 HandleJump();
                 break;
         }
@@ -421,51 +426,39 @@ public class MainCharacterController : MonoBehaviour
 
     void AirMove()
     {
-        //if (currentMoveDirection.magnitude == 0)
-        //{
-        //    AirDecellerate();
-        //    //momentumExtraSpeed = 0;
-        //    momentum = Vector3.zero;
-        //    slideMomentum = 0;
-        //}
+
 
         float yspeed = currentVelocity.y;
-        GetMoveDirection();
+        UpdateMoveDirection();
 
-        /* Input is read in on the x and y axis and stored in the variable inputDirection
-         * it is converted to x and z and then stored in moveDirection which is then transform
-         * into the objects world space axis. Input direction is used here to make sure the 
-         * player is strafing in the air. If they are they go faster. This emulates strafe jumping 
-         * to a certain extent */
+        //This needs to be revisited if we ever add controller support
+        //Need to look at possibly doing this as dot product calculation
         if (((lastInputDirection.x + inputDirection.x == 0) && Mathf.Abs(inputDirection.x) > 0)
             || ((lastInputDirection.y + inputDirection.y == 0) && Mathf.Abs(inputDirection.y) > 0))
         {
-            Debug.Log(lastInputDirection + " " + inputDirection);
-            Debug.Log("Activate Air Control");
             airControl = true;
         }
 
         switch (movementState)
         {
             case MovementState.NORMAL:
+                /* Input is read in on the x and y axis and stored in the variable inputDirection
+                 * it is converted to x and z and then stored in moveDirection which is then transform
+                 * into the objects world space axis. Input direction is used here to make sure the 
+                 * player is strafing in the air. If they are they go faster. This emulates strafe jumping 
+                 * to a certain extent */
                 if (Mathf.Abs(inputDirection.x) > 0 && Mathf.Abs(inputDirection.y) > 0)
                 {
                     JumpStrafeAccelerate();
                     AddAirControl();
                     HandleVelocity();
-                    HandleGravity(yspeed);
-                    HandleJump();
-                    return;
                 }
 
-                if (Mathf.Abs(inputDirection.y) > 0 || Mathf.Abs(inputDirection.x) > 0)
+                else if (Mathf.Abs(inputDirection.y) > 0 || Mathf.Abs(inputDirection.x) > 0)
                 {
-
                     Accelerate();
                     AddAirControl();
-                    currentVelocity = currentMoveDirection * currentSpeed;
-                    //currentVelocity.y = 0;
-
+                    HandleVelocity();
                 }
                 else
                 {
@@ -474,32 +467,21 @@ public class MainCharacterController : MonoBehaviour
                 HandleGravity(yspeed);
                 HandleJump();
                 break;
+
             case MovementState.DASHING:
                 HandleDash();
                 if (movementState == MovementState.HOOKSHOT)
                 {
                     CancelHookShotMomentumWallKick();
                 }
-                return;
+                break;
                
             case MovementState.HOOKSHOT:
                 {
                     HookShotMove();
                 }
-                return;
+                break;
         }
-
-        
-
-        //if (hookShotMove)
-        //{
-        //    HookShotMove();
-        //    return;
-        //}
-        //if (enemyStruck != null && !hookShotFiring)
-        //{
-        //    HookShotWhip();
-        //}
     }
 
     #endregion
@@ -524,6 +506,7 @@ public class MainCharacterController : MonoBehaviour
     {
         if (airControl)
         {
+            //Slows direction change while in the airborne
             currentSpeed *= airControlModifier;
             airControl = false;
         }
@@ -555,24 +538,17 @@ public class MainCharacterController : MonoBehaviour
     {
         if (movementState == MovementState.SLIDING)
         {
-            if (!maxSlideSpeedHit)
+            if (!slideMomentumExpended)
             {
-                currentSlideMomentum -= slideAccelerate * Time.deltaTime;
-                //if(slideMomentum >= maxSlideMomentum)
-                //{
-                //    slideMomentum = maxSlideMomentum;
-                //    maxSlideSpeedHit = true;
-                //    slideMomentum = 0;
-                //}
+                currentSlideMomentum -= slideDrag * Time.deltaTime;
                 if (currentSlideMomentum <= 0)
                 {
                     currentSlideMomentum = 0;
-                    maxSlideSpeedHit = true;
-                    CancelSlide();
-                    //slideMomentum = 0;
+                    slideMomentumExpended = true;
+                    //CancelSlide();
                 }
             }
-            else
+            else //After slide momentum is used slow player down to walking speed
             {
                 currentSpeed -= slideDeccelerate * Time.deltaTime;
                 if (currentSpeed <= walkingMaxSpeed)
@@ -592,34 +568,23 @@ public class MainCharacterController : MonoBehaviour
     #region DashFunctions
     void HandleDash()
     {
-        if (currentMomentum.magnitude > 0)
+        if (currentMomentum.magnitude > 0) //Reset Momentum
         {
             currentMomentum = Vector3.zero;
         }
-
-        if (dashNoMove)
-        {
-            currentVelocity = dashSpeed * dashNoMoveDirection;
-        }
-        else
-        {
-            currentVelocity = dashSpeed * currentMoveDirection;
-        }
+        currentVelocity = dashSpeed * currentMoveDirection; //Apply dash
         animeLines.gameObject.SetActive(true);
-
     }
-
-
     #endregion
 
     #region BlinkFunctions
 
-    public void HandleBlinkStrike(Vector3 positionToBlink)
+    void HandleBlinkStrike(Vector3 positionToBlink)
     {
         TeleportToPosition(positionToBlink);
     }
 
-    public void TeleportToPosition(Vector3 positionToTeleport)
+    private void TeleportToPosition(Vector3 positionToTeleport)
     {
         //foreach(Collider c in cc.)
         var currentPosition = transform.position;
@@ -632,7 +597,6 @@ public class MainCharacterController : MonoBehaviour
             Physics.IgnoreLayerCollision(7, 0, false);
             //cc.detectCollisions = true;
             blinkStikeActivated = false;
-            Debug.Log("Function Called");
         }
 
     }
@@ -659,7 +623,7 @@ public class MainCharacterController : MonoBehaviour
     {
         if (chargingStrongAttack)
         {
-            currentVelocity /= chargeSlowDown;
+            currentVelocity *= chargeSlowDown;
         }
     }
 
@@ -697,7 +661,7 @@ public class MainCharacterController : MonoBehaviour
 
     private void HookShotMove()
     {
-        HookShotDirection();
+        UpdateHookShotDirection();
         currentVelocity = hookShotSpeed * hookShotDirection;
         hookShotTransform.LookAt(hookHitPoint);
         lr.SetPosition(0, hookShotTransform.position);
@@ -738,7 +702,6 @@ public class MainCharacterController : MonoBehaviour
             {
                 currentSpeed = directionChangeSpeed;
             }
-
         }
         if (Mathf.Abs(inputDirection.y) == 1)
         {
@@ -759,6 +722,8 @@ public class MainCharacterController : MonoBehaviour
             currentSpeed += accelleration * Time.deltaTime;
         }
 
+        //Allows the user to exceed maxWalkingSpeed if they are strafe jumping otherwise cap
+        //there speed at the max walking speed
         if (currentSpeed >= walkingMaxSpeed && groundedTimer >= timeGroundedOffset)
         {
             currentSpeed = Mathf.Lerp(currentSpeed, walkingMaxSpeed, strafeJumpDeccelleration * Time.deltaTime);
@@ -830,27 +795,24 @@ public class MainCharacterController : MonoBehaviour
     {
         currentSpeed = walkingMaxSpeed;
         currentSlideMomentum = 0;
-        maxSlideSpeedHit = false;
+        slideMomentumExpended = false;
         movementState = MovementState.NORMAL;
         cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
         
         slideOnCooldown = true;
-        slideTriggerSet = false;
+        //slideTriggerSet = false;
     }
 
     private void CancelHookShot()
     {
         movementState = MovementState.NORMAL;
-        //hookShotMove = false;
         hookShotFiring = false;
         hookShotSize = 0;
         currentVelocity.y = 0;
-        //hookShotTransform.localScale = new Vector3(1, 1, hookShotSize);
         hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
         enemyStruck = null;
-        //lr.positionCount = 0;
     }
 
     private void CancelHookShotMomentumWallKick()
@@ -868,7 +830,7 @@ public class MainCharacterController : MonoBehaviour
     void CancelSlideForHookShot()
     {
         currentSlideMomentum = 0;
-        maxSlideSpeedHit = false;
+        slideMomentumExpended = false;
         movementState = MovementState.HOOKSHOT;
         slideTriggerSet = false;
         cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
@@ -890,6 +852,9 @@ public class MainCharacterController : MonoBehaviour
             queueJump = true;
             if (groundedState != GroundedState.GROUNDED && jumpNumber != maxNumberOfJumps)
             {
+                /*This is if the player walks off of an object 
+                 * it is the amount of time they have to input a jump
+                 * before they forfiet the double jump */
                 if (timeInAir >= minAirTimeForDoubleJump)
                 {
                     jumpNumber = 1;
@@ -897,14 +862,14 @@ public class MainCharacterController : MonoBehaviour
             }
         }
 
-        if (jump.wasReleasedThisFrame)
+        if (jumpButton.wasReleasedThisFrame)
         {
             queueJump = false;
         }
     }
     private void QueueSlide()
     {
-        if (slide.wasPressedThisFrame && !queueSlide && !slideOnCooldown)
+        if (slideButton.wasPressedThisFrame && !queueSlide && !slideOnCooldown)
         {
             if (currentSpeed > 0)
             {
@@ -913,12 +878,12 @@ public class MainCharacterController : MonoBehaviour
             }
         }
 
-        if (slidingTimer > minSlideTime)
+        if (slidingTimer > minSlideTime && slideButton.wasReleasedThisFrame)
         {
             queueSlide = false;
             slidingTimer = 0f;
             currentSlideMomentum = 0f;
-            maxSlideSpeedHit = true;
+            slideMomentumExpended = true;
         }
 
     }
@@ -933,7 +898,6 @@ public class MainCharacterController : MonoBehaviour
         {
             movementState = MovementState.DASHING;
             dashNoMove = false;
-            //hookShotCancelled = true;
             currentNumberOfDashes--;
             animeLines.gameObject.SetActive(true);
             //animator.SetTrigger("Dash");
@@ -942,7 +906,7 @@ public class MainCharacterController : MonoBehaviour
         {
             movementState = MovementState.DASHING;
             dashNoMove = true;
-            dashNoMoveDirection = transform.forward;
+            //dashNoMoveDirection = transform.forward;
             currentNumberOfDashes--;
             animeLines.gameObject.SetActive(true);
             //animator.SetTrigger("Dash");
@@ -957,7 +921,7 @@ public class MainCharacterController : MonoBehaviour
             hookHitPoint = grappleSystem.currentTargettedObject.transform.position;
             //Debug.Log(hit.collider.name);
             hookShotFiring = true;
-            HookShotDirection();
+            UpdateHookShotDirection();
             hookShotSize = 0f;
             hookShotTransform.LookAt(hookHitPoint);
         }
@@ -1069,7 +1033,7 @@ public class MainCharacterController : MonoBehaviour
                 foreach (RaycastHit c in hit)
                 {
                     groundedState = GroundedState.GROUNDED;
-                    //Debug.Log(hit.Length);
+      
                     jumpingTimer = 0;
                     jumpNumber = 0;
                     //animator.SetTrigger("HitGround");
