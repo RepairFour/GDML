@@ -523,8 +523,7 @@ public class MainCharacterController : MonoBehaviour
             queueJump = false;
             groundedState = GroundedState.INAIR;
             groundedTimer = 0;
-            //CancelSlideForHookShot();
-            //CancelSlide();
+            CancelSlideJump();
             //animator.SetTrigger("Jump");
 
             jumpNumber++;
@@ -802,6 +801,17 @@ public class MainCharacterController : MonoBehaviour
         
         slideOnCooldown = true;
         //slideTriggerSet = false;
+    }
+    void CancelSlideJump()
+    {
+        currentSlideMomentum = 0;
+        slideMomentumExpended = false;
+        movementState = MovementState.NORMAL;
+        cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+        cc.height = normalHeight;
+
+        slideOnCooldown = true;
+        //slideTriggerSet = false
     }
 
     private void CancelHookShot()
