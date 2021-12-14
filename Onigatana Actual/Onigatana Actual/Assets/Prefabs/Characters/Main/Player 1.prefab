@@ -20896,6 +20896,7 @@ MonoBehaviour:
   hookShotSpeed: 120
   hookCooldown: 0.07
   floatAfterHookShot: 0
+  currentSpeed: 0
 --- !u!114 &1195182653
 MonoBehaviour:
   m_ObjectHideFlags: 0

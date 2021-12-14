@@ -120,7 +120,7 @@ public class MainCharacterController : MonoBehaviour
     Vector3 lastMoveDirection;
 
     Vector3 currentVelocity;
-    float currentSpeed;
+    [SerializeField]float currentSpeed;
 
     Vector3 currentMomentum; //Gets added to current velocity in some cases 
 
@@ -804,7 +804,7 @@ public class MainCharacterController : MonoBehaviour
     }
     void CancelSlideJump()
     {
-        currentSlideMomentum = 0;
+        //currentSlideMomentum = 0;
         slideMomentumExpended = false;
         movementState = MovementState.NORMAL;
         cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);

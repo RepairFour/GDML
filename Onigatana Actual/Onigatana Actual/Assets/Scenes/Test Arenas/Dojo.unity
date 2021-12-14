@@ -3092,22 +3092,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
-      propertyPath: slideDrag
-      value: 39.97
-      objectReference: {fileID: 0}
-    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
-      propertyPath: hookCooldown
-      value: 0.07
-      objectReference: {fileID: 0}
-    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
-      propertyPath: minJumpingTime
-      value: 0.05
-      objectReference: {fileID: 0}
-    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
-      propertyPath: floatAfterHookShot
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3537334771301836439, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
