@@ -20869,14 +20869,14 @@ MonoBehaviour:
   maxNumberOfJumps: 2
   jumpSpeed: 27
   minAirTimeForDoubleJump: 0.5
-  minJumpingTime: 0.06
+  minJumpingTime: 0.05
   timeGroundedOffset: 0.06
   layerMask:
     serializedVersion: 2
     m_Bits: 64
   gravity: 65
   slideDirectionalScalar: 0.5
-  slideDrag: 0
+  slideDrag: 39.97
   slideDeccelerate: 225
   maxSlideMomentum: 40
   minSlideTime: 0.5
@@ -20894,7 +20894,7 @@ MonoBehaviour:
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 7
   hookShotSpeed: 120
-  hookCooldown: 0
+  hookCooldown: 0.07
   floatAfterHookShot: 0
 --- !u!114 &1195182653
 MonoBehaviour:
