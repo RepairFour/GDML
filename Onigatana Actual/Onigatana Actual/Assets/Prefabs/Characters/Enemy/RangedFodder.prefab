@@ -801,7 +801,8 @@ MonoBehaviour:
   attackMode: 0
   basicAttackDistance: 0
   projectile: {fileID: 5634760498512679707, guid: b92418c74c62822499d33a16bbba2170, type: 3}
-  projectileSpeed: 2000
+  projectileSpeed: 5000
+  turretMode: 0
   distanceToTriggerLeap: 0
   leapDuration: 0
   leapHeight: 0
@@ -809,6 +810,12 @@ MonoBehaviour:
   leapCooldown: 0
   shockwaveHitbox: {fileID: 0}
   slowShockwaveDuration: 0
+  distanceToTriggerSwipe: 0
+  swipeDamage: 0
+  layersAttackMiss:
+    serializedVersion: 2
+    m_Bits: 0
+  swipeDistance: 0
 --- !u!195 &7192277685749173785
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -876,6 +883,7 @@ MonoBehaviour:
   knockBackDirection: {x: 0, y: 0, z: 0}
   defaultMaterial: {fileID: 2100000, guid: 87d84526bf183544abbed3787528b2d0, type: 2}
   hurtMaterial: {fileID: 2100000, guid: ea0e498927196204dbf49c90b00bd75e, type: 2}
+  hasShield: 0
 --- !u!114 &1787669908
 MonoBehaviour:
   m_ObjectHideFlags: 0

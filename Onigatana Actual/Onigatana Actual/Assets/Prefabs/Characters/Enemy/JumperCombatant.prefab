@@ -1458,7 +1458,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 4
   dmgPerHit: 15
-  attackCDtimerMax: 3
+  attackCDtimerMax: 2
   firstAttackDelayMod: 1
   attackChargeTimerMax: 0.7
   chargeAttackAni: {fileID: 0}
@@ -1466,6 +1466,7 @@ MonoBehaviour:
   basicAttackDistance: 0
   projectile: {fileID: 0}
   projectileSpeed: 0
+  turretMode: 0
   distanceToTriggerLeap: 0
   leapDuration: 1
   leapHeight: 5
@@ -1540,7 +1541,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58cd13cc40fa1b45b57b31778653c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 50
+  health: 75
   blood: {fileID: 0}
   enemyTestAnims: {fileID: 4852428031798595868}
   knockBackDirection: {x: 0, y: 0, z: 0}
