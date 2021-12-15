@@ -171,4 +171,5 @@ public class EnemyStats : MonoBehaviour
             gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
         }
     }
+
 }

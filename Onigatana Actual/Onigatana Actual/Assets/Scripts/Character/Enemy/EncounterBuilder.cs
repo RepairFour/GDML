@@ -13,15 +13,19 @@ public class EncounterBuilder : MonoBehaviour
 		{
 			public GameObject enemyPrefab;
 			public int spawnNumber;
+			[Tooltip("Leave Empty to spawn randomly in encounter area")]
+			public Transform spawnPoint;
 		}
 		public List<Spawn> spawns;
 	}
 
 	[SerializeField] List<Wave> encounter = new List<Wave>();
+	[Header("Options")]
 	[SerializeField] bool spawnNextOnWipe;
 	[SerializeField] float spawnTimerMax;
 	[SerializeField] bool spawnTimedEnemiesOnWipe;
 	[SerializeField] int wipeFlexibility;
+	[Header("Key Variables")]
 	[SerializeField] GameObject keyDrop;
 
 
@@ -94,9 +98,16 @@ public class EncounterBuilder : MonoBehaviour
 			for (int i = 0; i < enemyType.spawnNumber; ++i)
 			{
 				Vector3 spawnPos = transform.position;
-				spawnPos.x += Random.Range(-zone.bounds.extents.x, zone.bounds.extents.x);
-				spawnPos.y += Random.Range(-zone.bounds.extents.y, zone.bounds.extents.y);
-				spawnPos.z += Random.Range(-zone.bounds.extents.z, zone.bounds.extents.z);
+				if (enemyType.spawnPoint == null)
+				{
+					spawnPos.x += Random.Range(-zone.bounds.extents.x, zone.bounds.extents.x);
+					spawnPos.y += Random.Range(-zone.bounds.extents.y, zone.bounds.extents.y);
+					spawnPos.z += Random.Range(-zone.bounds.extents.z, zone.bounds.extents.z);
+				}
+				else
+				{
+					spawnPos = enemyType.spawnPoint.position;
+				}
 				GameObject enemy = Instantiate(enemyType.enemyPrefab, spawnPos, Quaternion.identity);
 				enemiesInWave.Add(enemy);
 				enemiesSpawned.Add(enemy);
