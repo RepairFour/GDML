@@ -59,6 +59,9 @@ public class EnemyChase : MonoBehaviour
     [SerializeField] Transform debugDestination;
     float debugTimer = 0;
     float debugTimerMax = 1;
+
+    [SerializeField] Transform enemyTransform; //because the this script my be attached to a parent not the enemy itself
+    [SerializeField] bool isFlying;
 	#endregion
 
 	// Start is called before the first frame update
@@ -67,6 +70,10 @@ public class EnemyChase : MonoBehaviour
         player = FindObjectOfType<PlayerStats>();
         agent = GetComponent<NavMeshAgent>();
         enemyAttack = GetComponent<EnemyAttack>();
+        if(enemyAttack == null)//for flying units
+		{
+            enemyAttack = GetComponentInChildren<EnemyAttack>();
+		}
         agentWalkSpeed = agent.speed;
         agentAccelleration = agent.acceleration;
         wayManager = FindObjectOfType<WaypointManager>();
@@ -90,10 +97,21 @@ public class EnemyChase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(player == null)
+        if (player == null)
 		{
             player = FindObjectOfType<PlayerStats>();
         }
+        if(isFlying)
+		{
+            if(GetComponentInChildren<GameObject>() == null) // when the enemy dies,needs this to remove this(the parent)
+			{
+                Destroy(gameObject);
+			}
+            var temp = enemyTransform.localPosition;
+            temp.x = 0;
+            temp.z = 0;
+            enemyTransform.localPosition = temp;
+		}
         if (debugDestination == null)
         {
             if (enemyAttack.turretMode == false)
@@ -190,8 +208,9 @@ public class EnemyChase : MonoBehaviour
         chasePlayer = false;
         // try to see player 
         RaycastHit hit;
-        Vector3 directionToPlayer = player.transform.position - transform.position;
-        if (Physics.Raycast(transform.position, directionToPlayer, out hit,visionDistance,~layersToIgnore))
+        Vector3 directionToPlayer = player.transform.position - enemyTransform.position;
+        
+        if (Physics.Raycast(enemyTransform.position, directionToPlayer, out hit,visionDistance,~layersToIgnore))
         {
             if (hit.collider.GetComponent<PlayerStats>() != null /*&& Vector3.Dot(transform.forward, directionToPlayer.normalized) > 0*/)
             {
@@ -226,8 +245,6 @@ public class EnemyChase : MonoBehaviour
                     if (Vector3.Dot(leapVector, toPlayer) < 0)
                     {
                         agent.velocity = Vector3.zero;
-
-
                     }
                 }
             }
@@ -254,8 +271,15 @@ public class EnemyChase : MonoBehaviour
                 DistanceAndAknowledgementTracker();
                 if (runawayTimer < 0)
                 {
-                    //the desired distance away from the player to shoot hit
-                    FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
+                    //the desired distance away from the player to shoot hit                    
+                    if(!isFlying)
+					{
+                        FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
+                    }
+                    else
+                    {
+                        FindPath(playerPos + ((enemyTransform.position - playerPos).normalized * basicAttackDistance));
+                    }
                 }
             }
         }

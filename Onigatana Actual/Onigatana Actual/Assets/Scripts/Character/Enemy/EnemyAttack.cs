@@ -29,6 +29,7 @@ public class EnemyAttack : MonoBehaviour
     [Header("Ranged Enemy Variables")]
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed;
+    [SerializeField] Transform projectileSpawn;
     [Tooltip("Turns ranged enemies into stationary shooting enemy")]
     public bool turretMode;
 
@@ -76,6 +77,10 @@ public class EnemyAttack : MonoBehaviour
     {
         player = FindObjectOfType<PlayerStats>();
         enemyChase = GetComponent<EnemyChase>();
+        if(enemyChase == null)// for flying units
+		{
+            enemyChase = GetComponentInParent<EnemyChase>();
+		}
         basicAttackDistance = enemyChase.basicAttackDistance;
         mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
         originalColor = mat.color;
@@ -129,11 +134,11 @@ public class EnemyAttack : MonoBehaviour
                         mat.color = originalColor;
                         attackChargeTimer = 0;
                         attackCDtimer = 0;
-                        Vector3 bulletPos = transform.position;
-                        bulletPos.y += 5;
-                        var bullet = Instantiate(projectile, bulletPos, transform.rotation);
+                        //Vector3 bulletPos = transform.position;
+                        //bulletPos.y += 5;
+                        var bullet = Instantiate(projectile, projectileSpawn.position, transform.rotation);
                         bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-                        bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - bulletPos).normalized * projectileSpeed);
+                        bullet.GetComponent<Rigidbody>().AddForce((player.transform.position - projectileSpawn.position).normalized * projectileSpeed);
                     }
                 }
             }
