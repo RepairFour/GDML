@@ -103,9 +103,10 @@ public class EnemyChase : MonoBehaviour
         }
         if(isFlying)
 		{
-            if(GetComponentInChildren<GameObject>() == null) // when the enemy dies,needs this to remove this(the parent)
+            if(GetComponentInChildren<EnemyStats>() == null) // when the enemy dies,needs this to remove this(the parent)
 			{
                 Destroy(gameObject);
+                return;
 			}
             var temp = enemyTransform.localPosition;
             temp.x = 0;
