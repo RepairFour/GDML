@@ -11,10 +11,12 @@ public class EnemyAttack : MonoBehaviour
         RANGED_FODDER,
         RANGED_COMBATANT,
         SHIELD_COMBATANT,
-        JUMPER_COMBATANT
+        JUMPER_COMBATANT,
+        WHEEL_ENEMY
     }
-
-    [Header("General Enemy Variables")]
+	#region Vars
+	#region General Enemy vars
+	[Header("General Enemy Variables")]
     public EnemyType type;
     public int dmgPerHit;
     [SerializeField] float attackCDtimerMax;
@@ -24,16 +26,19 @@ public class EnemyAttack : MonoBehaviour
     //Hiddens
     [HideInInspector] public bool attackMode = false;
     [HideInInspector] public float basicAttackDistance;
+	#endregion
 
-
-    [Header("Ranged Enemy Variables")]
+	#region Ranged vars
+	[Header("Ranged Enemy Variables")]
     [SerializeField] GameObject projectile;
     [SerializeField] float projectileSpeed;
     [SerializeField] Transform projectileSpawn;
     [Tooltip("Turns ranged enemies into stationary shooting enemy")]
     public bool turretMode;
+	#endregion
 
-    [Header("Jumper Combatant Variables")]
+	#region Jumper vars
+	[Header("Jumper Combatant Variables")]
     [SerializeField] float distanceToTriggerLeap;
     [SerializeField] float leapDuration;
     [SerializeField] float leapHeight;
@@ -42,38 +47,57 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float leapCooldown;
     [SerializeField] GameObject shockwaveHitbox;
     [SerializeField] float slowShockwaveDuration;
-    [Header("Shield Combatant Variables")]
+	#endregion
+
+	#region Shield Combatant vars
+	[Header("Shield Combatant Variables")]
     [SerializeField] float distanceToTriggerSwipe;
     [SerializeField] int swipeDamage;
     [SerializeField] LayerMask layersAttackMiss;
     [Tooltip("The hitbox distance")]
     [SerializeField] float swipeDistance;
+	#endregion
 
-    //Timers
-    float attackCDtimer = 0;
+	#region Wheel enemy vars
+	[Header("Wheel Enemy Variables")]
+    [SerializeField] GameObject fireHitbox;
+    [SerializeField] float fireSpawnRate;
+
+	#endregion
+
+	#region Timers
+	//Timers
+	float attackCDtimer = 0;
     float attackChargeTimer = 0;
     float leapTimer = 0;
     float leapCDTimer = 0;
     float slowShockwaveTimer;
+    float fireHitboxTimer = 0;
+	#endregion
 
-    //Fetch Vars
-    PlayerStats player;
+	#region Fetch Vars
+	//Fetch Vars
+	PlayerStats player;
     EnemyChase enemyChase;
     Material mat;
     Color originalColor;
     NavMeshAgent agent;
     Vector3 playerJumpPos;
     Vector3 shockwaveNormalPos;
+	#endregion
 
-    //States
-    bool firstAttack = true;
+	#region States
+	//States
+	bool firstAttack = true;
     bool chargingAttack = false;
     bool leaping = false;
     bool shockwave = false;
     bool shockwaveSpawned = false;
     bool swiping = false;
+	#endregion
 
-    void Start()
+	#endregion
+	void Start()
     {
         player = FindObjectOfType<PlayerStats>();
         enemyChase = GetComponent<EnemyChase>();
@@ -190,8 +214,21 @@ public class EnemyAttack : MonoBehaviour
             }
 
         }
+        else if(type == EnemyType.WHEEL_ENEMY)
+		{
+            SpawnFireHitbox();
+        }
     }
 
+    private void SpawnFireHitbox()
+	{
+        fireHitboxTimer += Time.deltaTime;
+        if(fireHitboxTimer > fireSpawnRate)
+		{
+            fireHitboxTimer = 0;
+            Instantiate(fireHitbox,transform.position, transform.rotation);
+        }
+	}
     void SwipeAttack()
 	{
         //play animation
