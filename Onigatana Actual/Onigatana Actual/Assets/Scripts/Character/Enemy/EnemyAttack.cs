@@ -12,7 +12,8 @@ public class EnemyAttack : MonoBehaviour
         RANGED_COMBATANT,
         SHIELD_COMBATANT,
         JUMPER_COMBATANT,
-        WHEEL_ENEMY
+        WHEEL_ENEMY,
+        WELL_ENEMY 
     }
 	#region Vars
 	#region General Enemy vars
@@ -63,6 +64,12 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] GameObject fireHitbox;
     [SerializeField] float fireSpawnRate;
 
+    #endregion
+
+    #region Well enemy vars
+    [Header("Well Enemy Variables")]
+    public float tetherRange;
+    public Well well;
 	#endregion
 
 	#region Timers
@@ -319,7 +326,7 @@ public class EnemyAttack : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
     {
-        if (type == EnemyType.MELEE_FODDER )
+        if (type == EnemyType.MELEE_FODDER || type == EnemyType.WELL_ENEMY)
         {
             if (attackCDtimer > attackCDtimerMax)
             {
@@ -333,8 +340,23 @@ public class EnemyAttack : MonoBehaviour
         }
 
     }
+	private void OnTriggerStay(Collider other)
+	{
+        if (type == EnemyType.MELEE_FODDER || type == EnemyType.WELL_ENEMY)
+        {
+            if (attackCDtimer > attackCDtimerMax)
+            {
+                var player = other.GetComponent<PlayerStats>();
+                if (player != null)
+                {
+                    player.Hurt(dmgPerHit);
+                    attackCDtimer = 0;
+                }
+            }
+        }
+    }
 
-    public static Vector3 CubicBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
+	public static Vector3 CubicBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
     {
         float r = 1f - t;
         float f0 = r * r * r;

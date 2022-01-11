@@ -27,12 +27,14 @@ public class EnemyStats : MonoBehaviour
     public Material defaultMaterial;
     public Material hurtMaterial;
     [HideInInspector] public bool hasShield = false;
+    private EnemyAttack enemyAttack;
 
 	private void Start()
 	{
         Player = GameObject.FindGameObjectWithTag("Player");
         enemyRigidbody = gameObject.GetComponent<Rigidbody>();
-        if(GetComponentInChildren<ShieldHealth>())
+        enemyAttack = GetComponent<EnemyAttack>();
+        if (GetComponentInChildren<ShieldHealth>())
 		{
             hasShield = true;
 		}
@@ -45,26 +47,29 @@ public class EnemyStats : MonoBehaviour
     
     public void Hurt(int dmg, MeleeAnimation ani)
 	{
-        Health -= dmg;
-        Debug.Log($"OUCHHHHHH! I took {dmg} damage");
-        IsHit();
-        EnemyAnimateHit(ani);
-        if (isDead())
-		{
-            var enemyAttackScript = GetComponent<EnemyAttack>();
-            if (enemyAttackScript != null)
+        if (enemyAttack.type != EnemyAttack.EnemyType.WELL_ENEMY)
+        {
+            Health -= dmg;
+            Debug.Log($"OUCHHHHHH! I took {dmg} damage");
+            IsHit();
+            EnemyAnimateHit(ani);
+            if (isDead())
             {
-                enemyAttackScript.DisposeShockwave();
+                var enemyAttackScript = GetComponent<EnemyAttack>();
+                if (enemyAttackScript != null)
+                {
+                    enemyAttackScript.DisposeShockwave();
+                }
+                HUDCon.instance.UpdateKillCount();
+                AudioHandler.instance.PlaySound("EnemyDeath", 1f, true, 1);
+                GameManager.instance.bloodFuryState.FillBloodMeter(6f);
+                if (GameManager.instance.bloodFuryState.active)
+                {
+                    GameManager.instance.bloodFuryState.Revive();
+                }
+                Destroy(gameObject);
             }
-            HUDCon.instance.UpdateKillCount();
-            AudioHandler.instance.PlaySound("EnemyDeath",1f,true,1);
-            GameManager.instance.bloodFuryState.FillBloodMeter(6f);
-            if(GameManager.instance.bloodFuryState.active)
-			{
-                GameManager.instance.bloodFuryState.Revive();
-            }
-            Destroy(gameObject);
-		}
+        }
 	}
     public void IsHit()
     {

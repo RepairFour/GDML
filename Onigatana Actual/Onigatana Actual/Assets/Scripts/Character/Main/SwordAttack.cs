@@ -304,6 +304,11 @@ public class SwordAttack : MonoBehaviour
                 shield.GetComponentInParent<EnemyStats>().hasShield = false;
             }
         }
+        else if(other.gameObject.tag == "Well")
+		{
+            Well well = other.GetComponent<Well>();
+            well.Hurt(damage);
+		}
         attackCollider.enabled = false;
     }
 }

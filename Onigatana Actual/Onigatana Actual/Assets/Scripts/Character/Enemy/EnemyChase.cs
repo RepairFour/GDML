@@ -177,7 +177,7 @@ public class EnemyChase : MonoBehaviour
             standingStillTimer > (standingStillTimerMax / 2) &&
             relocate == false)
         {
-            if (enemyAttack.type != EnemyAttack.EnemyType.SHIELD_COMBATANT || enemyAttack.turretMode)
+            if (enemyAttack.type != EnemyAttack.EnemyType.SHIELD_COMBATANT && !enemyAttack.turretMode && enemyAttack.type != EnemyAttack.EnemyType.WELL_ENEMY)
             {
                 agent.SetDestination((Quaternion.Euler(0, Random.Range(100, 260), 0) * desiredDestination).normalized * basicAttackDistance);
                 relocatePos = agent.destination;
@@ -270,7 +270,7 @@ public class EnemyChase : MonoBehaviour
             }
 
         }
-        else if(enemyAttack.type == EnemyAttack.EnemyType.RANGED_FODDER)
+        else if (enemyAttack.type == EnemyAttack.EnemyType.RANGED_FODDER)
         {
             if (!enemyAttack.turretMode)
             {
@@ -278,8 +278,8 @@ public class EnemyChase : MonoBehaviour
                 if (runawayTimer < 0)
                 {
                     //the desired distance away from the player to shoot hit                    
-                    if(!isFlying)
-					{
+                    if (!isFlying)
+                    {
                         FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
                     }
                     else
@@ -289,13 +289,13 @@ public class EnemyChase : MonoBehaviour
                 }
             }
         }
-        else if(enemyAttack.type == EnemyAttack.EnemyType.SHIELD_COMBATANT)
-		{
+        else if (enemyAttack.type == EnemyAttack.EnemyType.SHIELD_COMBATANT)
+        {
             DistanceAndAknowledgementTracker();
             if (runawayTimer < 0) //if I can move
             {
                 //the desired distance away from the player to shoot hit
-                FindPath(transform.position + ((playerPos - transform.position)* 0.5f));
+                FindPath(transform.position + ((playerPos - transform.position) * 0.5f));
             }
         }
         else if (enemyAttack.type == EnemyAttack.EnemyType.JUMPER_COMBATANT)
@@ -306,6 +306,23 @@ public class EnemyChase : MonoBehaviour
                 //the desired distance away from the player to shoot hit
                 FindPath(transform.position + ((playerPos - transform.position) * 0.5f));
             }
+        }
+        else if (enemyAttack.type == EnemyAttack.EnemyType.WELL_ENEMY)
+        {
+            DistanceAndAknowledgementTracker();
+            if (Vector3.Distance(enemyAttack.well.lineStart.position, player.transform.position) < enemyAttack.tetherRange)
+            {
+                FindPath(playerPos);
+            }
+            else
+            {
+                FindPath(enemyAttack.well.transform.position + ((player.transform.position - enemyAttack.well.transform.position).normalized * enemyAttack.tetherRange));
+            }
+            //DistanceAndAknowledgementTracker();
+            //if (runawayTimer < 0) //if I can move
+            //{
+
+            //}
         }
         Debug.DrawLine(transform.position, agent.destination, Color.green);
     }
