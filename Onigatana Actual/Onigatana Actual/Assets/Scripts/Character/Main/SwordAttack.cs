@@ -23,7 +23,9 @@ public class SwordAttack : MonoBehaviour
     public ParticleSystem weaponTrail;
     public ParticleSystem attackHitEffect;
     public ParticleSystem blood;
+    public GameObject chargeParticles;
     public List<string> attacks = new List<string>();
+    public MeshRenderer swordRenderer;
 
     [Header("Player")]
     public MainCharacterController controller;
@@ -43,6 +45,9 @@ public class SwordAttack : MonoBehaviour
     public float timeToCharge;
     public float slowdownOnCharge;
     public float attackResetDelay;
+
+    public float maxElectricityAmount;
+    float currentElectricityAmount; 
 
     private bool attackQueued;
     private bool chargingAttack;
@@ -107,6 +112,9 @@ public class SwordAttack : MonoBehaviour
                 animator.SetBool("ChargeStart", false);
                 animator.SetBool("Charging", false);
             }
+            chargeParticles.SetActive(false);
+            swordRenderer.materials[1].SetFloat("electric_amount", 0);
+
             attackQueued = true;
             buttonHeldTime = 0;
             chargingTimer = 0;
@@ -195,11 +203,15 @@ public class SwordAttack : MonoBehaviour
         {
             FeelerRay();
             animator.SetBool("Charging", true);
-            
+
             if (chargingTimer >= timeToCharge)
             {
                 chargingAttack = false;
                 attackCharged = true;
+
+                swordRenderer.materials[1].SetFloat("electric_amount", 5);
+                chargeParticles.SetActive(true);
+
                 
             }
         }

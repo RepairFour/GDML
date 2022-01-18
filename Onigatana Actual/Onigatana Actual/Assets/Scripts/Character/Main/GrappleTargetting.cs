@@ -8,12 +8,14 @@ public class GrappleTargetting : MonoBehaviour
     bool grappleInputHeld;
     public bool StartGrapple;
     public GameObject currentTargettedObject;
+    public Vector3 hitPoint;
     public Transform feelerPoint;
     public Vector3 feelerLowTierHalfExtents;
     public Vector3 feelerMidTierExtents;
     public Vector3 feelerOuterTierExtents;
     public float feelerRange;
     public LayerMask feelerMask;
+    public float intialTargetDistance;
 
     PlayerMap input;
     private ButtonControl grappleButton;
@@ -65,7 +67,9 @@ public class GrappleTargetting : MonoBehaviour
             grappleInputHeld = false;
             if(currentTargettedObject != null)
             {
+                hitPoint = currentTargettedObject.GetComponent<Collider>().ClosestPoint(transform.position);
                 StartGrapple = true;
+                intialTargetDistance = Vector3.Distance(currentTargettedObject.transform.position, transform.position);
             }
         }
     }
