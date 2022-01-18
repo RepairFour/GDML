@@ -38976,31 +38976,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.089999676
+      value: -0.119997844
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.040000975
+      value: -0.043000758
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.000001458684
+      value: -0.683002
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.6538741
+      value: 0.64178133
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.62792665
+      value: -0.6134679
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.32512766
+      value: -0.35164955
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.26916298
+      value: -0.29684436
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -39012,7 +39012,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998390, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: -139.748
+      value: -144.644
       objectReference: {fileID: 0}
     - target: {fileID: 9093667975543998391, guid: 1ad9368f6e59cee41820327d60b4d4bb, type: 3}
       propertyPath: looping
