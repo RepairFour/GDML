@@ -351,6 +351,56 @@ public class SwordAttack : MonoBehaviour
         }
     }
 
+    
+    
+
+   
+  //  private void OnTriggerEnter(Collider other)
+  //  {
+  //      if (other.gameObject.tag == "Enemy")
+  //      {
+  //          var enemyStats = other.gameObject.GetComponent<EnemyStats>();
+  //          if (enemyStats.hasShield == false)
+  //          {
+  //              enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+  //              Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
+  //              Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
+  //          }
+		//	else
+		//	{
+  //              //Is player infront of enemy
+  //              if(Vector3.Dot((GameManager.instance.playerStats.transform.position - other.gameObject.transform.position).normalized,
+  //                             other.gameObject.transform.forward) > 0)
+		//		{
+  //                  var shield = other.gameObject.GetComponentInChildren<ShieldHealth>();
+  //                  if(shield.Hurt(damage))//if the shield dies then
+		//			{
+  //                      enemyStats.hasShield = false;
+  //                  }
+  //              }
+		//		else
+		//		{
+  //                  enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+  //                  Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
+  //                  Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
+  //              }
+  //          }                          
+  //      }
+  //      else if(other.gameObject.tag == "Shield")
+		//{
+  //          var shield = other.gameObject.GetComponentInParent<ShieldHealth>();
+  //          if (shield.Hurt(damage))//if the shield dies then
+  //          {
+  //              shield.GetComponentInParent<EnemyStats>().hasShield = false;
+  //          }
+  //      }
+  //      else if(other.gameObject.tag == "Well")
+		//{
+  //          Well well = other.GetComponent<Well>();
+  //          well.Hurt(damage);
+		//}
+  //      attackCollider.enabled = false;
+  //  }
 
     IEnumerator PlayChargeParticles()
     {
