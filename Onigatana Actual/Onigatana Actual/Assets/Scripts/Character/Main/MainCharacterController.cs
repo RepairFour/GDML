@@ -101,7 +101,9 @@ public class MainCharacterController : MonoBehaviour
     public float hookShotThrowSpeed; //How fast the hookshot reaches its destination
     public float momentumExtraSpeed = 7f; //How much momentum is added at the end of the hookshot
     public float hookShotSpeed; //How quickly the player travels while hookshoting
+    [Range(0, 1)] public float minimumSpeedModifier;
     public float hookCooldown;
+    public float speedModifier;
     [Space]
     public bool floatAfterHookShot = false; //If there is a small gravity cancel at the end of hookshot movement
 
@@ -120,7 +122,7 @@ public class MainCharacterController : MonoBehaviour
     Vector3 lastMoveDirection;
 
     Vector3 currentVelocity;
-    [SerializeField]float currentSpeed;
+    float currentSpeed;
 
     Vector3 currentMomentum; //Gets added to current velocity in some cases 
 
@@ -204,7 +206,10 @@ public class MainCharacterController : MonoBehaviour
     bool hookOnCooldown;
 
     float hookShotSize; //How far hookshot has travelled
-    float hookCooldownTimer; 
+    float hookCooldownTimer;
+    float intialDistanceToTarget;
+    float currentDistanceToTarget;
+    float distanceOffset;
     
     #endregion
 
@@ -299,9 +304,23 @@ public class MainCharacterController : MonoBehaviour
         if(movementState == MovementState.SLIDING)
         {
             //TODO: Needs to be done as a lerp or animation instead 
-            //Set slide heights
-            cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
-            cc.height = slideHeight;
+            if (currentSlideMomentum >= maxSlideMomentum * 0.25)
+            {
+                //Set slide heights
+
+                cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, new Vector3(0, slideCameraHeight, 0), 4 * Time.deltaTime);
+                //cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
+                cc.height = Mathf.Lerp(cc.height, slideHeight, 4 * Time.deltaTime);
+            }
+            else
+            {
+                //Set slide heights
+
+                cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, new Vector3(0, cameraHeight, 0), 10 * Time.deltaTime);
+                //cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
+                cc.height = Mathf.Lerp(cc.height, normalHeight, 10 *Time.deltaTime);
+            }
+            //cc.height = slideHeight;
         }
         
         if (currentMomentum.magnitude >= 0f)
@@ -391,13 +410,14 @@ public class MainCharacterController : MonoBehaviour
                 currentSpeed = walkingMaxSpeed + currentSlideMomentum;
                 HandleSlideVelocity();
                 HandleMomentumSpeed();
-                HandleGravity(yspeed); //Increases gravity so player sticks to ground
+                HandleGravity(0); //Increases gravity so player sticks to ground
                 HandleJump(); //Allows us to jump out of slide
                 return;
 
             case MovementState.HOOKSHOT:
                 CancelSlideForHookShot();
                 HookShotMove();
+                
                 return;
                 
             case MovementState.NORMAL:
@@ -426,7 +446,6 @@ public class MainCharacterController : MonoBehaviour
 
     void AirMove()
     {
-
 
         float yspeed = currentVelocity.y;
         UpdateMoveDirection();
@@ -479,8 +498,12 @@ public class MainCharacterController : MonoBehaviour
             case MovementState.HOOKSHOT:
                 {
                     HookShotMove();
+                    HandleGravity(currentVelocity.y);
+                    break;
                 }
-                break;
+                
+            
+
         }
     }
 
@@ -523,7 +546,8 @@ public class MainCharacterController : MonoBehaviour
             queueJump = false;
             groundedState = GroundedState.INAIR;
             groundedTimer = 0;
-            CancelSlideJump();
+            CancelSlideForJump();
+            //CancelSlideForJump();
             //animator.SetTrigger("Jump");
 
             jumpNumber++;
@@ -567,12 +591,24 @@ public class MainCharacterController : MonoBehaviour
     #region DashFunctions
     void HandleDash()
     {
-        if (currentMomentum.magnitude > 0) //Reset Momentum
+        if (!dashNoMove)
         {
-            currentMomentum = Vector3.zero;
+            if (currentMomentum.magnitude > 0) //Reset Momentum
+            {
+                currentMomentum = Vector3.zero;
+            }
+            currentVelocity = dashSpeed * currentMoveDirection; //Apply dash
+            animeLines.gameObject.SetActive(true);
         }
-        currentVelocity = dashSpeed * currentMoveDirection; //Apply dash
-        animeLines.gameObject.SetActive(true);
+        else
+        {
+            if (currentMomentum.magnitude > 0) //Reset Momentum
+            {
+                currentMomentum = Vector3.zero;
+            }
+            currentVelocity = dashSpeed * dashNoMoveDirection; //Apply dash
+            animeLines.gameObject.SetActive(true);
+        }
     }
     #endregion
 
@@ -644,6 +680,7 @@ public class MainCharacterController : MonoBehaviour
         if (hookShotSize >= Vector3.Distance(hookShotTransform.position, hookHitPoint))
         {
             movementState = MovementState.HOOKSHOT;
+            
             //hookShotMove = true;
             hookShotFiring = false;
             if (enemyStruck != null)
@@ -661,28 +698,26 @@ public class MainCharacterController : MonoBehaviour
     private void HookShotMove()
     {
         UpdateHookShotDirection();
-        currentVelocity = hookShotSpeed * hookShotDirection;
-        hookShotTransform.LookAt(hookHitPoint);
+        currentDistanceToTarget = Vector3.Distance(hookHitPoint, transform.position);
+        speedModifier = Mathf.Clamp(currentDistanceToTarget / grappleSystem.intialTargetDistance, minimumSpeedModifier, 1);
+        currentVelocity = (hookShotSpeed * speedModifier) * hookShotDirection;
+        currentVelocity += transform.up * -gravity;
+        
+        //hookShotTransform.LookAt(hookHitPoint);
         lr.SetPosition(0, hookShotTransform.position);
-        lr.SetPosition(1, hookShotHand.position);
+        lr.SetPosition(1, grappleSystem.hitPoint);
 
         if (Vector3.Distance(hookHitPoint, transform.position) < 5)
         {
             if (queueJump)
             {
                 CancelHookShot();
-                grappleSystem.currentTargettedObject.GetComponent<Outline>().OutlineWidth = 0f;
-                grappleSystem.currentTargettedObject = null;
-                grappleSystem.StartGrapple = false;
                 //CancelHookShotMomentumWallKick();
                 queueJump = false;
             }
             else
             {
                 CancelHookShot();
-                grappleSystem.currentTargettedObject.GetComponent<Outline>().OutlineWidth = 0f;
-                grappleSystem.currentTargettedObject = null;
-                grappleSystem.StartGrapple = false;
 
             }
         }
@@ -802,27 +837,27 @@ public class MainCharacterController : MonoBehaviour
         slideOnCooldown = true;
         //slideTriggerSet = false;
     }
-    void CancelSlideJump()
+    void CancelSlideForJump()
     {
-        //currentSlideMomentum = 0;
-        slideMomentumExpended = false;
-        movementState = MovementState.NORMAL;
         cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         cc.height = normalHeight;
-
-        slideOnCooldown = true;
-        //slideTriggerSet = false
+        movementState = MovementState.NORMAL;
+        
     }
 
     private void CancelHookShot()
     {
         movementState = MovementState.NORMAL;
         hookShotFiring = false;
+        
         hookShotSize = 0;
         currentVelocity.y = 0;
         hookShotHand.position = hookShotTransform.position;
         hookShotTransform.gameObject.SetActive(false);
         enemyStruck = null;
+        grappleSystem.currentTargettedObject.GetComponent<Outline>().OutlineWidth = 0f;
+        grappleSystem.currentTargettedObject = null;
+        grappleSystem.StartGrapple = false;
     }
 
     private void CancelHookShotMomentumWallKick()
@@ -906,17 +941,26 @@ public class MainCharacterController : MonoBehaviour
         }
         if (input.Player.Dash.triggered && currentNumberOfDashes > 0 && inputDirection.magnitude > 0)
         {
+            if(movementState == MovementState.HOOKSHOT)
+            {
+                CancelHookShot();
+            }
             movementState = MovementState.DASHING;
             dashNoMove = false;
             currentNumberOfDashes--;
             animeLines.gameObject.SetActive(true);
+            
             //animator.SetTrigger("Dash");
         }
         else if (input.Player.Dash.triggered && currentNumberOfDashes > 0 && inputDirection.magnitude == 0)
         {
+            if (movementState == MovementState.HOOKSHOT)
+            {
+                CancelHookShot();
+            }
             movementState = MovementState.DASHING;
             dashNoMove = true;
-            //dashNoMoveDirection = transform.forward;
+            dashNoMoveDirection = transform.forward;
             currentNumberOfDashes--;
             animeLines.gameObject.SetActive(true);
             //animator.SetTrigger("Dash");
@@ -928,12 +972,15 @@ public class MainCharacterController : MonoBehaviour
     {
         if (grappleSystem.StartGrapple == true)
         {
-            hookHitPoint = grappleSystem.currentTargettedObject.transform.position;
+            hookHitPoint = grappleSystem.hitPoint;
+            //hookHitPoint = grappleSystem.currentTargettedObject.transform.position;
             //Debug.Log(hit.collider.name);
             hookShotFiring = true;
             UpdateHookShotDirection();
             hookShotSize = 0f;
-            hookShotTransform.LookAt(hookHitPoint);
+            //hookShotTransform.LookAt(hookHitPoint);
+            
+           
         }
     }
 
@@ -1055,6 +1102,7 @@ public class MainCharacterController : MonoBehaviour
         }
         else
         {
+
             if (movementState != MovementState.SLIDING)
             {
                 groundedState = GroundedState.INAIR;
@@ -1079,7 +1127,8 @@ public class MainCharacterController : MonoBehaviour
 
     void HandleWalkAnimation()
     {
-        if (currentSpeed > 0)
+       
+        if (currentSpeed > 0 && groundedState == GroundedState.GROUNDED)
         {
             // animator.SetFloat("Moving", currentSpeed / maxSpeed);
             if (inputDirection.x > 0)
@@ -1130,6 +1179,7 @@ public class MainCharacterController : MonoBehaviour
             }
             // animator.SetFloat("Moving", 0);
         }
+        
     }
     void HandleSlideAnimation()
     {

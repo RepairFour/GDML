@@ -397,6 +397,7 @@ public class Controller : MonoBehaviour
     {
         if(grappleSystem.StartGrapple == true)
         {
+            
             hookHitPoint = grappleSystem.currentTargettedObject.transform.position;
             //Debug.Log(hit.collider.name);
             hookShotFiring = true;

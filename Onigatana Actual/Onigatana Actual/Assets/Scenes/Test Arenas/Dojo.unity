@@ -123,6 +123,16 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 23800000, guid: 314bd23896f64d349b0a5739511e73f8, type: 2}
+--- !u!23 &127633974 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 1719461600083837532, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+  m_PrefabInstance: {fileID: 1726908655}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &313832037 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4095742679175944715, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+  m_PrefabInstance: {fileID: 1726908655}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &447992107
 GameObject:
   m_ObjectHideFlags: 0
@@ -3092,6 +3102,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1261463122, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: swordRenderer
+      value: 
+      objectReference: {fileID: 127633974}
+    - target: {fileID: 1261463122, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: chargeParticles
+      value: 
+      objectReference: {fileID: 313832037}
+    - target: {fileID: 1261463122, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: maxElectricityAmount
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 265615993514590165, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2949595498233964610, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3537334771301836439, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3152,6 +3182,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4095742679175944715, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4439297976043791154, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5597074032860055879, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5831506182818740051, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -3179,6 +3221,18 @@ PrefabInstance:
     - target: {fileID: 5831506184794924626, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6530864273322769166, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7476856373911107181, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8160989235852943560, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 28e0e4eec71908940b701646612f8dee, type: 3}

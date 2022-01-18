@@ -10811,6 +10811,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: slideHeight
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: slideCameraHeight
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 3537334771301836439, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -10870,6 +10878,34 @@ PrefabInstance:
     - target: {fileID: 4085466532238945352, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_Name
       value: Player 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312902131966618684, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312902131966618684, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312902131966618684, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312902131966618684, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312902131966618684, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312902131966618684, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5312902131966618684, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5831506182818740051, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_AnchorMax.y
