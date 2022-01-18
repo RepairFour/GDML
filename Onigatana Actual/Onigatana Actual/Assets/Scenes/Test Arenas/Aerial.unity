@@ -359,6 +359,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
       value: 1
       objectReference: {fileID: 0}
@@ -610,6 +618,14 @@ PrefabInstance:
     - target: {fileID: 7192277685749173778, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: patrolPath
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
@@ -1023,6 +1039,14 @@ PrefabInstance:
     - target: {fileID: 7192277685749173778, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: patrolPath
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
@@ -1764,6 +1788,14 @@ PrefabInstance:
     - target: {fileID: 7192277685749173778, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: patrolPath
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
@@ -2605,7 +2637,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4332
+  m_Name: pb_Mesh-497954
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -2933,7 +2965,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-4122
+  m_Name: pb_Mesh-497740
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3163,6 +3195,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
       value: 1
       objectReference: {fileID: 0}
@@ -3252,6 +3292,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
       value: 1
       objectReference: {fileID: 0}
@@ -3275,7 +3323,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-312272
+  m_Name: pb_Mesh-495108
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5431,7 +5479,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2052
+  m_Name: pb_Mesh-495536
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -5659,6 +5707,14 @@ PrefabInstance:
     - target: {fileID: 7192277685749173778, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: patrolPath
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
@@ -10390,7 +10446,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1212
+  m_Name: pb_Mesh-494680
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11277,6 +11333,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
       value: 1
       objectReference: {fileID: 0}
@@ -11464,7 +11528,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2262
+  m_Name: pb_Mesh-495750
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -13177,7 +13241,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2688
+  m_Name: pb_Mesh-496184
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -14399,6 +14463,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
       value: 1
       objectReference: {fileID: 0}
@@ -14887,6 +14959,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
       value: 1
       objectReference: {fileID: 0}
@@ -14910,7 +14990,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2472
+  m_Name: pb_Mesh-495964
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -15403,14 +15483,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
-      propertyPath: hookShotSpeed
-      value: 200
-      objectReference: {fileID: 0}
-    - target: {fileID: 517693921, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
-      propertyPath: minimumSpeedModifier
-      value: 0.434
-      objectReference: {fileID: 0}
     - target: {fileID: 3537334771301836439, guid: 28e0e4eec71908940b701646612f8dee, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -15507,7 +15579,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1422
+  m_Name: pb_Mesh-494894
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -17393,6 +17465,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
       value: 1
       objectReference: {fileID: 0}
@@ -18744,7 +18824,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2930
+  m_Name: pb_Mesh-496430
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -18908,7 +18988,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-1842
+  m_Name: pb_Mesh-495322
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20564,7 +20644,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-313794
+  m_Name: pb_Mesh-496658
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -20956,6 +21036,14 @@ PrefabInstance:
     - target: {fileID: 7192277685749173778, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: patrolPath
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: dmgPerHit
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: turretMode
