@@ -23,6 +23,7 @@ public class SwordAttack : MonoBehaviour
     public ParticleSystem weaponTrail;
     public ParticleSystem attackHitEffect;
     public ParticleSystem blood;
+    public GameObject chargeTrail;
     public GameObject chargeParticles;
     public List<string> attacks = new List<string>();
     public MeshRenderer swordRenderer;
@@ -244,7 +245,7 @@ public class SwordAttack : MonoBehaviour
             animator.SetBool("Charging", false);
             animator.SetBool("ChargeStart", false);
             Debug.Log("Charge Attacked");
-            weaponTrail.Play();
+            StartCoroutine(PlayChargeParticles());
             attackCollider.enabled = true;
             AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
 
@@ -322,5 +323,15 @@ public class SwordAttack : MonoBehaviour
             well.Hurt(damage);
 		}
         attackCollider.enabled = false;
+    }
+
+    IEnumerator PlayChargeParticles()
+    {
+        chargeTrail.SetActive(true);
+        
+        yield return new WaitForSeconds(chargeTrail.GetComponent<ParticleSystem>().main.duration);
+        
+        chargeTrail.SetActive(false);
+
     }
 }
