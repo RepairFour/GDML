@@ -156,6 +156,7 @@ public class EnemyStats : MonoBehaviour
         enemyTestAnims.SetTrigger("Reset");
 
         Debug.Log(knockbackStrength);
+
         //enemyRigidbody.constraints = ~RigidbodyConstraints.FreezePositionX | ~RigidbodyConstraints.FreezePositionZ;
         enemyRigidbody.AddForce(knockBackDirection.normalized * knockbackStrength);
         knockbackStrength = 0;

@@ -5,11 +5,11 @@ using UnityEngine.InputSystem.Controls;
 
 public class SwordAttack : MonoBehaviour
 {
-    
+
+    GameObject targetedEnemy;
     [SerializeField] int normalDamage;
     [SerializeField] int chargeAttackDamage;
     int damage;
-
 
     PlayerMap input;
     private ButtonControl meleeButton;
@@ -33,7 +33,12 @@ public class SwordAttack : MonoBehaviour
 
     [Header("AttackColliders")]
     public BoxCollider attackCollider;
-    
+
+    public float attackRange;
+    public Vector3 attackFeelerLowTierHalfExtents;
+    public Vector3 attackFeelerMidTierExtents;
+    public Vector3 attackFeelerOuterTierExtents;
+
     [Header("ChargeAttackStuff")]
     public Transform feelerPoint;
     public Vector3 feelerLowTierHalfExtents;
@@ -143,9 +148,7 @@ public class SwordAttack : MonoBehaviour
     {
         if (attackCharged && canAttack)
         {
-            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerLowTierHalfExtents, transform.rotation, transform.forward, feelerRange, Color.red);
-            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerMidTierExtents, transform.rotation, transform.forward, feelerRange, Color.blue);
-            DrawBoxCast.DrawBoxCastBox(feelerPoint.position, feelerOuterTierExtents, transform.rotation, transform.forward, feelerRange, Color.green);
+            
             RaycastHit hit;
             if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, feelerRange, feelerMask))
             {
@@ -156,6 +159,7 @@ public class SwordAttack : MonoBehaviour
                         blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
                     }
                     blinkTarget = hit.collider.gameObject;
+                    targetedEnemy = blinkTarget;
                     blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
                     strikeLocked = true;
                 }
@@ -169,6 +173,7 @@ public class SwordAttack : MonoBehaviour
                         blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
                     }
                     blinkTarget = hit.collider.gameObject;
+                    targetedEnemy = blinkTarget;
                     blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
                     strikeLocked = true;
                 }
@@ -182,6 +187,7 @@ public class SwordAttack : MonoBehaviour
                         blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
                     }
                     blinkTarget = hit.collider.gameObject;
+                    targetedEnemy = blinkTarget;
                     blinkTarget.GetComponent<Outline>().OutlineWidth = 5f;
                     strikeLocked = true;
                 }
@@ -192,6 +198,7 @@ public class SwordAttack : MonoBehaviour
                 {
                     blinkTarget.GetComponent<Outline>().OutlineWidth = 0f;
                     blinkTarget = null;
+                    targetedEnemy = null;
                     strikeLocked = false;
                 }
             }
@@ -246,7 +253,7 @@ public class SwordAttack : MonoBehaviour
             animator.SetBool("ChargeStart", false);
             Debug.Log("Charge Attacked");
             StartCoroutine(PlayChargeParticles());
-            attackCollider.enabled = true;
+            
             AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
 
             blocked = false;
@@ -256,6 +263,7 @@ public class SwordAttack : MonoBehaviour
             chargingTimer = 0;
             //animator.SetBool("ChargeAttack", false);
             damage = chargeAttackDamage;
+            HandleTarget();
         }
         else if (attackQueued && !attackCharged && !chargingAttack)
         {
@@ -268,62 +276,81 @@ public class SwordAttack : MonoBehaviour
                 animationCounter = 0;
             }
             weaponTrail.Play();
-            attackCollider.enabled = true;
+            //attackCollider.enabled = true;
             AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
             blocked = false;
             damage = normalDamage;
+            HandleTarget();
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void HandleTarget()
     {
-        if (other.gameObject.tag == "Enemy")
+        RaycastHit hit;
+        //targetedEnemy = null;
+        if (targetedEnemy == null)
         {
-            var enemyStats = other.gameObject.GetComponent<EnemyStats>();
+            if (Physics.BoxCast(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, feelerMask))
+            {
+
+                if (targetedEnemy != hit.collider.gameObject)
+                {
+                    targetedEnemy = hit.collider.gameObject;
+                    //strikeLocked = true;
+                }
+            }
+            else if (Physics.BoxCast(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, feelerMask))
+            {
+                if (targetedEnemy != hit.collider.gameObject)
+                {
+                    targetedEnemy = hit.collider.gameObject;
+                }
+            }
+            else if (Physics.BoxCast(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, feelerMask))
+            {
+                if (targetedEnemy != hit.collider.gameObject)
+                {
+                    targetedEnemy = hit.collider.gameObject;
+                }
+            }
+        }
+
+        if (targetedEnemy != null)
+        {
+            var enemyStats = targetedEnemy.GetComponent<EnemyStats>();
             if (enemyStats.hasShield == false)
             {
                 enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-                Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
-                Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
+                Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
             }
-			else
-			{
+            else
+            {
                 //Is player infront of enemy
-                if(Vector3.Dot((GameManager.instance.playerStats.transform.position - other.gameObject.transform.position).normalized,
-                               other.gameObject.transform.forward) > 0)
-				{
-                    var shield = other.gameObject.GetComponentInChildren<ShieldHealth>();
-                    if(shield.Hurt(damage))//if the shield dies then
-					{
+                if (Vector3.Dot((GameManager.instance.playerStats.transform.position - targetedEnemy.gameObject.transform.position).normalized,
+                               targetedEnemy.gameObject.transform.forward) > 0)
+                {
+                    var shield = targetedEnemy.GetComponentInChildren<ShieldHealth>();
+                    if (shield.Hurt(damage))//if the shield dies then
+                    {
                         enemyStats.hasShield = false;
                     }
                 }
-				else
-				{
+                else
+                {
                     enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-                    Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
-                    Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
+                    Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                    Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                 }
-            }                          
-        }
-        else if(other.gameObject.tag == "Shield")
-		{
-            var shield = other.gameObject.GetComponentInParent<ShieldHealth>();
-            if (shield.Hurt(damage))//if the shield dies then
-            {
-                shield.GetComponentInParent<EnemyStats>().hasShield = false;
             }
+
+            targetedEnemy = null;
         }
-        else if(other.gameObject.tag == "Well")
-		{
-            Well well = other.GetComponent<Well>();
-            well.Hurt(damage);
-		}
-        attackCollider.enabled = false;
     }
+
 
     IEnumerator PlayChargeParticles()
     {

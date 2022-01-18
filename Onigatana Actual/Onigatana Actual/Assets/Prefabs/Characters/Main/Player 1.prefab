@@ -9805,6 +9805,10 @@ MonoBehaviour:
   swordRenderer: {fileID: 1719461600083837532}
   controller: {fileID: 517693921}
   attackCollider: {fileID: 81832046088313694}
+  attackRange: 15
+  attackFeelerLowTierHalfExtents: {x: 5, y: 5, z: 0}
+  attackFeelerMidTierExtents: {x: 15, y: 5, z: 0}
+  attackFeelerOuterTierExtents: {x: 25, y: 5, z: 0}
   feelerPoint: {fileID: 81832046088313689}
   feelerLowTierHalfExtents: {x: 5, y: 5, z: 1}
   feelerMidTierExtents: {x: 10, y: 10, z: 1}
@@ -20900,8 +20904,8 @@ MonoBehaviour:
   hookShotHand: {fileID: 4085466532833144512}
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 7
-  hookShotSpeed: 250
-  minimumSpeedModifier: 0.7
+  hookShotSpeed: 200
+  minimumSpeedModifier: 0.434
   hookCooldown: 0.1
   speedModifier: 0
   floatAfterHookShot: 0
