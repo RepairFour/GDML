@@ -134,12 +134,12 @@ public class EnemyChase : MonoBehaviour
                             loseInterestTimer = 0;
                         }
                         ChasePlayer();
-                        Debug.Log("Chasing player");
+                        //Debug.Log("Chasing player");
                     }
                     else
                     {
                         FollowPatrol();
-                        Debug.Log("Following patrol");
+                        //Debug.Log("Following patrol");
                     }
                 }
                 else // get to optimal attack range
@@ -147,7 +147,7 @@ public class EnemyChase : MonoBehaviour
                     wasChasing = true;
                     enemyAttack.attackMode = true;
                     ChasePlayer();
-                    Debug.Log("Chasing player 2");
+                    //Debug.Log("Chasing player 2");
                 }
             }
 			else

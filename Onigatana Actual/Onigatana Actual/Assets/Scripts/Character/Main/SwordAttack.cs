@@ -88,6 +88,11 @@ public class SwordAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerLowTierHalfExtents, transform.rotation, transform.forward, attackRange, Color.red);
+        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerMidTierExtents, transform.rotation, transform.forward, attackRange, Color.green);
+        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerOuterTierExtents, transform.rotation, transform.forward, attackRange, Color.black);
+
+
         QueryInput();
         HandleChargingAttack();
         HandleDashToTarget();
