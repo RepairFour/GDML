@@ -36,6 +36,7 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] Transform projectileSpawn;
     [Tooltip("Turns ranged enemies into stationary shooting enemy")]
     public bool turretMode;
+    public float minDistanceFromPlayer;
 	#endregion
 
 	#region Jumper vars

@@ -174,7 +174,7 @@ public class EnemyChase : MonoBehaviour
 	{
         if (Vector3.Distance(transform.position, lastLocation) < 0.7f &&
             Vector3.Distance(transform.position, desiredDestination) > 1f &&
-            standingStillTimer > (standingStillTimerMax / 2) &&
+            standingStillTimer > standingStillTimerMax &&
             relocate == false)
         {
             if (enemyAttack.type != EnemyAttack.EnemyType.SHIELD_COMBATANT && !enemyAttack.turretMode && enemyAttack.type != EnemyAttack.EnemyType.WELL_ENEMY)
@@ -280,7 +280,14 @@ public class EnemyChase : MonoBehaviour
                     //the desired distance away from the player to shoot hit                    
                     if (!isFlying)
                     {
-                        FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
+                        if (Vector3.Distance(playerPos, transform.position) > basicAttackDistance)
+                        {
+                            FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
+						}
+						else if(Vector3.Distance(playerPos, transform.position) < enemyAttack.minDistanceFromPlayer)
+						{
+                            FindPath(playerPos + ((transform.position - playerPos).normalized * basicAttackDistance));
+                        }
                     }
                     else
                     {

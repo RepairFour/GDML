@@ -3004,7 +3004,7 @@ PrefabInstance:
       objectReference: {fileID: 1197228205}
     - target: {fileID: 7192277685749173768, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: m_VersionIndex
-      value: 3760
+      value: 3763
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173771, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: m_Mesh
@@ -3057,6 +3057,22 @@ PrefabInstance:
     - target: {fileID: 7192277685749173776, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
       propertyPath: m_Name
       value: RangedFodder
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173776, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173778, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: runawayCooldown
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173778, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: aknowledgementTimerMax
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7192277685749173784, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
+      propertyPath: minDistanceFromPlayer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b55f591175d4ef846925ef5aff303afa, type: 3}
@@ -6611,7 +6627,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-89286
+  m_Name: pb_Mesh-1208
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10083,7 +10099,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-2112
+  m_Name: pb_Mesh-2430
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11036,7 +11052,7 @@ PrefabInstance:
       objectReference: {fileID: 1377300850}
     - target: {fileID: 1867555943655188839, guid: b29ac0cc9d26b5d47bcfbc030086ea38, type: 3}
       propertyPath: m_VersionIndex
-      value: 3769
+      value: 3772
       objectReference: {fileID: 0}
     - target: {fileID: 1867555943655188854, guid: b29ac0cc9d26b5d47bcfbc030086ea38, type: 3}
       propertyPath: m_Speed
