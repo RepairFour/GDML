@@ -35,6 +35,7 @@ public class SwordAttack : MonoBehaviour
     public BoxCollider attackCollider;
 
     public float attackRange;
+    public LayerMask attackMask;
     public Vector3 attackFeelerLowTierHalfExtents;
     public Vector3 attackFeelerMidTierExtents;
     public Vector3 attackFeelerOuterTierExtents;
@@ -220,7 +221,6 @@ public class SwordAttack : MonoBehaviour
                 swordRenderer.materials[1].SetFloat("electric_amount", 5);
                 chargeParticles.SetActive(true);
 
-                
             }
         }
     }
@@ -293,23 +293,22 @@ public class SwordAttack : MonoBehaviour
         //targetedEnemy = null;
         if (targetedEnemy == null)
         {
-            if (Physics.BoxCast(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, feelerMask))
+            if (Physics.BoxCast(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, attackMask))
             {
 
                 if (targetedEnemy != hit.collider.gameObject)
                 {
                     targetedEnemy = hit.collider.gameObject;
-                    //strikeLocked = true;
                 }
             }
-            else if (Physics.BoxCast(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, feelerMask))
+            else if (Physics.BoxCast(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, attackMask))
             {
                 if (targetedEnemy != hit.collider.gameObject)
                 {
                     targetedEnemy = hit.collider.gameObject;
                 }
             }
-            else if (Physics.BoxCast(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, feelerMask))
+            else if (Physics.BoxCast(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, attackMask))
             {
                 if (targetedEnemy != hit.collider.gameObject)
                 {
@@ -320,31 +319,49 @@ public class SwordAttack : MonoBehaviour
 
         if (targetedEnemy != null)
         {
-            var enemyStats = targetedEnemy.GetComponent<EnemyStats>();
-            if (enemyStats.hasShield == false)
-            {
-                enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-                Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
-                Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
-            }
-            else
-            {
-                //Is player infront of enemy
-                if (Vector3.Dot((GameManager.instance.playerStats.transform.position - targetedEnemy.gameObject.transform.position).normalized,
-                               targetedEnemy.gameObject.transform.forward) > 0)
-                {
-                    var shield = targetedEnemy.GetComponentInChildren<ShieldHealth>();
-                    if (shield.Hurt(damage))//if the shield dies then
-                    {
-                        enemyStats.hasShield = false;
-                    }
-                }
-                else
+            if (targetedEnemy.CompareTag("Enemy")) { 
+                var enemyStats = targetedEnemy.GetComponent<EnemyStats>();
+                if (enemyStats.hasShield == false)
                 {
                     enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
                     Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                     Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                 }
+                else
+                {
+                    //Is player infront of enemy
+                    if (Vector3.Dot((GameManager.instance.playerStats.transform.position - targetedEnemy.gameObject.transform.position).normalized,
+                                   targetedEnemy.gameObject.transform.forward) > 0)
+                    {
+                        var shield = targetedEnemy.GetComponentInChildren<ShieldHealth>();
+                        if (shield.Hurt(damage))//if the shield dies then
+                        {
+                            enemyStats.hasShield = false;
+                        }
+                    }
+                    else
+                    {
+                        enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                        Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                        Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                    }
+                }
+            }
+
+            else if (targetedEnemy.CompareTag("Shield"))
+            {
+                var shield = gameObject.GetComponentInParent<ShieldHealth>();
+                if (shield.Hurt(damage))//if the shield dies then
+                {
+                    shield.GetComponentInParent<EnemyStats>().hasShield = false;
+                }
+
+            }
+
+            else if(targetedEnemy.CompareTag("Well"))
+            {
+                Well well = targetedEnemy.GetComponent<Well>();
+                well.Hurt(damage);
             }
 
             targetedEnemy = null;
