@@ -15,15 +15,16 @@ public class CameraShake : MonoBehaviour
 	public float shakeAmount = 0.7f;
 	
 
-	Vector3 originalPos;
+	public Vector3 originalPos;
 
-	void Awake()
+	void Start()
 	{
 		if (camTransform == null)
 		{
 			camTransform = GetComponent(typeof(Transform)) as Transform;
 		}
 		shakeDurationTimer = shakeDuration;
+		originalPos = camTransform.localPosition;
 	}
 
 	void OnEnable()
