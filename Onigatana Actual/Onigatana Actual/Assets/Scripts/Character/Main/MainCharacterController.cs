@@ -72,6 +72,11 @@ public class MainCharacterController : MonoBehaviour
 
     [Header("Slide Variables")]
     [Range (0, 1)] public float slideDirectionalScalar; //Determines how much left and right movement the player has in slide 
+    public float slideDuration;
+    [Range(0.2f, 1)] public float slideEntryDurationPercentage;
+    [Min(0.1f)]public float slideStandUpTime;
+    
+    
     public float slideDrag; 
     public float slideDeccelerate;
     public float maxSlideMomentum; 
@@ -106,6 +111,7 @@ public class MainCharacterController : MonoBehaviour
     public float speedModifier;
     [Space]
     public bool floatAfterHookShot = false; //If there is a small gravity cancel at the end of hookshot movement
+    public float hookShotStoppingDistance;
 
     #endregion
 
@@ -148,6 +154,7 @@ public class MainCharacterController : MonoBehaviour
     bool slideMomentumExpended;
     bool slideOnCooldown;
     float slidingTimer;
+    float standingTimer;
     float slideCooldownTimer;
 
     #endregion
@@ -304,23 +311,34 @@ public class MainCharacterController : MonoBehaviour
         if(movementState == MovementState.SLIDING)
         {
             //TODO: Needs to be done as a lerp or animation instead 
-            if (currentSlideMomentum >= maxSlideMomentum * 0.25)
+            if (currentSlideMomentum <= maxSlideMomentum && currentSlideMomentum > 1)
             {
                 //Set slide heights
 
-                cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, new Vector3(0, slideCameraHeight, 0), 4 * Time.deltaTime);
+                cameraTransform.localPosition = Vector3.Lerp(new Vector3(0, cameraHeight, 0), new Vector3(0, slideCameraHeight, 0), slidingTimer/(slideDuration * slideEntryDurationPercentage));
                 //cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
-                cc.height = Mathf.Lerp(cc.height, slideHeight, 4 * Time.deltaTime);
+                cc.height = Mathf.Lerp(normalHeight, slideHeight, slidingTimer/(slideDuration * slideEntryDurationPercentage));
             }
             else
             {
-                //Set slide heights
-
-                cameraTransform.localPosition = Vector3.Lerp(cameraTransform.localPosition, new Vector3(0, cameraHeight, 0), 10 * Time.deltaTime);
-                //cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
-                cc.height = Mathf.Lerp(cc.height, normalHeight, 10 *Time.deltaTime);
+                ////Set slide heights
+                //standingTimer += Time.deltaTime;
+                //cameraTransform.localPosition = Vector3.Lerp(new Vector3(0, slideCameraHeight, 0), new Vector3(0, cameraHeight, 0), standingTimer/slideStandUpTime);
+                ////cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
+                //cc.height = Mathf.Lerp(slideHeight, normalHeight, standingTimer / slideStandUpTime);
             }
             //cc.height = slideHeight;
+        }
+        if(movementState != MovementState.SLIDING && cc.height != normalHeight)
+        {
+            standingTimer += Time.deltaTime;
+            cameraTransform.localPosition = Vector3.Lerp(new Vector3(0, slideCameraHeight, 0), new Vector3(0, cameraHeight, 0), standingTimer / slideStandUpTime);
+            //cameraTransform.localPosition = new Vector3(0, slideCameraHeight, 0);
+            cc.height = Mathf.Lerp(slideHeight, normalHeight, standingTimer / slideStandUpTime);
+            if(cc.height == normalHeight)
+            {
+                standingTimer = 0;
+            }
         }
         
         if (currentMomentum.magnitude >= 0f)
@@ -394,6 +412,7 @@ public class MainCharacterController : MonoBehaviour
         {
             movementState = MovementState.SLIDING;
             queueSlide = false;
+            slidingTimer = 0f;
         }
 
         switch (movementState)
@@ -408,6 +427,7 @@ public class MainCharacterController : MonoBehaviour
                 
             case MovementState.SLIDING:
                 currentSpeed = walkingMaxSpeed + currentSlideMomentum;
+                slidingTimer += Time.deltaTime;
                 HandleSlideVelocity();
                 HandleMomentumSpeed();
                 HandleGravity(0); //Increases gravity so player sticks to ground
@@ -563,8 +583,13 @@ public class MainCharacterController : MonoBehaviour
         {
             if (!slideMomentumExpended)
             {
-                currentSlideMomentum -= slideDrag * Time.deltaTime;
-                if (currentSlideMomentum <= 0)
+
+                //float t = 0;
+                //t += Time.deltaTime /slideDuration;
+                currentSlideMomentum = Mathf.Lerp(maxSlideMomentum, 0.0f, slidingTimer / slideDuration);
+                
+                //currentSlideMomentum -= slideDrag * Time.deltaTime;
+                if (currentSlideMomentum <= 0.1)
                 {
                     currentSlideMomentum = 0;
                     slideMomentumExpended = true;
@@ -608,6 +633,11 @@ public class MainCharacterController : MonoBehaviour
             }
             currentVelocity = dashSpeed * dashNoMoveDirection; //Apply dash
             animeLines.gameObject.SetActive(true);
+        }
+        if (cc.height != normalHeight)
+        {
+            cc.height = normalHeight;
+            cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
         }
     }
     #endregion
@@ -707,7 +737,7 @@ public class MainCharacterController : MonoBehaviour
         lr.SetPosition(0, hookShotTransform.position);
         lr.SetPosition(1, grappleSystem.hitPoint);
 
-        if (Vector3.Distance(hookHitPoint, transform.position) < 5)
+        if (Vector3.Distance(hookHitPoint, transform.position) < hookShotStoppingDistance)
         {
             if (queueJump)
             {
@@ -831,8 +861,8 @@ public class MainCharacterController : MonoBehaviour
         currentSlideMomentum = 0;
         slideMomentumExpended = false;
         movementState = MovementState.NORMAL;
-        cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
-        cc.height = normalHeight;
+        //cameraTransform.localPosition = new Vector3(0, cameraHeight, 0);
+        //cc.height = normalHeight;
         
         slideOnCooldown = true;
         //slideTriggerSet = false;
@@ -914,7 +944,8 @@ public class MainCharacterController : MonoBehaviour
     }
     private void QueueSlide()
     {
-        if (slideButton.wasPressedThisFrame && !queueSlide && !slideOnCooldown)
+        if (slideButton.wasPressedThisFrame && !queueSlide && !slideOnCooldown && movementState != MovementState.SLIDING
+            && inputDirection.magnitude > 0)
         {
             if (currentSpeed > 0)
             {
@@ -923,13 +954,13 @@ public class MainCharacterController : MonoBehaviour
             }
         }
 
-        if (slidingTimer > minSlideTime && slideButton.wasReleasedThisFrame)
-        {
-            queueSlide = false;
-            slidingTimer = 0f;
-            currentSlideMomentum = 0f;
-            slideMomentumExpended = true;
-        }
+        //if (slidingTimer > minSlideTime && slideButton.wasReleasedThisFrame)
+        //{
+        //    queueSlide = false;
+        //    slidingTimer = 0f;
+        //    currentSlideMomentum = 0f;
+        //    slideMomentumExpended = true;
+        //}
 
     }
 
