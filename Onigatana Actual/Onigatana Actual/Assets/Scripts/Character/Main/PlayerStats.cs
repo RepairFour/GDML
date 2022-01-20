@@ -12,12 +12,14 @@ public class PlayerStats : MonoBehaviour
 	public int armour { get; private set; }
 
 	BloodFuryState bloodFuryState;
+	CameraShake cameraShake;
 
 	
 	private void Start()
 	{
 		health = maxHealth;
 		bloodFuryState = GetComponent<BloodFuryState>();
+		cameraShake = GetComponent<CameraShake>();
 	}
 	///////health stuff/////////
 	public bool IsDead()
@@ -49,8 +51,10 @@ public class PlayerStats : MonoBehaviour
 		}
 		HUDCon.instance.UpdateHpBar();
 		
-		playerHurtAni.SetTrigger("Hurt");
-		AudioHandler.instance.PlaySound("PlayerHurt"); 
+		//playerHurtAni.SetTrigger("Hurt");
+		
+		AudioHandler.instance.PlaySound("PlayerHurt");
+		StartCoroutine(cameraShake.ShakeCamera());
 	}
 	public void IsDeadCheck()
 	{
