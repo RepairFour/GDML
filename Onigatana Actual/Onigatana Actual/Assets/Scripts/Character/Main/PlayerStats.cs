@@ -13,6 +13,7 @@ public class PlayerStats : MonoBehaviour
 
 	BloodFuryState bloodFuryState;
 	CameraShake cameraShake;
+	public ImageFader bloodFader;
 
 	
 	private void Start()
@@ -55,6 +56,7 @@ public class PlayerStats : MonoBehaviour
 		
 		AudioHandler.instance.PlaySound("PlayerHurt");
 		StartCoroutine(cameraShake.ShakeCamera());
+		StartCoroutine(bloodFader.fadeImage());
 	}
 	public void IsDeadCheck()
 	{
