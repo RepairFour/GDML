@@ -114,8 +114,17 @@ public class EnemyAttack : MonoBehaviour
             enemyChase = GetComponentInParent<EnemyChase>();
 		}
         basicAttackDistance = enemyChase.basicAttackDistance;
-        mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
-        originalColor = mat.color;
+        try
+        {
+            mat = GetComponentInChildren<SkinnedMeshRenderer>().material;
+            originalColor = mat.color;
+        }
+        catch
+		{
+
+		}
+
+        
         agent = GetComponent<NavMeshAgent>();
         if (type == EnemyType.JUMPER_COMBATANT)
         {
