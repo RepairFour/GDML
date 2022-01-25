@@ -250,7 +250,9 @@ public class EnemyAttack : MonoBehaviour
         if(fireHitboxTimer > fireSpawnRate)
 		{
             fireHitboxTimer = 0;
-            Instantiate(fireHitbox,transform.position, transform.rotation);
+            var pos = transform.position;
+            pos.y -= transform.GetComponent<BoxCollider>().bounds.size.y / 2;
+            Instantiate(fireHitbox,pos, transform.rotation);
         }
 	}
     void SwipeAttack()
