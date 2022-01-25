@@ -119,7 +119,7 @@ public class EnemyChase : MonoBehaviour
             {
                 if(enemyAttack.type == EnemyAttack.EnemyType.WHEEL_ENEMY)
 				{
-                    FollowPatrol();
+                    FollowPatrol();                 
                     return;
                 }
                 CanISeeThePlayer(); // fills out chasePlayer bool 
