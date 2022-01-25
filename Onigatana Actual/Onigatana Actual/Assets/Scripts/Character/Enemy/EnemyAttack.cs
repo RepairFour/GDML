@@ -179,13 +179,13 @@ public class EnemyAttack : MonoBehaviour
                         //bulletPos.y += 5;
                         var bullet = Instantiate(projectile, projectileSpawn.position, transform.rotation);
                         bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-                        if (InterceptionDir(player.transform.position, transform.position, player.GetComponent<CharacterController>().velocity, projectileSpeed, out var direction))
+                        if (InterceptionDir(GameManager.instance.playerAimArea.transform.position, transform.position, player.GetComponent<CharacterController>().velocity, projectileSpeed, out var direction))
                         {
                             bullet.GetComponent<Rigidbody>().velocity = direction * projectileSpeed;
                         }
                         else
                         {
-                            bullet.GetComponent<Rigidbody>().velocity = (player.transform.position - projectileSpawn.position).normalized * projectileSpeed;
+                            bullet.GetComponent<Rigidbody>().velocity = (GameManager.instance.playerAimArea.transform.position - projectileSpawn.position).normalized * projectileSpeed;
                         }
                     }
                 }
