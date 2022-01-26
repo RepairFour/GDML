@@ -226,7 +226,6 @@ GameObject:
   - component: {fileID: 1867555943655188858}
   - component: {fileID: 1867555943655188836}
   - component: {fileID: 1867555943655188859}
-  - component: {fileID: 1867555943655188857}
   - component: {fileID: 1867555943655188856}
   - component: {fileID: 1867555943655188834}
   - component: {fileID: 1867555943655188855}
@@ -234,6 +233,8 @@ GameObject:
   - component: {fileID: 1867555943655188861}
   - component: {fileID: 1867555943655188860}
   - component: {fileID: 8807631636133661435}
+  - component: {fileID: 1782051890}
+  - component: {fileID: 1782051906}
   m_Layer: 8
   m_Name: WheelEnemy
   m_TagString: Enemy
@@ -590,7 +591,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3778
+  m_VersionIndex: 3910
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -714,25 +715,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 5.30167, y: 9.909594, z: 4.304967}
   m_Center: {x: -0.3903308, y: 2.9547987, z: 1.4298133}
---- !u!95 &1867555943655188857
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1867555943655188863}
-  m_Enabled: 0
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: ae72a9bba4beeb64fae339bde29aaf0b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!114 &1867555943655188856
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -816,13 +798,13 @@ NavMeshAgent:
   m_Speed: 40
   m_Acceleration: 100
   avoidancePriority: 50
-  m_AngularSpeed: 300
+  m_AngularSpeed: 0
   m_StoppingDistance: 3
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 0
   m_AutoRepath: 1
   m_Height: 8.56
-  m_BaseOffset: 2.02
+  m_BaseOffset: 4.91
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
 --- !u!114 &1867555943655188861
@@ -868,7 +850,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   health: 50
   blood: {fileID: 0}
-  enemyTestAnims: {fileID: 1867555943655188857}
+  enemyTestAnims: {fileID: 1867555943655188857, guid: b29ac0cc9d26b5d47bcfbc030086ea38, type: 3}
   knockBackDirection: {x: 0, y: 0, z: 0}
   defaultMaterial: {fileID: 2100000, guid: 87d84526bf183544abbed3787528b2d0, type: 2}
   hurtMaterial: {fileID: 2100000, guid: ea0e498927196204dbf49c90b00bd75e, type: 2}
@@ -891,6 +873,38 @@ MonoBehaviour:
   precomputeOutline: 0
   bakeKeys: []
   bakeValues: []
+--- !u!95 &1782051890
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867555943655188863}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 7ad58d31afc784646a95ea99e0f0d04e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &1782051906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1867555943655188863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8017a8e1d422fc24c89289ad427349f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 1
 --- !u!1 &5282975002196637031
 GameObject:
   m_ObjectHideFlags: 0
@@ -904,7 +918,7 @@ GameObject:
   - component: {fileID: 1580232758121239425}
   - component: {fileID: 6834411831152183965}
   m_Layer: 8
-  m_Name: Sphere (1)
+  m_Name: Wheel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

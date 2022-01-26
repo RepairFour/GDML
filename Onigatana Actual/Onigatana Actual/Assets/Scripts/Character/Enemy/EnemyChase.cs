@@ -62,6 +62,7 @@ public class EnemyChase : MonoBehaviour
 
     [SerializeField] Transform enemyTransform; //because the this script my be attached to a parent not the enemy itself
     [SerializeField] bool isFlying;
+    [SerializeField] Tether tether;
 	#endregion
 
 	// Start is called before the first frame update
@@ -320,16 +321,13 @@ public class EnemyChase : MonoBehaviour
             if (Vector3.Distance(enemyAttack.well.lineStart.position, player.transform.position) < enemyAttack.tetherRange)
             {
                 FindPath(playerPos);
+                tether.InRange();
             }
             else
             {
                 FindPath(enemyAttack.well.transform.position + ((player.transform.position - enemyAttack.well.transform.position).normalized * enemyAttack.tetherRange));
+                tether.MaxRanged();
             }
-            //DistanceAndAknowledgementTracker();
-            //if (runawayTimer < 0) //if I can move
-            //{
-
-            //}
         }
         Debug.DrawLine(transform.position, agent.destination, Color.green);
     }
@@ -371,4 +369,5 @@ public class EnemyChase : MonoBehaviour
         }
         Debug.DrawLine(transform.position, agent.destination, Color.green);
     }
+
 }
