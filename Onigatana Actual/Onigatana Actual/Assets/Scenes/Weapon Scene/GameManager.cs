@@ -5,7 +5,8 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
-    public Controller playerController;
+    public MainCharacterController playerController;
+
     public PlayerStats playerStats;
     public BloodFuryState bloodFuryState;
     public CanvasManager gameOverCanvas;

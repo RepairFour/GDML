@@ -342,6 +342,17 @@ public class SwordAttack : MonoBehaviour
                 if (enemyStats.hasShield == false)
                 {
                     enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                    foreach(var t in GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies())
+                    {
+                        if(t == enemyStats)
+                        {
+                            continue;
+                        }
+                        else
+                        {
+                            t.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                        }
+                    }
                     Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                     Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                 }
