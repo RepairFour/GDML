@@ -44,8 +44,7 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] float distanceToTriggerLeap;
     [SerializeField] float leapDuration;
     [SerializeField] float leapHeight;
-    [Tooltip("Percentage of the distance between this and the player")]
-    [SerializeField] [Range(0, 1)] float leapDistance;
+    [SerializeField] float leapDistance;
     [SerializeField] float leapCooldown;
     [SerializeField] GameObject shockwaveHitbox;
     [SerializeField] float slowShockwaveDuration;
@@ -206,7 +205,20 @@ public class EnemyAttack : MonoBehaviour
                     //arc towards player
                     agent.enabled = false;
                     leaping = true;
-                    playerJumpPos = transform.position + ((player.transform.position - transform.position) * leapDistance);
+
+                    var distance = Vector3.Distance(transform.position, player.GetComponent<Collider>().bounds.ClosestPoint(transform.position)) - 5;
+                    if(distance > leapDistance)
+					{
+                        distance = leapDistance;
+					}
+
+                    playerJumpPos = transform.position + ((player.transform.position - transform.position).normalized * distance);
+
+
+     //               if(Mathf.Abs(playerJumpPos - player.transform.position) < 1)
+					//{
+
+					//}
                     playerJumpPos.y = transform.position.y; //bug city
                     leapCDTimer = 0;
                 }

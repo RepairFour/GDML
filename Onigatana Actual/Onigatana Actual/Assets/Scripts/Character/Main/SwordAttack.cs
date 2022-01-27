@@ -365,8 +365,7 @@ public class SwordAttack : MonoBehaviour
 
             else if(targetedEnemy.CompareTag("Well"))
             {
-                Well well = targetedEnemy.GetComponent<Well>();
-                well.Hurt(damage);
+                targetedEnemy.GetComponent<Well>().Hurt(damage);                
             }
 
             targetedEnemy = null;

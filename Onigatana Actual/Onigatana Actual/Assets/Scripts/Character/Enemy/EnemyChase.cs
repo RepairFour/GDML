@@ -189,7 +189,10 @@ public class EnemyChase : MonoBehaviour
 
         if (!relocate)
 		{
-			agent.destination = desiredDestination;
+            if (agent.isOnNavMesh)
+            {
+                agent.destination = desiredDestination;
+            }
 		}
 		else
 		{
@@ -355,8 +358,10 @@ public class EnemyChase : MonoBehaviour
         enemyAttack.attackMode = false;
         if (agent.enabled && agent.isOnNavMesh)
         {
-            agent.destination = path[pathNode].position;
-
+            if (agent.isOnNavMesh)
+            {
+                agent.destination = path[pathNode].position;
+            }
             if (Mathf.Abs(transform.position.x - path[pathNode].position.x) < 1 &&
                Mathf.Abs(transform.position.z - path[pathNode].position.z) < 1)
             {

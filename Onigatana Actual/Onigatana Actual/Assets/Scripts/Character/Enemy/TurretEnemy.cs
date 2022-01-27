@@ -86,7 +86,14 @@ public class TurretEnemy : MonoBehaviour
 		{
             lineRender.enabled = true;
             lineRender.SetPosition(0, lasers[i].position);
-            lineRender.SetPosition(1, hitLocations[i]);
+            if (hitLocations.Count > 0)
+            {           
+                lineRender.SetPosition(1, hitLocations[i]);
+            }
+			else
+			{
+                lineRender.SetPosition(1, lasers[i].forward * 1000000);
+            }
             ++i;
 		}
     }

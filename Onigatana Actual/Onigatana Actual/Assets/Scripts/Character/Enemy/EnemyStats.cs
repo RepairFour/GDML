@@ -94,27 +94,34 @@ public class EnemyStats : MonoBehaviour
 
     public void EnemyAnimateHit(MeleeAnimation ani)
     {
-        gameObject.GetComponent<Animator>().enabled = true;
-        if (ani == MeleeAnimation.ANIMATION1)
+        try
         {
-            InAnimation1 = true;
-            InAnimation2 = false;
-            enemyTestAnims.SetTrigger("Attacked1");
+            gameObject.GetComponent<Animator>().enabled = true;
+            if (ani == MeleeAnimation.ANIMATION1)
+            {
+                InAnimation1 = true;
+                InAnimation2 = false;
+                enemyTestAnims.SetTrigger("Attacked1");
+            }
+            else if (ani == MeleeAnimation.ANIMATION2)
+            {
+                InAnimation1 = false;
+                InAnimation2 = true;
+                enemyTestAnims.SetTrigger("Attacked2");
+            }
         }
-        else if (ani == MeleeAnimation.ANIMATION2)
-        {
-            InAnimation1 = false;
-            InAnimation2 = true;
-            enemyTestAnims.SetTrigger("Attacked2");
-        }
-        if (GetComponent<GalahadLvl1>() == null)
-        {
-            gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = hurtMaterial;
-        }
-		else
+        catch
 		{
-            gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
-        }
+
+		}
+        //if (GetComponent<GalahadLvl1>() == null)
+        //{
+        // //   gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = hurtMaterial;
+        //}
+		//else
+		//{
+  //          gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
+  //      }
 
 
         //Here we calculate from what position the player hits the enemy, in order to calculate what direction the knockback will trigger in later. We also increase the knockback strength, but it is capped at a certain amount.
@@ -145,15 +152,19 @@ public class EnemyStats : MonoBehaviour
 
         InAnimation1 = false;
         InAnimation2 = false;
-        if (GetComponent<GalahadLvl1>() == null)
+        //if (GetComponent<GalahadLvl1>() == null)
+        //{
+        //    gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = defaultMaterial;
+        //}
+        //else
+        //{
+        //    gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
+        //}
+        try
         {
-            gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = defaultMaterial;
+            enemyTestAnims.SetTrigger("Reset");
         }
-        else
-        {
-            gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
-        }
-        enemyTestAnims.SetTrigger("Reset");
+		catch { }
 
         Debug.Log(knockbackStrength);
 
@@ -168,14 +179,14 @@ public class EnemyStats : MonoBehaviour
     //Simple invoked function to reset the material after a short timer.
     private void resetMaterial()
     {
-        if (GetComponent<GalahadLvl1>() == null)
-        {
-            gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = defaultMaterial;
-        }
-        else
-        {
-            gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
-        }
+        //if (GetComponent<GalahadLvl1>() == null)
+        //{
+        //    gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = defaultMaterial;
+        //}
+        //else
+        //{
+        //    gameObject.GetComponent<MeshRenderer>().material = defaultMaterial;
+        //}
     }
 
 }
