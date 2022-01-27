@@ -88,9 +88,9 @@ public class SwordAttack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerLowTierHalfExtents, transform.rotation, transform.forward, attackRange, Color.red);
-        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerMidTierExtents, transform.rotation, transform.forward, attackRange, Color.green);
-        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerOuterTierExtents, transform.rotation, transform.forward, attackRange, Color.black);
+        //DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerLowTierHalfExtents, transform.rotation, transform.forward, attackRange, Color.red);
+        //DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerMidTierExtents, transform.rotation, transform.forward, attackRange, Color.green);
+        //DrawBoxCast.DrawBoxCastBox(feelerPoint.position, attackFeelerOuterTierExtents, transform.rotation, transform.forward, attackRange, Color.black);
 
 
         QueryInput();
@@ -324,6 +324,19 @@ public class SwordAttack : MonoBehaviour
 
         if (targetedEnemy != null)
         {
+            RaycastHit occulusionTest;
+            if (Physics.Raycast(transform.position, targetedEnemy.transform.position - transform.position,
+                out occulusionTest, Vector3.Distance(targetedEnemy.transform.position, transform.position)))
+            {
+                if (!occulusionTest.transform.gameObject.CompareTag("Enemy"))
+                {
+                    targetedEnemy = null;
+                    return;
+                }
+            }
+                
+            
+            
             if (targetedEnemy.CompareTag("Enemy")) { 
                 var enemyStats = targetedEnemy.GetComponent<EnemyStats>();
                 if (enemyStats.hasShield == false)

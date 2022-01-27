@@ -106,7 +106,7 @@ public class GunTestTeleport : MonoBehaviour
         input.Enable();
 
         ClickShoot = (ButtonControl)input.Player.Shoot.controls[0];
-        SecondaryClickShoot = (ButtonControl)input.Player.SecondaryFire.controls[0];
+        //SecondaryClickShoot = (ButtonControl)input.Player.SecondaryFire.controls[0];
 
 
        //initialSecondaryFireAmmoConsumptionBonus = secondaryFireAmmoConsumptionBonus;

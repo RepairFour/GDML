@@ -75,7 +75,7 @@ public class GunBase : MonoBehaviour
         input.Enable();
 
         clickShoot = (ButtonControl)input.Player.Shoot.controls[0];
-        secondaryClickShoot = (ButtonControl)input.Player.SecondaryFire.controls[0];
+        //secondaryClickShoot = (ButtonControl)input.Player.SecondaryFire.controls[0];
         isReadyToShoot = true;
 
         audioSource = GetComponent<AudioSource>();
@@ -99,10 +99,10 @@ public class GunBase : MonoBehaviour
     {
         return clickShoot.isPressed;
     }
-    protected bool SecondaryFirePressed()
-    {
-        return secondaryClickShoot.isPressed;
-    }
+    //protected bool SecondaryFirePressed()
+    //{
+    //    //return secondaryClickShoot.isPressed;
+    //}
     protected void HandleInput()
     {
        
@@ -126,20 +126,20 @@ public class GunBase : MonoBehaviour
             PrimaryFire();
         }
 
-        else if (isReadyToShoot && SecondaryFirePressed() 
-            && !OnCooldown 
-            && !isShooting 
-            && !isReloading)
-        {
-            meleeWeapon.enabled = false;
-            meleeHand.enabled = false;
-            foreach (MeshRenderer r in rangedWeapon)
-            {
-                r.enabled = true;
-            }
-            rangedWeaponScript.enabled = true;
-            SecondaryFire();
-        }
+        //else if (isReadyToShoot && SecondaryFirePressed() 
+        //    && !OnCooldown 
+        //    && !isShooting 
+        //    && !isReloading)
+        //{
+        //    meleeWeapon.enabled = false;
+        //    meleeHand.enabled = false;
+        //    foreach (MeshRenderer r in rangedWeapon)
+        //    {
+        //        r.enabled = true;
+        //    }
+        //    rangedWeaponScript.enabled = true;
+        //    SecondaryFire();
+        //}
     }
     protected virtual void PrimaryFire()
     {
