@@ -23,7 +23,7 @@ public class Mark : MonoBehaviour
                 break;
             case Marks.BLINK:
                 markDisplay.GetComponent<SpriteRenderer>().sprite = blinkIcon;
-                GameManager.instance.playerController.SetMark(this);
+                //GameManager.instance.playerController.SetMark(this);
                 break;
         }
 
@@ -67,7 +67,7 @@ public class Mark : MonoBehaviour
     public void BlinkMarkApplied()
     {
         SetMark(Marks.NONE);
-        GameManager.instance.playerController.SetMark(null);
+        //GameManager.instance.playerController.SetMark(null);
         markDisplay.GetComponent<SpriteRenderer>().sprite = null;
         blinkMarkTimer = 0;
     }

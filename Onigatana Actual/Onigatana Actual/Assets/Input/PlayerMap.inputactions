@@ -86,7 +86,7 @@
                     "interactions": ""
                 },
                 {
-                    "name": "SecondaryFire",
+                    "name": "Ability",
                     "type": "Button",
                     "id": "f41e56f7-d096-457a-9cc8-9961e9a82e83",
                     "expectedControlType": "Button",
@@ -264,7 +264,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "SecondaryFire",
+                    "action": "Ability",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
