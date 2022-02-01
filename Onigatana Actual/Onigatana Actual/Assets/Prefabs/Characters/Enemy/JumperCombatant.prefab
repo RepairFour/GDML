@@ -760,6 +760,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   dmg: 15
+  timed: 0
+  duration: 0
 --- !u!1 &4305742183845774037
 GameObject:
   m_ObjectHideFlags: 0
@@ -1692,6 +1694,7 @@ MonoBehaviour:
   chargeAttackAni: {fileID: 0}
   attackMode: 0
   basicAttackDistance: 0
+  meleeAttackHitbox: {fileID: 0}
   projectile: {fileID: 0}
   projectileSpeed: 0
   projectileSpawn: {fileID: 0}
@@ -1714,6 +1717,7 @@ MonoBehaviour:
   fireSpawnRate: 0
   tetherRange: 0
   well: {fileID: 0}
+  chargingAttack: 0
 --- !u!195 &4852428031798595859
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1750,8 +1754,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolPath: 2
   basicAttackDistance: 0
-  leapTimerMax: 0
-  leapForce: 0
   visionDistance: 250
   layersToIgnore:
     serializedVersion: 2
