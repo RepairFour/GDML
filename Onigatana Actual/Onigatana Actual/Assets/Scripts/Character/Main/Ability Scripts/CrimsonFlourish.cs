@@ -10,6 +10,7 @@ public class CrimsonFlourish : MonoBehaviour
     public LayerMask hitMask;
     public float activationTime;
     public float cooldownTime;
+    [Range(0.25f, 1)] public float damageModifer; 
 
     public GameObject tempThing;
     
@@ -166,6 +167,17 @@ public class CrimsonFlourish : MonoBehaviour
         }
     }
 
+    void CleanList()
+    {
+        for (int i = linkedEnemies.Count - 1; i >= 0; i--)
+        {
+            if(linkedEnemies[i] == null)
+            {
+                linkedEnemies.Remove(linkedEnemies[i]);
+            }
+        }
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -175,6 +187,7 @@ public class CrimsonFlourish : MonoBehaviour
         HandleCrimsonFlourishHitCooldown();
         HandleAbilityCooldown();
         DrawLinks();
+        CleanList();
     }
     private void OnDrawGizmos()
     {

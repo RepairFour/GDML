@@ -334,28 +334,32 @@ public class SwordAttack : MonoBehaviour
                     return;
                 }
             }
-                
-            
-            
-            if (targetedEnemy.CompareTag("Enemy")) { 
+
+
+
+            if (targetedEnemy.CompareTag("Enemy"))
+            {
                 var enemyStats = targetedEnemy.GetComponent<EnemyStats>();
                 if (enemyStats.hasShield == false)
                 {
                     enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-                    foreach(var t in GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies())
+                    for (int i = 0; i < GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies().Count; i++)
                     {
-                        if(t == enemyStats)
+                        if (GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies()[i] == enemyStats)
                         {
                             continue;
                         }
                         else
                         {
-                            t.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                            GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies()[i].Hurt(Mathf.RoundToInt(damage * GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().damageModifer), EnemyStats.MeleeAnimation.ANIMATION1);
                         }
                     }
                     Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                     Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                 }
+
+
+
                 else
                 {
                     //Is player infront of enemy
@@ -367,93 +371,47 @@ public class SwordAttack : MonoBehaviour
                         {
                             enemyStats.hasShield = false;
                         }
+
+                        else
+                        {
+                            enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                            Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                            Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                        }
+
                     }
-                    else
+
+
+                    else if (targetedEnemy.CompareTag("Shield"))
                     {
-                        enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-                        Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
-                        Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                        var shield = gameObject.GetComponentInParent<ShieldHealth>();
+                        if (shield.Hurt(damage))//if the shield dies then
+                        {
+                            shield.GetComponentInParent<EnemyStats>().hasShield = false;
+                        }
+
                     }
+
+                    else if (targetedEnemy.CompareTag("Well"))
+                    {
+                        targetedEnemy.GetComponent<Well>().Hurt(damage);
+                    }
+
+                    targetedEnemy = null;
                 }
             }
-
-            else if (targetedEnemy.CompareTag("Shield"))
-            {
-                var shield = gameObject.GetComponentInParent<ShieldHealth>();
-                if (shield.Hurt(damage))//if the shield dies then
-                {
-                    shield.GetComponentInParent<EnemyStats>().hasShield = false;
-                }
-
-            }
-
-            else if(targetedEnemy.CompareTag("Well"))
-            {
-                targetedEnemy.GetComponent<Well>().Hurt(damage);                
-            }
-
-            targetedEnemy = null;
         }
-    }
-
-    
-    
-
-   
-  //  private void OnTriggerEnter(Collider other)
-  //  {
-  //      if (other.gameObject.tag == "Enemy")
-  //      {
-  //          var enemyStats = other.gameObject.GetComponent<EnemyStats>();
-  //          if (enemyStats.hasShield == false)
-  //          {
-  //              enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-  //              Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
-  //              Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
-  //          }
-		//	else
-		//	{
-  //              //Is player infront of enemy
-  //              if(Vector3.Dot((GameManager.instance.playerStats.transform.position - other.gameObject.transform.position).normalized,
-  //                             other.gameObject.transform.forward) > 0)
-		//		{
-  //                  var shield = other.gameObject.GetComponentInChildren<ShieldHealth>();
-  //                  if(shield.Hurt(damage))//if the shield dies then
-		//			{
-  //                      enemyStats.hasShield = false;
-  //                  }
-  //              }
-		//		else
-		//		{
-  //                  enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-  //                  Instantiate(blood, other.ClosestPoint(transform.position), Quaternion.identity);
-  //                  Instantiate(attackHitEffect, other.ClosestPoint(transform.position), Quaternion.identity);
-  //              }
-  //          }                          
-  //      }
-  //      else if(other.gameObject.tag == "Shield")
-		//{
-  //          var shield = other.gameObject.GetComponentInParent<ShieldHealth>();
-  //          if (shield.Hurt(damage))//if the shield dies then
-  //          {
-  //              shield.GetComponentInParent<EnemyStats>().hasShield = false;
-  //          }
-  //      }
-  //      else if(other.gameObject.tag == "Well")
-		//{
-  //          Well well = other.GetComponent<Well>();
-  //          well.Hurt(damage);
-		//}
-  //      attackCollider.enabled = false;
-  //  }
-
-    IEnumerator PlayChargeParticles()
-    {
-        chargeTrail.SetActive(true);
-        
-        yield return new WaitForSeconds(chargeTrail.GetComponent<ParticleSystem>().main.duration);
-        
-        chargeTrail.SetActive(false);
 
     }
+
+        IEnumerator PlayChargeParticles()
+        {
+            chargeTrail.SetActive(true);
+
+            yield return new WaitForSeconds(chargeTrail.GetComponent<ParticleSystem>().main.duration);
+
+            chargeTrail.SetActive(false);
+
+        }
+    
 }
