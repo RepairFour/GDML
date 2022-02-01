@@ -20,15 +20,10 @@ public class EnemyChase : MonoBehaviour
     EnemyAttack enemyAttack;
     public float basicAttackDistance;
 
-    //leaping stuff for melee units
-    bool leap = false;
-    float leapTimer = 0;
-    [SerializeField] float leapTimerMax;
-    [SerializeField] float leapForce;
-    float leapingTimer = 0;
-    float agentWalkSpeed;
-    float agentAccelleration;
-    Vector3 leapVector = new Vector3();
+    // melee units
+    Collider playerCollider;
+
+
     [SerializeField] float visionDistance = 100;
     [SerializeField] LayerMask layersToIgnore;
     [SerializeField] float aknowledgementTimerMax;
@@ -69,14 +64,13 @@ public class EnemyChase : MonoBehaviour
 	void Start()
     {
         player = FindObjectOfType<PlayerStats>();
+        playerCollider = player.GetComponent<Collider>();
         agent = GetComponent<NavMeshAgent>();
         enemyAttack = GetComponent<EnemyAttack>();
         if(enemyAttack == null)//for flying units
 		{
             enemyAttack = GetComponentInChildren<EnemyAttack>();
 		}
-        agentWalkSpeed = agent.speed;
-        agentAccelleration = agent.acceleration;
         wayManager = FindObjectOfType<WaypointManager>();
 
         if (enemyAttack.turretMode == false)
@@ -93,11 +87,13 @@ public class EnemyChase : MonoBehaviour
             visionDistance *= 500;
             basicAttackDistance *= 500;
 		}
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+   
         if (player == null)
 		{
             player = FindObjectOfType<PlayerStats>();
@@ -169,8 +165,8 @@ public class EnemyChase : MonoBehaviour
                 FindPath(debugDestination.position);
             }
 		}
+        
     }
-
     void FindPath(Vector3 desiredDestination)
 	{
         if (Vector3.Distance(transform.position, lastLocation) < 0.7f &&
@@ -233,53 +229,28 @@ public class EnemyChase : MonoBehaviour
 	{
         if (enemyAttack.type == EnemyAttack.EnemyType.MELEE_FODDER)
         {
-            leapingTimer -= Time.deltaTime;
-            if (!leap)
+            if (!enemyAttack.chargingAttack)
             {
-                if (leapingTimer < 0)
+                var dir = (player.transform.position - transform.position).normalized;
+                var temp = playerCollider.bounds.ClosestPoint(transform.position);
+                temp -= dir * (basicAttackDistance - 2);
+                agent.destination = temp;
+                if (!agent.updateRotation)
                 {
-                    agent.speed = agentWalkSpeed;
-                    agent.acceleration = agentAccelleration;
-                    agent.destination = player.transform.position - ((player.transform.position - transform.position).normalized * basicAttackDistance);
-                    if (Mathf.Abs(transform.position.x - agent.destination.x) < 1 &&
-                       Mathf.Abs(transform.position.z - agent.destination.z) < 1)
-                    {
-                        leap = true;
-                    }
-                }
-                else
-                {
-                    //vector to the player
-                    Vector3 toPlayer = player.transform.position - transform.position;
-                    //dot product against leap vector
-                    if (Vector3.Dot(leapVector, toPlayer) < 0)
-                    {
-                        agent.velocity = Vector3.zero;
-                    }
+                    agent.updateRotation = true;
                 }
             }
-            else
-            {
-                leapTimer += Time.deltaTime;
-                if (leapTimer > leapTimerMax)
-                {
-                    agent.destination = player.transform.position;
-                    agent.speed = leapForce;
-                    agent.acceleration = leapForce;
-                    leap = false;
-                    leapTimer = 0;
-                    leapingTimer = 1;
-                    leapVector = agent.destination - transform.position;
-                }
-            }
-
+			else if (agent.updateRotation)
+			{
+                agent.updateRotation = false;
+			}
         }
         else if (enemyAttack.type == EnemyAttack.EnemyType.RANGED_FODDER)
         {
             if (!enemyAttack.turretMode)
             {
                 DistanceAndAknowledgementTracker();
-                if (runawayTimer < 0)
+                if (runawayTimer < 0 && !enemyAttack.chargingAttack)
                 {
                     //the desired distance away from the player to shoot hit                    
                     if (!isFlying)
