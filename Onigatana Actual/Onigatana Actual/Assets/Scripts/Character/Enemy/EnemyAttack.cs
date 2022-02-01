@@ -13,11 +13,11 @@ public class EnemyAttack : MonoBehaviour
         SHIELD_COMBATANT,
         JUMPER_COMBATANT,
         WHEEL_ENEMY,
-        WELL_ENEMY 
+        WELL_ENEMY
     }
-	#region Vars
-	#region General Enemy vars
-	[Header("General Enemy Variables")]
+    #region Vars
+    #region General Enemy vars
+    [Header("General Enemy Variables")]
     public EnemyType type;
     public int dmgPerHit;
     [SerializeField] float attackCDtimerMax;
@@ -27,6 +27,11 @@ public class EnemyAttack : MonoBehaviour
     //Hiddens
     [HideInInspector] public bool attackMode = false;
     [HideInInspector] public float basicAttackDistance;
+    #endregion
+
+    #region Melee Fodder
+    [Header("Melee Fodder Variables")]
+    [SerializeField] BoxCollider meleeAttackHitbox;
 	#endregion
 
 	#region Ranged vars
@@ -96,7 +101,8 @@ public class EnemyAttack : MonoBehaviour
 	#region States
 	//States
 	bool firstAttack = true;
-    bool chargingAttack = false;
+    [HideInInspector] 
+    public bool chargingAttack = false;
     bool leaping = false;
     bool shockwave = false;
     bool shockwaveSpawned = false;
@@ -178,18 +184,41 @@ public class EnemyAttack : MonoBehaviour
                         //bulletPos.y += 5;
                         var bullet = Instantiate(projectile, projectileSpawn.position, transform.rotation);
                         bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-                        if (InterceptionDir(GameManager.instance.playerAimArea.transform.position, transform.position, player.GetComponent<CharacterController>().velocity, projectileSpeed, out var direction))
-                        {
-                            bullet.GetComponent<Rigidbody>().velocity = direction * projectileSpeed;
-                        }
-                        else
-                        {
-                            bullet.GetComponent<Rigidbody>().velocity = (GameManager.instance.playerAimArea.transform.position - projectileSpawn.position).normalized * projectileSpeed;
-                        }
+                        //if (InterceptionDir(GameManager.instance.playerAimArea.transform.position, transform.position, player.GetComponent<CharacterController>().velocity, projectileSpeed, out var direction))
+                        //{
+                        //    bullet.GetComponent<Rigidbody>().velocity = direction * projectileSpeed;
+                        //}
+                        
+                        bullet.GetComponent<Rigidbody>().velocity = (GameManager.instance.playerAimArea.transform.position - projectileSpawn.position).normalized * projectileSpeed;
+
+                        
                     }
                 }
             }
         }
+        else if(type == EnemyType.MELEE_FODDER)
+		{
+            if (attackMode && attackCDtimer > attackCDtimerMax)
+            {
+                if (Vector3.Distance(transform.position, player.transform.position) < basicAttackDistance && !chargingAttack)
+                {
+                    chargingAttack = true;
+                }
+                if (chargingAttack)
+                {
+                    attackChargeTimer += Time.deltaTime;
+                    mat.color = Color.blue;
+                    if (attackChargeTimer > attackChargeTimerMax)
+                    {
+                        chargingAttack = false;
+                        mat.color = originalColor;
+                        attackChargeTimer = 0;
+                        attackCDtimer = 0;
+                        meleeAttackHitbox.gameObject.SetActive(true);
+                    }
+                }
+            }
+		}
 
         else if(type == EnemyType.JUMPER_COMBATANT)
 		{
@@ -357,7 +386,7 @@ public class EnemyAttack : MonoBehaviour
 
 	private void OnTriggerEnter(Collider other)
     {
-        if (type == EnemyType.MELEE_FODDER || type == EnemyType.WELL_ENEMY)
+        if (type == EnemyType.WELL_ENEMY)
         {
             if (attackCDtimer > attackCDtimerMax)
             {
