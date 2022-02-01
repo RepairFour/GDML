@@ -10,15 +10,16 @@ public class CrimsonFlourish : MonoBehaviour
     public LayerMask hitMask;
     public float activationTime;
     public float cooldownTime;
-    [Range(0.25f, 1)] public float damageModifer; 
-
+    [Range(0.25f, 1)] public float damageModifer;
+    public Transform vfxTranform;
+    
     public GameObject tempThing;
     
     float intialAngle;
-    float currentAngle;
+    public float currentAngle;
     float cooldownTimer;
     float activationTimer;
-    Vector3 currentBladeDirection;
+    public Quaternion currentBladeDirection;
 
     bool queued;
     bool needSetUp;
@@ -33,7 +34,7 @@ public class CrimsonFlourish : MonoBehaviour
     {
         intialAngle = -1* (arcAngle / 2);
         currentAngle = intialAngle;
-        currentBladeDirection = Quaternion.AngleAxis(intialAngle, Vector3.up) * transform.forward;
+        currentBladeDirection = Quaternion.AngleAxis(intialAngle, Vector3.up);
         queued = false;
         needSetUp = true;
         
@@ -50,14 +51,14 @@ public class CrimsonFlourish : MonoBehaviour
         {
             queued = true;
             needSetUp = true;
-            currentBladeDirection = Quaternion.AngleAxis(currentAngle, Vector3.up) * transform.forward;
+            currentBladeDirection = Quaternion.AngleAxis(currentAngle, Vector3.up);
         }
     }
     void SetUpCrimsonFlourish()
     {
         if(queued && needSetUp)
         {
-            currentBladeDirection = Quaternion.AngleAxis(intialAngle, Vector3.up) * transform.forward;
+            currentBladeDirection = Quaternion.AngleAxis(intialAngle, Vector3.up);
             currentAngle = intialAngle;
             needSetUp = false;
         }
@@ -68,19 +69,20 @@ public class CrimsonFlourish : MonoBehaviour
         if (queued && !abilityActivated)
         {
             //Calculate the angle split
-            var angleSplit = arcAngle / bladeNumber;
+            var angleSplit = arcAngle / (bladeNumber - 1);
             //arcAngle/bladeNumber
 
             for (int i = 0; i < bladeNumber; i++)
             {
                 RaycastHit[] raycastHits;
-                raycastHits = Physics.SphereCastAll(transform.position, 10, transform.forward + currentBladeDirection, range, hitMask);
+                raycastHits = Physics.SphereCastAll(transform.position, 10, currentBladeDirection * vfxTranform.forward, range, hitMask);
                 currentAngle += angleSplit;
 
-                var temp = Instantiate(tempThing, transform.position + transform.forward * 2, Quaternion.identity); 
-                temp.GetComponent<Rigidbody>().AddForce(transform.forward + currentBladeDirection * 10000);
+                var temp = Instantiate(tempThing, vfxTranform.position, vfxTranform.rotation * currentBladeDirection); 
+                temp.GetComponent<Rigidbody>().AddForce(temp.transform.forward * 10000);
 
-                currentBladeDirection = Quaternion.AngleAxis(currentAngle, Vector3.up) * transform.forward;
+                currentBladeDirection = Quaternion.AngleAxis(currentAngle, Vector3.up);
+                
                 for(int y = 0; y < raycastHits.Length; y++)
                 {
                     if (raycastHits[y].transform.gameObject.CompareTag("Enemy"))
@@ -94,7 +96,7 @@ public class CrimsonFlourish : MonoBehaviour
             }
             //queued = false;
             abilityActivated = true;
-            currentAngle = 0;
+            //currentAngle = 0;
             //enemiesAddedToList = true;
 
         }
@@ -191,7 +193,7 @@ public class CrimsonFlourish : MonoBehaviour
     }
     private void OnDrawGizmos()
     {
-        Gizmos.DrawLine(transform.position, transform.forward + currentBladeDirection * 200);
+        //Gizmos.DrawLine(transform.position, transform.forward + currentBladeDirection * 200);
         
     }
 
