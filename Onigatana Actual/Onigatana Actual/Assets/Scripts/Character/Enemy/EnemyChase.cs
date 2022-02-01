@@ -93,7 +93,7 @@ public class EnemyChase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-   
+        UpdateRotation();
         if (player == null)
 		{
             player = FindObjectOfType<PlayerStats>();
@@ -166,6 +166,29 @@ public class EnemyChase : MonoBehaviour
             }
 		}
         
+    }
+
+    void UpdateRotation()
+	{
+        if (enemyAttack.type != EnemyAttack.EnemyType.JUMPER_COMBATANT)
+        {
+            Vector3 dir;
+            if (Vector3.Distance(transform.position, player.transform.position) <= basicAttackDistance)
+            {
+                dir = player.transform.position - transform.position;
+            }
+            else
+            {
+                dir = agent.destination - transform.position;
+                if (enemyAttack.type == EnemyAttack.EnemyType.RANGED_FODDER || enemyAttack.type == EnemyAttack.EnemyType.WELL_ENEMY)
+                {
+                    dir = player.transform.position - transform.position;
+                }
+            }
+            dir.y = 0;//This allows the object to only rotate on its y axis
+            Quaternion rot = Quaternion.LookRotation(dir);
+            transform.rotation = Quaternion.Lerp(transform.rotation, rot, 5 * Time.deltaTime);
+        }
     }
     void FindPath(Vector3 desiredDestination)
 	{
