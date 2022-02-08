@@ -91,6 +91,7 @@ public class EnemyAttack : MonoBehaviour
 	//Fetch Vars
 	PlayerStats player;
     EnemyChase enemyChase;
+    EnemyStats enemyStats;
     Material mat;
     Color originalColor;
     NavMeshAgent agent;
@@ -113,6 +114,7 @@ public class EnemyAttack : MonoBehaviour
 	void Start()
     {
         player = FindObjectOfType<PlayerStats>();
+        enemyStats = GetComponent<EnemyStats>();
         enemyChase = GetComponent<EnemyChase>();
         if(enemyChase == null)// for flying units
 		{
@@ -310,7 +312,7 @@ public class EnemyAttack : MonoBehaviour
                 player = hit.collider.GetComponent<PlayerStats>();
                 if (player != null)
                 {
-                    player.Hurt(swipeDamage); //need to update to new hurt
+                    player.Hurt(swipeDamage, ref enemyStats); //need to update to new hurt
                 }                
             }
             attackChargeTimer = 0;
@@ -393,7 +395,7 @@ public class EnemyAttack : MonoBehaviour
                 var player = other.GetComponent<PlayerStats>();
                 if (player != null)
                 {
-                    player.Hurt(dmgPerHit);
+                    player.Hurt(dmgPerHit, ref enemyStats);
                     attackCDtimer = 0;
                 }
             }
@@ -409,7 +411,7 @@ public class EnemyAttack : MonoBehaviour
                 var player = other.GetComponent<PlayerStats>();
                 if (player != null)
                 {
-                    player.Hurt(dmgPerHit);
+                    player.Hurt(dmgPerHit, ref enemyStats);
                     attackCDtimer = 0;
                 }
             }

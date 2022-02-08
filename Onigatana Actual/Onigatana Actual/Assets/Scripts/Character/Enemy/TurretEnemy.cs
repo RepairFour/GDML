@@ -74,7 +74,7 @@ public class TurretEnemy : MonoBehaviour
                 var player = hit.collider.gameObject.GetComponent<PlayerStats>();
                 if (player != null && damageCount < damgeTicks)
                 {
-                    player.Hurt(damage);
+                    player.Hurt(damage, this);
                     ++damageCount;
                 }
                 hitLocations.Add(hit.point);

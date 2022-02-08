@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public MainCharacterController playerController;
-
+    public Weapon currentPlayerWeapon;
     public PlayerStats playerStats;
     public BloodFuryState bloodFuryState;
     public CanvasManager gameOverCanvas;
