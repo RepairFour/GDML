@@ -80,6 +80,7 @@ public class Weapon : MonoBehaviour
         input = InputManager.instance.input;
         meleeButton = (ButtonControl)input.Player.Melee.controls[0];
         parryButton = (ButtonControl)input.Player.Parry.controls[0];
+        canParry = true;
     }
 
     // Update is called once per frame

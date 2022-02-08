@@ -15,8 +15,8 @@ public class EnemyProjectile : MonoBehaviour
 		{
 			if (other.GetComponent<PlayerStats>() != null)
 			{
-				other.GetComponent<PlayerStats>().Hurt(dmg);
-				Destroy(gameObject);
+				other.GetComponent<PlayerStats>().Hurt(dmg, this);
+				//Destroy(gameObject);
 				hitSomething = true;
 			}
 			
