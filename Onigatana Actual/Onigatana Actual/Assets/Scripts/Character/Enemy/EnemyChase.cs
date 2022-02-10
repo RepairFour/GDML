@@ -17,6 +17,28 @@ public class EnemyChase : MonoBehaviour
     int pathNode = 0;
     bool chasePlayer = false;
 
+    bool gettingKnockbacked = false;
+    bool hitwall = false;
+    bool knockbackSetUp = false;
+    Vector3 knockbackDirection;
+    Vector3 knockbackPos0;
+    Vector3 knockbackPos1;
+    Vector3 knockbackPos2;
+    Vector3 knockbackPos3;
+    float knockbackTimer = 0f;
+    float knockbackDuration;
+    float knockbackDistance;
+    float knockbackHeight;
+    int wallsmashDamage;
+    public Vector3 setKnockbackDirection { set => knockbackDirection = value; }
+    public bool isGettingKnockbacked { get => gettingKnockbacked; set => gettingKnockbacked = value; }
+    public float setKnockbackDuration { set => knockbackDuration = value; }
+    public float setKnockbackDistance { set => knockbackDistance = value; }
+    public float setKnockbackHeight { set => knockbackHeight = value; }
+    public int setWallSmashDamage { set => wallsmashDamage = value; }
+
+    public LayerMask knockbackMask;
+
     EnemyAttack enemyAttack;
     public float basicAttackDistance;
 
@@ -58,10 +80,12 @@ public class EnemyChase : MonoBehaviour
     [SerializeField] Transform enemyTransform; //because the this script my be attached to a parent not the enemy itself
     [SerializeField] bool isFlying;
     [SerializeField] Tether tether;
-	#endregion
 
-	// Start is called before the first frame update
-	void Start()
+    public GameObject test;
+    #endregion
+
+    // Start is called before the first frame update
+    void Start()
     {
         player = FindObjectOfType<PlayerStats>();
         playerCollider = player.GetComponent<Collider>();
@@ -93,78 +117,86 @@ public class EnemyChase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        UpdateRotation();
-        if (player == null)
-		{
-            player = FindObjectOfType<PlayerStats>();
-        }
-        if(isFlying)
-		{
-            if(GetComponentInChildren<EnemyStats>() == null) // when the enemy dies,needs this to remove this(the parent)
-			{
-                Destroy(gameObject);
-                return;
-			}
-            var temp = enemyTransform.localPosition;
-            temp.x = 0;
-            temp.z = 0;
-            enemyTransform.localPosition = temp;
-		}
-        if (debugDestination == null)
+        if (!gettingKnockbacked)
         {
-            if (enemyAttack.turretMode == false)
+            UpdateRotation();
+            if (player == null)
             {
-                if(enemyAttack.type == EnemyAttack.EnemyType.WHEEL_ENEMY)
-				{
-                    FollowPatrol();                 
+                player = FindObjectOfType<PlayerStats>();
+            }
+            if (isFlying)
+            {
+                if (GetComponentInChildren<EnemyStats>() == null) // when the enemy dies,needs this to remove this(the parent)
+                {
+                    Destroy(gameObject);
                     return;
                 }
-                CanISeeThePlayer(); // fills out chasePlayer bool 
-                if (chasePlayer == false)
+                var temp = enemyTransform.localPosition;
+                temp.x = 0;
+                temp.z = 0;
+                enemyTransform.localPosition = temp;
+            }
+            if (debugDestination == null)
+            {
+                if (enemyAttack.turretMode == false)
                 {
-                    if (wasChasing)
-                    {
-                        loseInterestTimer += Time.deltaTime;
-                        if (loseInterestTimer >= loseInterestTimerMax)
-                        {
-                            wasChasing = false;
-                            loseInterestTimer = 0;
-                        }
-                        ChasePlayer();
-                        //Debug.Log("Chasing player");
-                    }
-                    else
+                    if (enemyAttack.type == EnemyAttack.EnemyType.WHEEL_ENEMY)
                     {
                         FollowPatrol();
-                        //Debug.Log("Following patrol");
+                        return;
+                    }
+                    CanISeeThePlayer(); // fills out chasePlayer bool 
+                    if (chasePlayer == false)
+                    {
+                        if (wasChasing)
+                        {
+                            loseInterestTimer += Time.deltaTime;
+                            if (loseInterestTimer >= loseInterestTimerMax)
+                            {
+                                wasChasing = false;
+                                loseInterestTimer = 0;
+                            }
+                            ChasePlayer();
+                            //Debug.Log("Chasing player");
+                        }
+                        else
+                        {
+                            FollowPatrol();
+                            //Debug.Log("Following patrol");
+                        }
+                    }
+                    else // get to optimal attack range
+                    {
+                        wasChasing = true;
+                        enemyAttack.attackMode = true;
+                        ChasePlayer();
+                        //Debug.Log("Chasing player 2");
                     }
                 }
-                else // get to optimal attack range
+                else
                 {
-                    wasChasing = true;
-                    enemyAttack.attackMode = true;
-                    ChasePlayer();
-                    //Debug.Log("Chasing player 2");
+                    CanISeeThePlayer();
+                    if (chasePlayer)
+                    {
+                        enemyAttack.attackMode = true;
+                    }
                 }
             }
-			else
-			{
-                CanISeeThePlayer();
-                if(chasePlayer)
-				{
-                    enemyAttack.attackMode = true;
+            else
+            {
+                debugTimer += Time.deltaTime;
+                if (debugTimer >= debugTimerMax)
+                {
+                    debugTimer = 0;
+                    FindPath(debugDestination.position);
                 }
             }
         }
-		else
-		{
-            debugTimer += Time.deltaTime;
-            if (debugTimer >= debugTimerMax)
-            {
-                debugTimer = 0;
-                FindPath(debugDestination.position);
-            }
-		}
+        else
+        {
+            agent.enabled = false;
+            Knockback();
+        }
         
     }
 
@@ -367,6 +399,90 @@ public class EnemyChase : MonoBehaviour
             }
         }
         Debug.DrawLine(transform.position, agent.destination, Color.green);
+    }
+
+    private void Knockback()
+    {
+        
+        KnockbackSetup();
+
+        
+
+        Vector3 posToLerpTo = MathHelper.CubicBezier(knockbackPos0
+            , knockbackPos1, knockbackPos2, knockbackPos3, knockbackTimer / knockbackDuration);
+        Debug.DrawLine(knockbackPos0, knockbackPos1);
+        Debug.DrawLine(knockbackPos1, knockbackPos2);
+        Debug.DrawLine(knockbackPos2, knockbackPos3);
+
+        transform.position = posToLerpTo;
+
+        knockbackTimer += Time.deltaTime;
+
+        if (knockbackTimer >= knockbackDuration)
+        {
+            gettingKnockbacked = false;
+            knockbackTimer = 0f;
+            agent.enabled = true;
+            knockbackSetUp = false;
+            if (hitwall)
+            {
+                GetComponent<EnemyStats>().Hurt(wallsmashDamage);
+                hitwall = false;
+            }
+            return;
+        }
+    }
+
+    void KnockbackSetup()
+    {
+
+        if (!knockbackSetUp)
+        {
+            Debug.Log("Called");
+            knockbackPos0 = transform.position;
+            knockbackPos1 = transform.position;
+            knockbackPos1.y += knockbackHeight;
+            knockbackPos2 = transform.position + (knockbackDirection.normalized * knockbackDistance);
+            knockbackPos2.y += knockbackHeight;
+            knockbackPos3 = transform.position + (knockbackDirection.normalized * knockbackDistance);
+            
+
+
+            if (Physics.Raycast(knockbackPos0, (knockbackPos1 - knockbackPos0).normalized,
+                out RaycastHit hit,
+                Vector3.Distance(knockbackPos0, knockbackPos1),
+                knockbackMask))
+            {
+                
+                knockbackPos1 = GetComponent<Collider>().ClosestPointOnBounds(hit.point);
+                knockbackPos2 = GetComponent<Collider>().ClosestPointOnBounds(hit.point);
+                knockbackPos3 = GetComponent<Collider>().ClosestPointOnBounds(hit.point);
+                hitwall = true;
+            }
+            else if (Physics.Raycast(knockbackPos1,
+                (knockbackPos2 - knockbackPos1).normalized,
+                out RaycastHit hit1,
+                Vector3.Distance(knockbackPos1, knockbackPos2), 
+                knockbackMask))
+            {
+                knockbackPos2 = GetComponent<Collider>().ClosestPointOnBounds(hit1.point);
+                knockbackPos3 = GetComponent<Collider>().ClosestPointOnBounds(hit1.point);
+                hitwall = true;
+            }
+            else if (Physics.Raycast(knockbackPos2,
+                (knockbackPos3 - knockbackPos2).normalized,
+                out RaycastHit hit2,
+                Vector3.Distance(knockbackPos2, knockbackPos3),
+                knockbackMask))
+            {                
+                knockbackPos3 = GetComponent<Collider>().ClosestPointOnBounds(hit2.point);
+                hitwall = true;
+            }
+
+            //Instantiate(test, knockbackPos3, Quaternion.identity);
+            knockbackSetUp = true;
+
+        }
     }
 
 }

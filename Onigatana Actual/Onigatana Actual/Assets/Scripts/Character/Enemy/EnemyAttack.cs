@@ -345,7 +345,7 @@ public class EnemyAttack : MonoBehaviour
         Vector3 pos2 = playerJumpPos;
         pos2.y += leapHeight;
         Vector3 pos3 = playerJumpPos;
-        Vector3 posToLerpTo = CubicBezier(pos0,pos1,pos2,pos3, leapTimer / leapDuration);
+        Vector3 posToLerpTo = MathHelper.CubicBezier(pos0,pos1,pos2,pos3, leapTimer / leapDuration);
 
         transform.position = Vector3.Lerp(transform.position, posToLerpTo, 1);
 
@@ -418,18 +418,6 @@ public class EnemyAttack : MonoBehaviour
         }
     }
 
-	public static Vector3 CubicBezier(Vector3 p0, Vector3 p1, Vector3 p2, Vector3 p3, float t)
-    {
-        float r = 1f - t;
-        float f0 = r * r * r;
-        float f1 = r * r * t * 3;
-        float f2 = r * t * t * 3;
-        float f3 = t * t * t;
-        return new Vector3( f0 * p0.x + f1 * p1.x + f2 * p2.x + f3 * p3.x,
-                            f0 * p0.y + f1 * p1.y + f2 * p2.y + f3 * p3.y,
-                            f0 * p0.z + f1 * p1.z + f2 * p2.z + f3 * p3.z);
-    }
-
 
     public bool InterceptionDir(Vector3 a, Vector3 b, Vector3 vA, float sB, out Vector3 result)
 	{
@@ -438,7 +426,7 @@ public class EnemyAttack : MonoBehaviour
         var alpha = Vector2.Angle(aToB, vA) * Mathf.Deg2Rad;
         var sA = vA.magnitude;
         var r = sA / sB;
-        if(MyMath.SolveQuadratic(1-r*r, 2*r*dC*Mathf.Cos(alpha), -(dC*dC), out var root1, out var root2) == 0)
+        if(MathHelper.SolveQuadratic(1-r*r, 2*r*dC*Mathf.Cos(alpha), -(dC*dC), out var root1, out var root2) == 0)
 		{
             result = Vector2.zero;
             return false;
@@ -451,19 +439,4 @@ public class EnemyAttack : MonoBehaviour
 	}
 }
 
-public class MyMath
-{
-    public static int SolveQuadratic(float a, float b, float c, out float root1, out float root2)
-	{
-        var discriminant = b * b - 4 * a * c;
-        if(discriminant < 0)
-		{
-            root1 = Mathf.Infinity;
-            root2 = -root1;
-            return 0;
-		}
-        root1 = (-b + Mathf.Sqrt(discriminant)) / (2 * a);
-        root2 = (-b - Mathf.Sqrt(discriminant)) / (2 * a);
-        return discriminant > 0 ? 2 : 1;
-    }
-}
+

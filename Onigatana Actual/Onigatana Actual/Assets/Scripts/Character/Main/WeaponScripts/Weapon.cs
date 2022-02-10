@@ -84,14 +84,17 @@ public class Weapon : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
+
+
+
         QueryInput();
         HandleParrying();
-        HandleChargingAttack();
-        HandleChargeAttackEffect();
-        HandleAttacks();
-        HandleAttackCleanUp();
+        //HandleChargingAttack();
+        //HandleChargeAttackEffect();
+        //HandleAttacks();
+        //HandleAttackCleanUp();
         
     }
 
@@ -246,30 +249,26 @@ public class Weapon : MonoBehaviour
         {
             ChargeAttackAnimation();
             ChargeAttackSound();
+
+            damage = chargeAttackDamage;
+            HandleTarget();
+            chargingTimer = 0;
             blocked = false;
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
-            
-            chargingTimer = 0;
-            //animator.SetBool("ChargeAttack", false);
-            damage = chargeAttackDamage;
-            HandleTarget();
         }
         else if (attackQueued && !attackCharged && !chargingAttack)
         {
             BasicAttackAnimation();
-            //attackCollider.enabled = true;
             BasicAttackSound();
-            
-            
+
+            damage = normalDamage;
+            HandleTarget();
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
             blocked = false;
-            
-            damage = normalDamage;
-            HandleTarget();
         }
 
     }

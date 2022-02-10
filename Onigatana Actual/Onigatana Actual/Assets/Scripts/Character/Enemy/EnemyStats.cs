@@ -71,6 +71,32 @@ public class EnemyStats : MonoBehaviour
             }
         }
 	}
+    public void Hurt(int dmg)
+    {
+        if (enemyAttack.type != EnemyAttack.EnemyType.WELL_ENEMY)
+        {
+            Health -= dmg;
+            Debug.Log($"OUCHHHHHH! I took {dmg} damage");
+            IsHit();
+            
+            if (isDead())
+            {
+                var enemyAttackScript = GetComponent<EnemyAttack>();
+                if (enemyAttackScript != null)
+                {
+                    enemyAttackScript.DisposeShockwave();
+                }
+                HUDCon.instance.UpdateKillCount();
+                AudioHandler.instance.PlaySound("EnemyDeath", 1f, true, 1);
+                GameManager.instance.bloodFuryState.FillBloodMeter(6f);
+                if (GameManager.instance.bloodFuryState.active)
+                {
+                    GameManager.instance.bloodFuryState.Revive();
+                }
+                Destroy(gameObject);
+            }
+        }
+    }
     public void IsHit()
     {
         //hitAni.Play("Death");

@@ -28,9 +28,19 @@ public class Sword : Weapon
     float currentElectricityAmount;
 
 
-    
+
 
     #region ChargeAttack
+
+    protected override void Update()
+    {
+        base.Update();
+        HandleChargingAttack();
+        HandleChargeAttackEffect();
+        HandleAttacks();
+        HandleAttackCleanUp();
+    }
+
     protected override void ChargeAttackFeelerRay()
     {
         if (attackCharged && canAttack)
@@ -267,11 +277,11 @@ public class Sword : Weapon
 
     #region Sound
     protected override void BasicAttackSound() {
-        AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
+        AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 3);
     }
     protected override void ChargeAttackSound() 
     {
-        AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 2);
+        AudioHandler.instance.PlaySound("SwordSlash2", 1, true, 3);
     }
     #endregion
 
