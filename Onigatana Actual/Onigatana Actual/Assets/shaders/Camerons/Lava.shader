@@ -1,15 +1,18 @@
-Shader "Unlit/Triplaner"
+Shader "Unlit/Lava"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _MainTex("Texture", 2D) = "white" {}
         _Color("Tint Colour", Color) = (1,1,1,1)
         _Scale("Scale", Range(0.01, 1)) = 1
         _Sharpness("Blend Sharpness", Range(1,64)) = 1
+        _MoveRate("Move Rate", Range(0, 5)) = 1
+        _Brightness("Brightness", Range(1,10)) = 1
+   
     }
     SubShader
     {
-        Tags { "RenderType"="Opaque" }
+        Tags { "RenderType" = "Opaque" }
 
         Pass
         {
@@ -37,15 +40,17 @@ Shader "Unlit/Triplaner"
             float4 _Color;
             float _Scale;
             float _Sharpness;
+            float _MoveRate;
+            float _Brightness;
 
-            FragInput vert (MeshData v)
+            FragInput vert(MeshData v)
             {
                 FragInput o;
                 o.position = UnityObjectToClipPos(v.vertex);
                 //cal world pos of vertex
-                float4 worldPos = mul(unity_ObjectToWorld, v.vertex) ;
-                o.worldPos = worldPos.xyz * _Scale;
-      
+                float4 worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.worldPos = worldPos.xyz * _Scale;               
+                o.worldPos.y += _Time.y * _MoveRate;
                 //calculate world normal
                 float3 worldNormal = mul(v.normal, (float3x3)unity_WorldToObject);
                 o.normal = normalize(worldNormal);
@@ -54,7 +59,7 @@ Shader "Unlit/Triplaner"
 
             fixed4 frag(FragInput i) : SV_Target
             {
-              
+
 
                 float2 uv_front = TRANSFORM_TEX(i.worldPos.xy, _MainTex);
                 float2 uv_side = TRANSFORM_TEX(i.worldPos.zy, _MainTex);
@@ -76,7 +81,7 @@ Shader "Unlit/Triplaner"
                 col_side *= weights.x;
                 col_top *= weights.y;
 
-                fixed4 col = col_front + col_side + col_top;
+                fixed4 col = (col_front + col_side + col_top) * _Brightness;
 
                 col *= _Color;
                 return col;
@@ -85,4 +90,5 @@ Shader "Unlit/Triplaner"
         }
     }
     FallBack "Standard"
+    
 }

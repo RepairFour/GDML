@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Unlit_Triplaner
-  m_Shader: {fileID: 4800000, guid: ec176aeeec9826a43a1a6c51fe5c0ac5, type: 3}
+  m_Name: Unlit_Bloodbar
+  m_Shader: {fileID: 4800000, guid: 653d214a4d38e9f4eb32ee09c10c0850, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -20,13 +20,17 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: be9b20641608fa44498cff89fa71229f, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Scale: 0.01
-    - _Sharpness: 13.6
+    - _BorderSize: 0.2
+    - _Frequency: 5
+    - _Health: 1
+    - _Magnitude: 0.3
+    - _Threshold: 0
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _EndColor: {r: 1, g: 0.028217364, b: 0, a: 1}
+    - _StartColor: {r: 0.21960786, g: 0.21960786, b: 0.21960786, a: 1}
   m_BuildTextureStacks: []
