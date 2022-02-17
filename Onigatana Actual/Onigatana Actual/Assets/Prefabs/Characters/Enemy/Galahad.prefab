@@ -886,10 +886,10 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 2
-  m_Speed: 10
-  m_Acceleration: 50
+  m_Speed: 30
+  m_Acceleration: 30
   avoidancePriority: 50
-  m_AngularSpeed: 400
+  m_AngularSpeed: 30
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -910,12 +910,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d58cd13cc40fa1b45b57b31778653c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 800
-  blood: {fileID: 0}
+  health: 300
+  blood: {fileID: 6985031832804872773, guid: 2b9fa75499d8aa34ab2c0b9407ea11fe, type: 3}
   enemyTestAnims: {fileID: 4207229641426707694}
   knockBackDirection: {x: 0, y: 0, z: 0}
   defaultMaterial: {fileID: 2100000, guid: 87d84526bf183544abbed3787528b2d0, type: 2}
   hurtMaterial: {fileID: 2100000, guid: ea0e498927196204dbf49c90b00bd75e, type: 2}
+  hasShield: 0
 --- !u!114 &4207229641426707693
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -930,13 +931,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   galahadActions:
   - {fileID: 4207229641426707691}
+  - {fileID: 4207229641426707675}
+  - {fileID: 7346323600287916892}
   - {fileID: 4207229641426707672}
   - {fileID: 4207229641426707672}
   - {fileID: 4207229641426707672}
   - {fileID: 4207229641426707675}
-  - {fileID: 4207229641426707672}
-  - {fileID: 7346323600287916892}
-  - {fileID: 4207229641426707672}
 --- !u!114 &4207229641426707691
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -950,7 +950,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   finished: 0
-  chargeUpTimerMax: 2
+  chargeUpTimerMax: 0.5
   chargeSpeed: 8000
   dmg: 25
 --- !u!114 &4207229641426707672
@@ -981,8 +981,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finished: 0
   stompHitBox: {fileID: 4207229641179159797}
-  hitBoxSize: 140
-  stompSpeed: 60
+  hitBoxSize: 110
+  stompSpeed: 150
   dmg: 25
   chargeUpTimerMax: 2
 --- !u!114 &7346323600287916892
@@ -999,7 +999,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   finished: 0
   projectile: {fileID: 3708793293189853914, guid: b2f9cc43b5930604ea231ba9ff34bb86, type: 3}
-  projectileSpeed: 4000
+  projectileSpeed: 8000
   dmg: 25
   chargeUpTimerMax: 1
 --- !u!65 &4207229641426707673

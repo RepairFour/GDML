@@ -9874,14 +9874,14 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81832046088313688}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df1abbe39a98a6d4db5fbec4b63896f9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   normalDamage: 25
   chargeAttackDamage: 50
-  attackRange: 15
+  attackRange: 12
   attackSpeed: 0.25
   attackMask:
     serializedVersion: 2
@@ -9927,7 +9927,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81832046088313688}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 594ed2310d517da4f8f5ac407332167e, type: 3}
   m_Name: 
@@ -9971,7 +9971,10 @@ MonoBehaviour:
   - Attack2
   swordRenderer: {fileID: 1719461600083837532}
   pushbackForce: 100
-  knockbackTime: 0.5
+  knockbackDuration: 0
+  knockbackDistance: 0
+  knockbackHeight: 0
+  knockbackWallSmashDamage: 0
   maxElectricityAmount: 10
 --- !u!95 &948209838116482813
 Animator:
@@ -20923,7 +20926,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 4
   m_Radius: 0.5
-  m_SlopeLimit: 90
+  m_SlopeLimit: 40
   m_StepOffset: 1
   m_SkinWidth: 0.01
   m_MinMoveDistance: 0
@@ -20941,7 +20944,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   camTransform: {fileID: 5312902131966618684}
-  shakeDuration: 0.5
+  shakeDuration: 0.2
   shakeAmount: 0.7
   originalPos: {x: 0, y: 0, z: 0}
 --- !u!114 &3537334770861536678
@@ -21031,7 +21034,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   leanAnimator: {fileID: 3911127137506613000}
   cameraHeight: 3
-  slideCameraHeight: 0.5
+  slideCameraHeight: 0.25
   cameraTransform: {fileID: 4085466531584680994}
   xSensitivity: 35
   ySensitivity: 35
@@ -21081,10 +21084,10 @@ MonoBehaviour:
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 7
   hookShotSpeed: 200
-  minimumSpeedModifier: 0.434
+  minimumSpeedModifier: 0.7
   hookCooldown: 0.1
   speedModifier: 0
-  floatAfterHookShot: 0
+  floatAfterHookShot: 1
   hookShotStoppingDistance: 10
 --- !u!114 &4860797491167713944
 MonoBehaviour:
