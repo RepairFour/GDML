@@ -9,6 +9,16 @@ public class Sword : Weapon
     bool strikeLocked;
     int animationCounter = 0;
 
+    [Header("Sword Basic Attack Hitbox")]
+    [SerializeField] protected Vector3 attackFeelerLowTierHalfExtents;
+    [SerializeField] protected Vector3 attackFeelerMidTierExtents;
+    [SerializeField] protected Vector3 attackFeelerOuterTierExtents;
+    [Space]
+    [Header("Sword Charge Attack Hitbox")]
+    [SerializeField] protected Vector3 feelerLowTierHalfExtents;
+    [SerializeField] protected Vector3 feelerMidTierExtents;
+    [SerializeField] protected Vector3 feelerOuterTierExtents;
+
     [Header("Animation and Particles")]
     public Animator animator;
     public ParticleSystem weaponTrail;
@@ -47,7 +57,7 @@ public class Sword : Weapon
         {
 
             RaycastHit hit;
-            if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, chargeAttackRange, chargeAttackMask))
+            if (Physics.BoxCast(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, out hit, feelerPoint.rotation, chargeAttackRange, chargeAttackMask))
             {
                 if (blinkTarget != hit.collider.gameObject)
                 {
@@ -61,7 +71,7 @@ public class Sword : Weapon
                     strikeLocked = true;
                 }
             }
-            else if (Physics.BoxCast(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, chargeAttackRange, chargeAttackMask))
+            else if (Physics.BoxCast(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, chargeAttackRange, chargeAttackMask))
             {
                 if (blinkTarget != hit.collider.gameObject)
                 {
@@ -75,7 +85,7 @@ public class Sword : Weapon
                     strikeLocked = true;
                 }
             }
-            else if (Physics.BoxCast(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, chargeAttackRange, chargeAttackMask))
+            else if (Physics.BoxCast(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, chargeAttackRange, chargeAttackMask))
             {
                 if (blinkTarget != hit.collider.gameObject)
                 {
@@ -137,7 +147,7 @@ public class Sword : Weapon
         //targetedEnemy = null;
         if (targetedEnemy == null)
         {
-            if (Physics.BoxCast(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, attackMask))
+            if (Physics.BoxCast(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
             {
 
                 if (targetedEnemy != hit.collider.gameObject)
@@ -145,14 +155,14 @@ public class Sword : Weapon
                     targetedEnemy = hit.collider.gameObject;
                 }
             }
-            else if (Physics.BoxCast(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, attackMask))
+            else if (Physics.BoxCast(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
             {
                 if (targetedEnemy != hit.collider.gameObject)
                 {
                     targetedEnemy = hit.collider.gameObject;
                 }
             }
-            else if (Physics.BoxCast(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, out hit, Quaternion.identity, attackRange, attackMask))
+            else if (Physics.BoxCast(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
             {
                 if (targetedEnemy != hit.collider.gameObject)
                 {

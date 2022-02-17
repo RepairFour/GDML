@@ -12,6 +12,14 @@ public class Kenobo : Weapon
 
     int animationCounter = 0;
 
+    [Header("Sword Basic Attack Hitbox")]
+    [SerializeField] protected Vector3 cleaveAttackHitBox;
+    [Space]
+    [Header("Sword Charge Attack Hitbox")]
+    [SerializeField] protected Vector3 chargeAttackHitBox;
+
+
+
     [Header("Animation and Particles")]
     public Animator animator;
     public ParticleSystem weaponTrail;
@@ -39,6 +47,9 @@ public class Kenobo : Weapon
         HandleChargingAttack();
         HandleAttacks();
         HandleAttackCleanUp();
+
+        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, chargeAttackHitBox, feelerPoint.rotation, feelerPoint.forward, chargeAttackRange, Color.red);
+        DrawBoxCast.DrawBoxCastBox(feelerPoint.position, cleaveAttackHitBox, feelerPoint.rotation, feelerPoint.forward, attackRange, Color.green);
     }
 
     #region ChargeAttack
@@ -50,9 +61,9 @@ public class Kenobo : Weapon
             //List<RaycastHit> mid = new List<RaycastHit>();
             //List<RaycastHit> outer = new List<RaycastHit>();
 
-            hits.AddRange(Physics.BoxCastAll(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, Quaternion.identity, attackRange, attackMask));
-            hits.AddRange(Physics.BoxCastAll(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, Quaternion.identity, attackRange, attackMask));
-            hits.AddRange(Physics.BoxCastAll(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, Quaternion.identity, attackRange, attackMask));
+            hits.AddRange(Physics.BoxCastAll(feelerPoint.position, chargeAttackHitBox, feelerPoint.forward, feelerPoint.rotation, chargeAttackRange, attackMask));
+            //hits.AddRange(Physics.BoxCastAll(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, Quaternion.identity, attackRange, attackMask));
+            //hits.AddRange(Physics.BoxCastAll(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, Quaternion.identity, attackRange, attackMask));
 
             if (hits.Count > 0)
             {
@@ -142,17 +153,17 @@ public class Kenobo : Weapon
             if (attackCharged)
             {
                 range = chargeAttackRange;
-                inner = Physics.BoxCastAll(feelerPoint.position, feelerLowTierHalfExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
-                mid = Physics.BoxCastAll(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
-                outer = Physics.BoxCastAll(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
+                inner = Physics.BoxCastAll(feelerPoint.position, chargeAttackHitBox, feelerPoint.forward, feelerPoint.rotation, range, attackMask);
+                //mid = Physics.BoxCastAll(feelerPoint.position, feelerMidTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
+                //outer = Physics.BoxCastAll(feelerPoint.position, feelerOuterTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
                 
             }
             else
             {
                 range = attackRange;
-                inner = Physics.BoxCastAll(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
-                mid = Physics.BoxCastAll(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
-                outer = Physics.BoxCastAll(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
+                inner = Physics.BoxCastAll(feelerPoint.position, cleaveAttackHitBox, feelerPoint.forward, feelerPoint.rotation, range, attackMask);
+                //mid = Physics.BoxCastAll(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
+                //outer = Physics.BoxCastAll(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, Quaternion.identity, range, attackMask);
             }
             if (inner.Length > 0)
             {
@@ -165,26 +176,26 @@ public class Kenobo : Weapon
                 }
 
             }
-            if (mid.Length > 0)
-            {
-                for (int i = 0; i < mid.Length; i++)
-                {
-                    if (!targetedEnemies.Contains(mid[i].collider.gameObject))
-                    {
-                        targetedEnemies.Add(mid[i].collider.gameObject);
-                    }
-                }
-            }
-            if (outer.Length > 0)
-            {
-                for (int i = 0; i < outer.Length; i++)
-                {
-                    if (!targetedEnemies.Contains(outer[i].collider.gameObject))
-                    {
-                        targetedEnemies.Add(outer[i].collider.gameObject);
-                    }
-                }
-            }
+            //if (mid.Length > 0)
+            //{
+            //    for (int i = 0; i < mid.Length; i++)
+            //    {
+            //        if (!targetedEnemies.Contains(mid[i].collider.gameObject))
+            //        {
+            //            targetedEnemies.Add(mid[i].collider.gameObject);
+            //        }
+            //    }
+            //}
+            //if (outer.Length > 0)
+            //{
+            //    for (int i = 0; i < outer.Length; i++)
+            //    {
+            //        if (!targetedEnemies.Contains(outer[i].collider.gameObject))
+            //        {
+            //            targetedEnemies.Add(outer[i].collider.gameObject);
+            //        }
+            //    }
+            //}
         }
 
         if (targetedEnemies.Count > 0)
@@ -204,68 +215,71 @@ public class Kenobo : Weapon
             pushBackTargets = targetedEnemies;
             HandleChargeAttackEffect();
 
-            foreach (GameObject e in targetedEnemies)
+            if (targetedEnemies.Count > 0)
             {
-                var enemyStats = e.GetComponent<EnemyStats>();
-                if (enemyStats.hasShield == false)
+                foreach (GameObject e in targetedEnemies)
                 {
-                    enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-                    for (int i = 0; i < GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies().Count; i++)
+                    var enemyStats = e.GetComponent<EnemyStats>();
+                    if (enemyStats.hasShield == false)
                     {
-                        if (GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies()[i] == enemyStats)
+                        enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                        for (int i = 0; i < GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies().Count; i++)
                         {
-                            continue;
+                            if (GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies()[i] == enemyStats)
+                            {
+                                continue;
+                            }
+                            else
+                            {
+                                GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies()[i].Hurt(Mathf.RoundToInt(damage * GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().damageModifer), EnemyStats.MeleeAnimation.ANIMATION1);
+                            }
                         }
-                        else
-                        {
-                            GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().getLinkedEnemies()[i].Hurt(Mathf.RoundToInt(damage * GameManager.instance.playerController.gameObject.GetComponent<CrimsonFlourish>().damageModifer), EnemyStats.MeleeAnimation.ANIMATION1);
-                        }
+                        Instantiate(blood, e.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                        Instantiate(attackHitEffect, e.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
                     }
-                    Instantiate(blood, e.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
-                    Instantiate(attackHitEffect, e.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+
+                    else
+                    {
+                        //Is player infront of enemy
+                        if (Vector3.Dot((GameManager.instance.playerStats.transform.position - targetedEnemy.gameObject.transform.position).normalized,
+                                       targetedEnemy.gameObject.transform.forward) > 0)
+                        {
+                            var shield = targetedEnemy.GetComponentInChildren<ShieldHealth>();
+                            if (shield.Hurt(damage))//if the shield dies then
+                            {
+                                enemyStats.hasShield = false;
+                            }
+
+                            else
+                            {
+                                enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
+                                Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                                Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
+                            }
+
+                        }
+
+
+                        else if (targetedEnemy.CompareTag("Shield"))
+                        {
+                            var shield = gameObject.GetComponentInParent<ShieldHealth>();
+                            if (shield.Hurt(damage))//if the shield dies then
+                            {
+                                shield.GetComponentInParent<EnemyStats>().hasShield = false;
+                            }
+
+                        }
+
+                        else if (targetedEnemy.CompareTag("Well"))
+                        {
+                            targetedEnemy.GetComponent<Well>().Hurt(damage);
+                        }
+
+                        targetedEnemy = null;
+                    }
                 }
-
-                else
-                {
-                    //Is player infront of enemy
-                    if (Vector3.Dot((GameManager.instance.playerStats.transform.position - targetedEnemy.gameObject.transform.position).normalized,
-                                   targetedEnemy.gameObject.transform.forward) > 0)
-                    {
-                        var shield = targetedEnemy.GetComponentInChildren<ShieldHealth>();
-                        if (shield.Hurt(damage))//if the shield dies then
-                        {
-                            enemyStats.hasShield = false;
-                        }
-
-                        else
-                        {
-                            enemyStats.Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);
-                            Instantiate(blood, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
-                            Instantiate(attackHitEffect, targetedEnemy.GetComponent<Collider>().ClosestPoint(transform.position), Quaternion.identity);
-                        }
-
-                    }
-
-
-                    else if (targetedEnemy.CompareTag("Shield"))
-                    {
-                        var shield = gameObject.GetComponentInParent<ShieldHealth>();
-                        if (shield.Hurt(damage))//if the shield dies then
-                        {
-                            shield.GetComponentInParent<EnemyStats>().hasShield = false;
-                        }
-
-                    }
-
-                    else if (targetedEnemy.CompareTag("Well"))
-                    {
-                        targetedEnemy.GetComponent<Well>().Hurt(damage);
-                    }
-
-                    targetedEnemy = null;
-                }
+                targetedEnemies.Clear();
             }
-            targetedEnemies.Clear();
         }
     }
     #endregion

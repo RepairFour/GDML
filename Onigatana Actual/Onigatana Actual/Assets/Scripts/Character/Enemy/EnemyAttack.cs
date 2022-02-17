@@ -24,6 +24,7 @@ public class EnemyAttack : MonoBehaviour
     [SerializeField] [Range(1, 3)] float firstAttackDelayMod = 1;
     [SerializeField] float attackChargeTimerMax;
     [SerializeField] Animation chargeAttackAni;
+    public Animator tenguAnimator;
     //Hiddens
     [HideInInspector] public bool attackMode = false;
     [HideInInspector] public float basicAttackDistance;
@@ -162,9 +163,11 @@ public class EnemyAttack : MonoBehaviour
                 if (Vector3.Distance(transform.position, player.transform.position) <= basicAttackDistance + 1 || enemyChase.runawayTimer > 0)
                 {
                     chargingAttack = true;
+                    tenguAnimator.SetTrigger("Attack");
                     if (chargeAttackAni != null)
                     {
-                        chargeAttackAni.Play("Idle"); //replace for attack charge ani
+                        
+                        //chargeAttackAni.Play("Idle"); //replace for attack charge ani
                     }
                 }
                 if (chargingAttack)

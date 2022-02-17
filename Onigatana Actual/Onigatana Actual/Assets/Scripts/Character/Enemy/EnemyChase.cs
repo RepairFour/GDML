@@ -42,6 +42,8 @@ public class EnemyChase : MonoBehaviour
     EnemyAttack enemyAttack;
     public float basicAttackDistance;
 
+    public Animator tenguAnimator;
+
     // melee units
     Collider playerCollider;
 
@@ -110,6 +112,8 @@ public class EnemyChase : MonoBehaviour
 		{
             visionDistance *= 500;
             basicAttackDistance *= 500;
+
+            
 		}
         
     }
@@ -117,6 +121,15 @@ public class EnemyChase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(agent.velocity.magnitude > 0)
+        {
+            tenguAnimator.SetBool("Walking", true);
+        }
+        else
+        {
+            tenguAnimator.SetBool("Walking", false);
+        }
+        
         if (!gettingKnockbacked)
         {
             UpdateRotation();
