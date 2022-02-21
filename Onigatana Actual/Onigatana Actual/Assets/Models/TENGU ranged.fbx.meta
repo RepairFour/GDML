@@ -1,20 +1,17 @@
 fileFormatVersion: 2
-guid: 069b6b510956f774796fefc747feb80d
+guid: c259b6d7962da794790a47cb9eb69261
 ModelImporter:
   serializedVersion: 21100
   internalIDToNameTable:
   - first:
-      74: -7064995993315538601
-    second: Armature.002|Armature.001|mixamo.com|Layer0
+      74: -5060674848045924840
+    second: tengu anims|Attack
   - first:
-      74: 3756940507620898010
-    second: Armature.002|attack
+      74: 2171401242107108819
+    second: tengu anims|Idle
   - first:
-      74: -152156108709224479
-    second: Armature.002|idle
-  - first:
-      74: -2551251867363297744
-    second: Armature.002|tengu walk
+      74: 1579855505827860778
+    second: tengu anims|Run
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -44,66 +41,8 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: Armature.002|Armature.001|mixamo.com|Layer0
-      takeName: Armature.002|Armature.001|mixamo.com|Layer0
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 68
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.002|attack
-      takeName: Armature.002|attack
-      internalID: 0
-      firstFrame: 0
-      lastFrame: 81
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: Armature.002|idle
-      takeName: Armature.002|idle
+      name: tengu anims|Attack
+      takeName: tengu anims|Attack
       internalID: 0
       firstFrame: 0
       lastFrame: 81
@@ -131,18 +70,47 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: Armature.002|tengu walk
-      takeName: Armature.002|tengu walk
+      name: tengu anims|Idle
+      takeName: tengu anims|Idle
       internalID: 0
       firstFrame: 0
-      lastFrame: 68
+      lastFrame: 423
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: tengu anims|Run
+      takeName: tengu anims|Run
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 36
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
