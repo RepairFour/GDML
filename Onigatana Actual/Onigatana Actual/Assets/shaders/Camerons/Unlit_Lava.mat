@@ -25,11 +25,11 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Brightness: 5.46
+    - _Brightness: 10
     - _MoveRate: 0.33
     - _Scale: 0.028
     - _Sharpness: 9.5
     - _SinOn: 0.77
     m_Colors:
-    - _Color: {r: 0, g: 1, b: 0.526783, a: 1}
+    - _Color: {r: 0.80590963, g: 1, b: 0, a: 1}
   m_BuildTextureStacks: []

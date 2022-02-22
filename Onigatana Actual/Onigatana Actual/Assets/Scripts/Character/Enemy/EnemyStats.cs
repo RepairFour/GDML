@@ -47,7 +47,7 @@ public class EnemyStats : MonoBehaviour
     
     public void Hurt(int dmg, MeleeAnimation ani)
 	{
-        if (enemyAttack.type != EnemyAttack.EnemyType.WELL_ENEMY)
+        if (enemyAttack == null || enemyAttack.type != EnemyAttack.EnemyType.WELL_ENEMY )
         {
             Health -= dmg;
             Debug.Log($"OUCHHHHHH! I took {dmg} damage");
@@ -144,21 +144,27 @@ public class EnemyStats : MonoBehaviour
         //{
         // //   gameObject.GetComponentInChildren<SkinnedMeshRenderer>().material = hurtMaterial;
         //}
-		//else
-		//{
-  //          gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
-  //      }
+        //else
+        //{
+        //          gameObject.GetComponent<MeshRenderer>().material = hurtMaterial;
+        //      }
 
-
-        //Here we calculate from what position the player hits the enemy, in order to calculate what direction the knockback will trigger in later. We also increase the knockback strength, but it is capped at a certain amount.
-        //enemyRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
-        knockBackDirection = enemyRigidbody.transform.position - Player.transform.position;
-        knockbackStrength = knockbackStrength + 150;
-        if (knockbackStrength >= 650)
+        try
         {
-            knockbackStrength = 650;
-        }
 
+            //Here we calculate from what position the player hits the enemy, in order to calculate what direction the knockback will trigger in later. We also increase the knockback strength, but it is capped at a certain amount.
+            //enemyRigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionZ;
+            knockBackDirection = enemyRigidbody.transform.position - Player.transform.position;
+            knockbackStrength = knockbackStrength + 150;
+            if (knockbackStrength >= 650)
+            {
+                knockbackStrength = 650;
+            }
+        }
+        catch
+		{
+            Debug.Log("Enemy doesn't have rigidbody");
+        }
         //We activate their animation, and we cancel any reset invokes. We do this so that we can continually keep the enemy in hitstun/animations until we stop attacking, and then we send them back to normal.
 
         CancelInvoke("resetToNormal");
@@ -189,15 +195,20 @@ public class EnemyStats : MonoBehaviour
         try
         {
             enemyTestAnims.SetTrigger("Reset");
-        }
-		catch { }
+        }catch { }
 
         Debug.Log(knockbackStrength);
 
         //enemyRigidbody.constraints = ~RigidbodyConstraints.FreezePositionX | ~RigidbodyConstraints.FreezePositionZ;
-        enemyRigidbody.AddForce(knockBackDirection.normalized * knockbackStrength);
-        knockbackStrength = 0;
-        gameObject.GetComponent<Animator>().enabled = false;
+        try
+        {
+            enemyRigidbody.AddForce(knockBackDirection.normalized * knockbackStrength);
+            knockbackStrength = 0;
+        }catch { Debug.Log("No Rigidbody on this object"); }
+        try
+        {
+            gameObject.GetComponent<Animator>().enabled = false;
+        }catch { Debug.Log("No Animator Attached"); }
 
     }
 

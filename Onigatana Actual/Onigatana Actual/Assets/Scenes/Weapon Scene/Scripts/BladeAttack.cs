@@ -157,6 +157,7 @@ public class BladeAttack : MonoBehaviour
         {
             if (other.gameObject.tag == "Enemy")
             {
+                Debug.Log(other.name);
                 if (attackAnimation1)
                 {
                     other.GetComponent<EnemyStats>().Hurt(damage, EnemyStats.MeleeAnimation.ANIMATION1);

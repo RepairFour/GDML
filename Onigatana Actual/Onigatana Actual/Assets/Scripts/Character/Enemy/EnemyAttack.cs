@@ -7,6 +7,7 @@ public class EnemyAttack : MonoBehaviour
 {
     public enum EnemyType
     {
+        NONE,
         MELEE_FODDER,
         RANGED_FODDER,
         RANGED_COMBATANT,
