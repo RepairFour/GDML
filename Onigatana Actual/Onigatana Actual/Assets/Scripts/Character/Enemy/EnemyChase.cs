@@ -123,13 +123,24 @@ public class EnemyChase : MonoBehaviour
     {
         
         if(agent.velocity.magnitude > 0)
-        { 
-            tenguAnimator.SetBool("Walking", true); 
+        {
+            if (Vector3.Dot((agent.destination - transform.position).normalized,
+                (transform.position - player.transform.position).normalized) > 0)
+            {
+                tenguAnimator.SetBool("Walking", false);
+                tenguAnimator.SetBool("Backwards", true);
+            }
+            else 
+            {
+                tenguAnimator.SetBool("Walking", true);
+                tenguAnimator.SetBool("Backwards", false);
+            }
+            
         }
         else
         {
             tenguAnimator.SetBool("Walking", false);
-            
+            tenguAnimator.SetBool("Backwards", false);
         }
         
         if (!gettingKnockbacked)
