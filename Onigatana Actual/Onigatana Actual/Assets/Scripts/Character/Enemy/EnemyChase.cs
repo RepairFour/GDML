@@ -145,8 +145,8 @@ public class EnemyChase : MonoBehaviour
         if (Time.deltaTime > 1e-5f)
             velocity = smoothDeltaPosition / Time.deltaTime;
         velocity.Normalize();
-        bool shouldMove = agent.velocity.magnitude > 0;
- 
+        bool shouldMove = velocity.magnitude > 0.5f && agent.remainingDistance > agent.radius;
+
         // Update animation parameters
         tenguAnimator.SetBool("Walking", shouldMove);
         tenguAnimator.SetFloat("Vely", velocity.y);
