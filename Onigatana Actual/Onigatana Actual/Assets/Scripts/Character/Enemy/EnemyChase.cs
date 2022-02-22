@@ -121,13 +121,15 @@ public class EnemyChase : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         if(agent.velocity.magnitude > 0)
-        {
-            tenguAnimator.SetBool("Walking", true);
+        { 
+            tenguAnimator.SetBool("Walking", true); 
         }
         else
         {
             tenguAnimator.SetBool("Walking", false);
+            
         }
         
         if (!gettingKnockbacked)

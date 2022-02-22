@@ -162,43 +162,50 @@ public class EnemyAttack : MonoBehaviour
             {
                 if (Vector3.Distance(transform.position, player.transform.position) <= basicAttackDistance + 1 || enemyChase.runawayTimer > 0)
                 {
-                    chargingAttack = true;
-                    tenguAnimator.SetTrigger("Attack");
+                    //chargingAttack = true;
+                    if (enemyChase.GetComponent<NavMeshAgent>().velocity.magnitude > 0)
+                    {
+                        tenguAnimator.SetTrigger("Walkback");
+                    }
+                    else
+                    {
+                        tenguAnimator.SetTrigger("Attack");
+                    }
                     if (chargeAttackAni != null)
                     {
                         
                         //chargeAttackAni.Play("Idle"); //replace for attack charge ani
                     }
                 }
-                if (chargingAttack)
-                {
-                    attackChargeTimer += Time.deltaTime;
-                    mat.color = Color.blue;
-                    if (attackChargeTimer > attackChargeTimerMax)
-                    {
-                        chargingAttack = false;
-                        if (chargeAttackAni != null)
-                        {
-                            chargeAttackAni.Play("Attack2");
-                            chargeAttackAni.PlayQueued("Run");
-                        }
-                        mat.color = originalColor;
-                        attackChargeTimer = 0;
-                        attackCDtimer = 0;
-                        //Vector3 bulletPos = transform.position;
-                        //bulletPos.y += 5;
-                        var bullet = Instantiate(projectile, projectileSpawn.position, transform.rotation);
-                        bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
-                        //if (InterceptionDir(GameManager.instance.playerAimArea.transform.position, transform.position, player.GetComponent<CharacterController>().velocity, projectileSpeed, out var direction))
-                        //{
-                        //    bullet.GetComponent<Rigidbody>().velocity = direction * projectileSpeed;
-                        //}
+                //if (chargingAttack)
+                //{
+                //    attackChargeTimer += Time.deltaTime;
+                //    mat.color = Color.blue;
+                //    if (attackChargeTimer > attackChargeTimerMax)
+                //    {
+                //        //chargingAttack = false;
+                //        //if (chargeAttackAni != null)
+                //        //{
+                //        //    chargeAttackAni.Play("Attack2");
+                //        //    chargeAttackAni.PlayQueued("Run");
+                //        //}
+                //        //mat.color = originalColor;
+                //        //attackChargeTimer = 0;
+                //        //attackCDtimer = 0;
+                //        ////Vector3 bulletPos = transform.position;
+                //        ////bulletPos.y += 5;
+                //        //var bullet = Instantiate(projectile, projectileSpawn.position, transform.rotation);
+                //        //bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
+                //        ////if (InterceptionDir(GameManager.instance.playerAimArea.transform.position, transform.position, player.GetComponent<CharacterController>().velocity, projectileSpeed, out var direction))
+                //        ////{
+                //        ////    bullet.GetComponent<Rigidbody>().velocity = direction * projectileSpeed;
+                //        ////}
                         
-                        bullet.GetComponent<Rigidbody>().velocity = (GameManager.instance.playerAimArea.transform.position - projectileSpawn.position).normalized * projectileSpeed;
+                //        //bullet.GetComponent<Rigidbody>().velocity = (GameManager.instance.playerAimArea.transform.position - projectileSpawn.position).normalized * projectileSpeed;
 
                         
-                    }
-                }
+                //    }
+                //}
             }
         }
         else if(type == EnemyType.MELEE_FODDER)
@@ -353,6 +360,29 @@ public class EnemyAttack : MonoBehaviour
         transform.position = Vector3.Lerp(transform.position, posToLerpTo, 1);
 
         
+    }
+
+    void RangedAttack()
+    {
+        chargingAttack = false;
+        if (chargeAttackAni != null)
+        {
+            chargeAttackAni.Play("Attack2");
+            chargeAttackAni.PlayQueued("Run");
+        }
+        mat.color = originalColor;
+        attackChargeTimer = 0;
+        attackCDtimer = 0;
+        //Vector3 bulletPos = transform.position;
+        //bulletPos.y += 5;
+        var bullet = Instantiate(projectile, projectileSpawn.position, transform.rotation);
+        bullet.GetComponent<EnemyProjectile>().dmg = dmgPerHit;
+        //if (InterceptionDir(GameManager.instance.playerAimArea.transform.position, transform.position, player.GetComponent<CharacterController>().velocity, projectileSpeed, out var direction))
+        //{
+        //    bullet.GetComponent<Rigidbody>().velocity = direction * projectileSpeed;
+        //}
+
+        bullet.GetComponent<Rigidbody>().velocity = (GameManager.instance.playerAimArea.transform.position - projectileSpawn.position).normalized * projectileSpeed;
     }
 
     void Shockwave()
