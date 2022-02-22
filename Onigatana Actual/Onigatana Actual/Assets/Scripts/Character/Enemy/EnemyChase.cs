@@ -86,9 +86,16 @@ public class EnemyChase : MonoBehaviour
     public GameObject test;
     #endregion
 
+    #region Animation
+    Vector2 smoothDeltaPosition = Vector2.zero;
+    Vector2 velocity = Vector2.zero;
+
+    #endregion
+
     // Start is called before the first frame update
     void Start()
     {
+        
         player = FindObjectOfType<PlayerStats>();
         playerCollider = player.GetComponent<Collider>();
         agent = GetComponent<NavMeshAgent>();
@@ -115,32 +122,57 @@ public class EnemyChase : MonoBehaviour
 
             
 		}
-        
+        agent.updatePosition = false; //THIS IS ANIMATION STUFF
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
-        if(agent.velocity.magnitude > 0)
-        {
-            if(Vector3.Dot(agent.velocity, transform.forward) > 0)
-            {
-                tenguAnimator.SetBool("Walking", true);
-            }
-            else
-            {
-                tenguAnimator.SetBool("Walking", false);
-            }
-            
+        Vector3 worldDeltaPosition = (agent.pathEndPosition - transform.position).normalized;
+        Debug.Log("World " + worldDeltaPosition);
 
-        }
-        else
-        {
-            tenguAnimator.SetBool("Walking", false);
-            
-        }
-        
+        // Map 'worldDeltaPosition' to local space
+        float dx = Vector3.Dot(transform.right, worldDeltaPosition);
+        float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
+        Vector2 deltaPosition = new Vector2(dx, dy);
+
+        // Low-pass filter the deltaMove
+        float smooth = Mathf.Min(1.0f, Time.deltaTime / 0.15f);
+        smoothDeltaPosition = Vector2.Lerp(smoothDeltaPosition, deltaPosition, smooth);
+
+        // Update velocity if time advances
+        if (Time.deltaTime > 1e-5f)
+            velocity = smoothDeltaPosition / Time.deltaTime;
+        velocity.Normalize();
+        bool shouldMove = agent.velocity.magnitude > 0;
+ 
+        // Update animation parameters
+        tenguAnimator.SetBool("Walking", shouldMove);
+        tenguAnimator.SetFloat("Vely", velocity.y);
+        tenguAnimator.SetFloat("Velx", velocity.x);
+
+
+
+        //if(agent.velocity.magnitude > 0)
+        //{
+        //    if(Vector3.Dot(agent.velocity, transform.forward) > 0)
+        //    {
+        //        tenguAnimator.SetBool("Walking", true);
+        //    }
+        //    else
+        //    {
+        //        tenguAnimator.SetBool("Walking", false);
+        //    }
+
+
+        //}
+        //else
+        //{
+        //    tenguAnimator.SetBool("Walking", false);
+
+        //}
+
         if (!gettingKnockbacked)
         {
             UpdateRotation();
@@ -507,6 +539,10 @@ public class EnemyChase : MonoBehaviour
             knockbackSetUp = true;
 
         }
+    }
+    private void OnAnimatorMove()
+    {
+        
     }
 
 }
