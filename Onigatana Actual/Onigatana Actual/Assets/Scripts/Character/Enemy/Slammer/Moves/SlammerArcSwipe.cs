@@ -40,6 +40,7 @@ public class SlammerArcSwipe : SlammerMove
             if (Mathf.Abs((transform.rotation.eulerAngles - rotGoal.eulerAngles).magnitude) < 0.1f)
             {
                 inPosition = true;
+                hitbox.SetActive(true);
             }
         }
         else
@@ -50,8 +51,9 @@ public class SlammerArcSwipe : SlammerMove
             if (Mathf.Abs((transform.rotation.eulerAngles - rotGoal.eulerAngles).magnitude) < 0.1f)
             {
                 inPosition = false;
-                return false;
+                hitbox.SetActive(false);
                 firstFrame = false;
+                return false;                
             }
         }
         return true;

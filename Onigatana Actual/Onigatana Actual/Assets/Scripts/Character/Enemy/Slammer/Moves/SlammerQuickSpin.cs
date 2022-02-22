@@ -15,12 +15,14 @@ public class SlammerQuickSpin : SlammerMove
 		windUpTimer += Time.deltaTime;
 		if (windUpTimer >= windUpTime)
 		{
+			hitbox.SetActive(true);
 			transform.RotateAround(transform.position, transform.up, Time.deltaTime * qSpinSpeed);
 			arcCounter += Time.deltaTime * qSpinSpeed;
 			if (arcCounter >= qSpinArc)
 			{
-				return false;
+				hitbox.SetActive(false);
 				windUpTimer = 0;
+				return false;				
 			}
 		}
 		return true;

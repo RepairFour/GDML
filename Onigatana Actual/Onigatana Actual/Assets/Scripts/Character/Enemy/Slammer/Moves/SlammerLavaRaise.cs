@@ -6,7 +6,6 @@ public class SlammerLavaRaise : SlammerMove
 {
     [SerializeField] float lavaHeight;
     [SerializeField] float risingSpeed;
-    [SerializeField] GameObject lava;
     [SerializeField] int waves;
     int waveCounter = 0;
     float risingTimer = 0;
@@ -16,18 +15,19 @@ public class SlammerLavaRaise : SlammerMove
 
 	private void Start()
 	{
-        startPos = lava.transform.position;
+        startPos = hitbox.transform.position;
         endPos = new Vector3(startPos.x, startPos.y + lavaHeight, startPos.z);
     }
 	public override bool Activate()
 	{
+        hitbox.SetActive(true);
         risingTimer += Time.deltaTime;
         if (waveCounter < waves)
         {
             if (!lowerLava)
             {
-                lava.transform.position = Vector3.Lerp(lava.transform.position, endPos, risingTimer * risingSpeed);
-                if (Mathf.Abs((lava.transform.position - endPos).magnitude) < 0.1f)
+                hitbox.transform.position = Vector3.Lerp(hitbox.transform.position, endPos, risingTimer * risingSpeed);
+                if (Mathf.Abs((hitbox.transform.position - endPos).magnitude) < 0.1f)
                 {
                     lowerLava = true;
                     risingTimer = 0;
@@ -35,8 +35,8 @@ public class SlammerLavaRaise : SlammerMove
             }
             else
             {
-                lava.transform.position = Vector3.Lerp(lava.transform.position, startPos, risingTimer * risingSpeed);
-                if (Mathf.Abs((lava.transform.position - startPos).magnitude) < 0.1f)
+                hitbox.transform.position = Vector3.Lerp(hitbox.transform.position, startPos, risingTimer * risingSpeed);
+                if (Mathf.Abs((hitbox.transform.position - startPos).magnitude) < 0.1f)
                 {
                     lowerLava = false;
                     risingTimer = 0;
@@ -47,6 +47,7 @@ public class SlammerLavaRaise : SlammerMove
         else
         {            
             waveCounter = 0;
+            hitbox.SetActive(false);
             return false;
         }
         return true;

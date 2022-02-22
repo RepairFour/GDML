@@ -7,8 +7,10 @@ public class HurtPlayerObject : MonoBehaviour
     public int dmg;
 	public bool timed;
 	public float duration;
+	public bool knockback = false;
 	float timer;
 	bool hit;
+
 	private void OnTriggerEnter(Collider other)
 	{
 		if(other.GetComponent<PlayerStats>() != null)

@@ -13,6 +13,7 @@ public class SlammerSpin : SlammerMove
     float speedUptimer = 0;
     public override bool Activate()
     {
+        hitbox.SetActive(true);
         speedUptimer += Time.deltaTime;
         if (speedUptimer >= 1)
         {
@@ -28,6 +29,7 @@ public class SlammerSpin : SlammerMove
         spinTimer += Time.deltaTime;
         if (spinTimer >= spinDuration)
         {
+            hitbox.SetActive(false);
             spinTimer = 0;
             return false;
         }
