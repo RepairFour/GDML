@@ -163,7 +163,7 @@ public class EnemyAttack : MonoBehaviour
                 if (Vector3.Distance(transform.position, player.transform.position) <= basicAttackDistance + 1 || enemyChase.runawayTimer > 0)
                 {
                     //chargingAttack = true;
-                    if (tenguAnimator.GetBool("Backwards"))
+                    if (enemyChase.gameObject.GetComponent<NavMeshAgent>().velocity.magnitude > 0)
                     {
                         tenguAnimator.SetTrigger("Walkback");
                     }
