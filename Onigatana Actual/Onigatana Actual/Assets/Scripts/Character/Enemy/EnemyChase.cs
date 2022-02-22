@@ -122,7 +122,7 @@ public class EnemyChase : MonoBehaviour
 
             
 		}
-        agent.updatePosition = false; //THIS IS ANIMATION STUFF
+        //agent.updatePosition = false; //THIS IS ANIMATION STUFF
 
     }
 
