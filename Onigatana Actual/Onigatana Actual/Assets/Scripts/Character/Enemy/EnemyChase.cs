@@ -36,9 +36,10 @@ public class EnemyChase : MonoBehaviour
     public float setKnockbackDistance { set => knockbackDistance = value; }
     public float setKnockbackHeight { set => knockbackHeight = value; }
     public int setWallSmashDamage { set => wallsmashDamage = value; }
+    public NavMeshAgent Agent { get => agent;}
 
     public LayerMask knockbackMask;
-
+    
     EnemyAttack enemyAttack;
     public float basicAttackDistance;
 

@@ -145,31 +145,34 @@ public class Sword : Weapon
     {
         RaycastHit hit;
         //targetedEnemy = null;
-        if (targetedEnemy == null)
+        
+        if (Physics.BoxCast(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
         {
-            if (Physics.BoxCast(feelerPoint.position, attackFeelerLowTierHalfExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
-            {
 
-                if (targetedEnemy != hit.collider.gameObject)
-                {
-                    targetedEnemy = hit.collider.gameObject;
-                }
-            }
-            else if (Physics.BoxCast(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
+            if (targetedEnemy != hit.collider.gameObject)
             {
-                if (targetedEnemy != hit.collider.gameObject)
-                {
-                    targetedEnemy = hit.collider.gameObject;
-                }
-            }
-            else if (Physics.BoxCast(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
-            {
-                if (targetedEnemy != hit.collider.gameObject)
-                {
-                    targetedEnemy = hit.collider.gameObject;
-                }
+                targetedEnemy = hit.collider.gameObject;
             }
         }
+        else if (Physics.BoxCast(feelerPoint.position, attackFeelerMidTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
+        {
+            if (targetedEnemy != hit.collider.gameObject)
+            {
+                targetedEnemy = hit.collider.gameObject;
+            }
+        }
+        else if (Physics.BoxCast(feelerPoint.position, attackFeelerOuterTierExtents, feelerPoint.forward, out hit, feelerPoint.rotation, attackRange, attackMask))
+        {
+            if (targetedEnemy != hit.collider.gameObject)
+            {
+                targetedEnemy = hit.collider.gameObject;
+            }
+        }
+        else
+        {
+            targetedEnemy = null;
+        }
+        
 
         if (targetedEnemy != null)
         {

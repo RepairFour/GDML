@@ -251,6 +251,7 @@ public class Weapon : MonoBehaviour
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
+            
         }
         else if (attackQueued && !attackCharged && !chargingAttack)
         {

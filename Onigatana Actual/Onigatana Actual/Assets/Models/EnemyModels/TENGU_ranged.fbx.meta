@@ -1,8 +1,32 @@
 fileFormatVersion: 2
-guid: 9d127b49e5d4ab041af80b9b0b1be4e0
+guid: bdbcc62e03c0f534e874e774e1507db8
 ModelImporter:
   serializedVersion: 21100
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 5056565909976044209
+    second: tengu anims|die
+  - first:
+      74: -2719264401323867466
+    second: tengu anims|hurt
+  - first:
+      74: 201670738560962505
+    second: tengu anims|idle
+  - first:
+      74: -9139679245138430003
+    second: tengu anims|standing idle
+  - first:
+      74: -803007831551085632
+    second: tengu anims|walk back attack
+  - first:
+      74: 3906928975162733032
+    second: tengu anims|walk forward
+  - first:
+      74: -4886271843766757997
+    second: tengu anims|walk left
+  - first:
+      74: -8288993102357711510
+    second: tengu anims|walk right
   externalObjects: {}
   materials:
     materialImportMode: 2
