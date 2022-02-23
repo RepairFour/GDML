@@ -912,11 +912,11 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 5
-  m_Speed: 50
-  m_Acceleration: 50
+  m_Speed: 60
+  m_Acceleration: 60
   avoidancePriority: 50
-  m_AngularSpeed: 50
-  m_StoppingDistance: 0.01
+  m_AngularSpeed: 1000
+  m_StoppingDistance: 10
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -940,8 +940,8 @@ MonoBehaviour:
   knockbackMask:
     serializedVersion: 2
     m_Bits: 0
-  basicAttackDistance: 9
-  visionDistance: 600
+  basicAttackDistance: 10
+  visionDistance: 10000
   layersToIgnore:
     serializedVersion: 2
     m_Bits: 260
