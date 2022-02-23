@@ -7562,7 +7562,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173778, guid: bd7b198f54b9d6f499e6402c25c4e490, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173778, guid: bd7b198f54b9d6f499e6402c25c4e490, type: 3}
       propertyPath: tenguAnimator
@@ -7570,7 +7570,7 @@ PrefabInstance:
       objectReference: {fileID: 1789056520}
     - target: {fileID: 7192277685749173779, guid: bd7b198f54b9d6f499e6402c25c4e490, type: 3}
       propertyPath: health
-      value: 25
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7192277685749173779, guid: bd7b198f54b9d6f499e6402c25c4e490, type: 3}
       propertyPath: enemyTestAnims
@@ -10743,11 +10743,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bd7b198f54b9d6f499e6402c25c4e490, type: 3}
+--- !u!1 &1789056519 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6077915495555510978, guid: bd7b198f54b9d6f499e6402c25c4e490, type: 3}
+  m_PrefabInstance: {fileID: 1120288672}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &1789056520 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4157021994113378829, guid: bd7b198f54b9d6f499e6402c25c4e490, type: 3}
   m_PrefabInstance: {fileID: 1120288672}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1789056523
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1789056519}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d2d634728bb34124e91a88c4edeb56eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2020732568
 GameObject:
   m_ObjectHideFlags: 0
