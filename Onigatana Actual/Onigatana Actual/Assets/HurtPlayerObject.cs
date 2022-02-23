@@ -16,6 +16,10 @@ public class HurtPlayerObject : MonoBehaviour
 		if(other.GetComponent<PlayerStats>() != null)
 		{
 			other.GetComponent<PlayerStats>().Hurt(dmg);
+			if(knockback)
+			{
+				//GameManager.instance.playerController.knock
+			}
 		}
 		Debug.Log(other.name);
 	}
