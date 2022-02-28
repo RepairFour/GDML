@@ -5,6 +5,8 @@ using UnityEngine;
 public class KillEnemy : MonoBehaviour
 {
     GameObject parent;
+
+    
     // Start is called before the first frame update
     void Start()
     {

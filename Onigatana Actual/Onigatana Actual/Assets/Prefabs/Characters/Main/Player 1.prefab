@@ -9874,7 +9874,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81832046088313688}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: df1abbe39a98a6d4db5fbec4b63896f9, type: 3}
   m_Name: 
@@ -9886,16 +9886,10 @@ MonoBehaviour:
   attackMask:
     serializedVersion: 2
     m_Bits: 256
-  attackFeelerLowTierHalfExtents: {x: 0, y: 0, z: 0}
-  attackFeelerMidTierExtents: {x: 3, y: 5, z: 0}
-  attackFeelerOuterTierExtents: {x: 5, y: 5, z: 0}
   timeToCharge: 0.7
   slowdownOnCharge: 0
   attackResetDelay: 0.01
   feelerPoint: {fileID: 81832046088313689}
-  feelerLowTierHalfExtents: {x: 5, y: 5, z: 1}
-  feelerMidTierExtents: {x: 10, y: 10, z: 1}
-  feelerOuterTierExtents: {x: 15, y: 15, z: 1}
   chargeAttackRange: 50
   chargeAttackMask:
     serializedVersion: 2
@@ -9907,6 +9901,12 @@ MonoBehaviour:
   recoveryTime: 10
   holdButtonDelay: 0.3
   controller: {fileID: 517693921}
+  attackFeelerLowTierHalfExtents: {x: 0, y: 0, z: 0}
+  attackFeelerMidTierExtents: {x: 3, y: 5, z: 0}
+  attackFeelerOuterTierExtents: {x: 5, y: 5, z: 0}
+  feelerLowTierHalfExtents: {x: 5, y: 5, z: 1}
+  feelerMidTierExtents: {x: 10, y: 10, z: 1}
+  feelerOuterTierExtents: {x: 15, y: 15, z: 1}
   animator: {fileID: 948209838116482813}
   weaponTrail: {fileID: 566933615138905677}
   attackHitEffect: {fileID: 2840070882530968802, guid: f551937ab5aa58244912f15eec13b53a, type: 3}
@@ -9927,28 +9927,22 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 81832046088313688}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 594ed2310d517da4f8f5ac407332167e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  normalDamage: 25
-  chargeAttackDamage: 25
+  normalDamage: 0
+  chargeAttackDamage: 0
   attackRange: 25
   attackSpeed: 0.5
   attackMask:
     serializedVersion: 2
     m_Bits: 256
-  attackFeelerLowTierHalfExtents: {x: 3, y: 5, z: 1}
-  attackFeelerMidTierExtents: {x: 5, y: 5, z: 1}
-  attackFeelerOuterTierExtents: {x: 10, y: 5, z: 1}
   timeToCharge: 0.7
   slowdownOnCharge: 0
   attackResetDelay: 0.01
   feelerPoint: {fileID: 81832046088313689}
-  feelerLowTierHalfExtents: {x: 5, y: 5, z: 1}
-  feelerMidTierExtents: {x: 15, y: 10, z: 1}
-  feelerOuterTierExtents: {x: 25, y: 15, z: 1}
   chargeAttackRange: 50
   chargeAttackMask:
     serializedVersion: 2
@@ -9960,6 +9954,8 @@ MonoBehaviour:
   recoveryTime: 0
   holdButtonDelay: 0.3
   controller: {fileID: 517693921}
+  cleaveAttackHitBox: {x: 25, y: 5, z: 0}
+  chargeAttackHitBox: {x: 25, y: 25, z: 0}
   animator: {fileID: 948209838116482813}
   weaponTrail: {fileID: 566933615138905677}
   attackHitEffect: {fileID: 2840070882530968802, guid: f551937ab5aa58244912f15eec13b53a, type: 3}
@@ -9971,7 +9967,10 @@ MonoBehaviour:
   - Attack2
   swordRenderer: {fileID: 1719461600083837532}
   pushbackForce: 100
-  knockbackTime: 0.5
+  knockbackDuration: 0.2
+  knockbackDistance: 30
+  knockbackHeight: 2
+  knockbackWallSmashDamage: 10
   maxElectricityAmount: 10
 --- !u!95 &948209838116482813
 Animator:
@@ -21059,10 +21058,11 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   gravity: 65
+  terminalVelocity: 100
   slideDirectionalScalar: 0.5
   slideDuration: 1
-  slideEntryDurationPercentage: 0.2
-  slideStandUpTime: 0.4
+  slideEntryDurationPercentage: 0.6
+  slideStandUpTime: 0.2
   slideDrag: 35
   slideDeccelerate: 225
   maxSlideMomentum: 40
@@ -21081,7 +21081,7 @@ MonoBehaviour:
   hookShotThrowSpeed: 500
   momentumExtraSpeed: 7
   hookShotSpeed: 200
-  minimumSpeedModifier: 0.434
+  minimumSpeedModifier: 0.588
   hookCooldown: 0.1
   speedModifier: 0
   floatAfterHookShot: 0
