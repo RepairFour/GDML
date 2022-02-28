@@ -28,12 +28,14 @@ public class EnemyStats : MonoBehaviour
     public Material hurtMaterial;
     [HideInInspector] public bool hasShield = false;
     private EnemyAttack enemyAttack;
+    private EnemyChase enemyChase;
 
 	private void Start()
 	{
         Player = GameObject.FindGameObjectWithTag("Player");
         enemyRigidbody = gameObject.GetComponent<Rigidbody>();
-        enemyAttack = GetComponent<EnemyAttack>();
+        enemyAttack = GetComponentInChildren<EnemyAttack>();
+        enemyChase = GetComponent<EnemyChase>();
         if (GetComponentInChildren<ShieldHealth>())
 		{
             hasShield = true;
@@ -55,6 +57,7 @@ public class EnemyStats : MonoBehaviour
             EnemyAnimateHit(ani);
             if (isDead())
             {
+                enemyChase.Agent.enabled = false;
                 var enemyAttackScript = GetComponent<EnemyAttack>();
                 if (enemyAttackScript != null)
                 {
@@ -67,7 +70,9 @@ public class EnemyStats : MonoBehaviour
                 {
                     GameManager.instance.bloodFuryState.Revive();
                 }
-                Destroy(gameObject);
+                //Destroy(gameObject);
+                enemyTestAnims.SetTrigger("Dead");
+                
             }
         }
 	}
@@ -81,6 +86,7 @@ public class EnemyStats : MonoBehaviour
             
             if (isDead())
             {
+                enemyChase.Agent.enabled = false;
                 var enemyAttackScript = GetComponent<EnemyAttack>();
                 if (enemyAttackScript != null)
                 {
@@ -93,7 +99,8 @@ public class EnemyStats : MonoBehaviour
                 {
                     GameManager.instance.bloodFuryState.Revive();
                 }
-                Destroy(gameObject);
+                //Destroy(gameObject);
+                enemyTestAnims.SetTrigger("Dead");
             }
         }
     }
@@ -120,20 +127,21 @@ public class EnemyStats : MonoBehaviour
 
     public void EnemyAnimateHit(MeleeAnimation ani)
     {
+        
         try
         {
-            gameObject.GetComponent<Animator>().enabled = true;
+            //gameObject.GetComponent<Animator>().enabled = true;
             if (ani == MeleeAnimation.ANIMATION1)
             {
-                InAnimation1 = true;
-                InAnimation2 = false;
-                enemyTestAnims.SetTrigger("Attacked1");
+                //InAnimation1 = true;
+                //InAnimation2 = false;
+                enemyTestAnims.SetTrigger("Hurt");
             }
             else if (ani == MeleeAnimation.ANIMATION2)
             {
-                InAnimation1 = false;
-                InAnimation2 = true;
-                enemyTestAnims.SetTrigger("Attacked2");
+                //InAnimation1 = false;
+                //InAnimation2 = true;
+                enemyTestAnims.SetTrigger("Hurt");
             }
         }
         catch

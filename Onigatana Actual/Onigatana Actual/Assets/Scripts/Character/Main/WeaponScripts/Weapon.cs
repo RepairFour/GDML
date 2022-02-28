@@ -14,9 +14,6 @@ public class Weapon : MonoBehaviour
     
     [Header("Weapon Hitbox Stats")]
     [SerializeField] protected LayerMask attackMask;
-    [SerializeField] protected Vector3 attackFeelerLowTierHalfExtents;
-    [SerializeField] protected Vector3 attackFeelerMidTierExtents;
-    [SerializeField] protected Vector3 attackFeelerOuterTierExtents;
 
     [Header("Charge Attack Stats")]
     [SerializeField] protected float timeToCharge;
@@ -25,9 +22,6 @@ public class Weapon : MonoBehaviour
 
     [Header("Charge Attack Hitbox Stats")]
     [SerializeField] protected Transform feelerPoint;
-    [SerializeField] protected Vector3 feelerLowTierHalfExtents;
-    [SerializeField] protected Vector3 feelerMidTierExtents;
-    [SerializeField] protected Vector3 feelerOuterTierExtents;
     [SerializeField] protected float chargeAttackRange;
     [SerializeField] protected LayerMask chargeAttackMask;
 
@@ -257,6 +251,7 @@ public class Weapon : MonoBehaviour
             attackCharged = false;
             attackQueued = false;
             canAttack = false;
+            
         }
         else if (attackQueued && !attackCharged && !chargingAttack)
         {

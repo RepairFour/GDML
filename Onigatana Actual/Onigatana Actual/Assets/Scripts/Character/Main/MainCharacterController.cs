@@ -68,6 +68,7 @@ public class MainCharacterController : MonoBehaviour
 
     [Header("Gravity Variables")]
     public float gravity;
+    public float terminalVelocity;
     [Space]
 
     [Header("Slide Variables")]
@@ -216,6 +217,7 @@ public class MainCharacterController : MonoBehaviour
     float hookCooldownTimer;
     float intialDistanceToTarget;
     float currentDistanceToTarget;
+    float previousDistanceToTarget = 0;
     float distanceOffset;
     
     #endregion
@@ -430,7 +432,7 @@ public class MainCharacterController : MonoBehaviour
                 slidingTimer += Time.deltaTime;
                 HandleSlideVelocity();
                 HandleMomentumSpeed();
-                HandleGravity(0); //Increases gravity so player sticks to ground
+                HandleGravity(-gravity); //Increases gravity so player sticks to ground
                 HandleJump(); //Allows us to jump out of slide
                 return;
 
@@ -458,7 +460,7 @@ public class MainCharacterController : MonoBehaviour
 
                 HandleChargingAttack();
 
-                HandleGravity(0); //Basic level of gravity applied
+                HandleGravity(-gravity); //Basic level of gravity applied
                 HandleJump();
                 break;
         }
@@ -506,6 +508,18 @@ public class MainCharacterController : MonoBehaviour
                 HandleGravity(yspeed);
                 HandleJump();
                 break;
+            
+            case MovementState.SLIDING:
+                {
+                    currentSpeed = walkingMaxSpeed + currentSlideMomentum;
+                    slidingTimer += Time.deltaTime;
+                    HandleSlideVelocity();
+                    HandleMomentumSpeed();
+                    HandleGravity(-gravity); //Increases gravity so player sticks to ground
+                    HandleJump(); //Allows us to jump out of slide
+                    break;
+                }
+
 
             case MovementState.DASHING:
                 HandleDash();
@@ -543,6 +557,10 @@ public class MainCharacterController : MonoBehaviour
     {
         currentVelocity.y = speed;
         currentVelocity.y -= gravity * Time.deltaTime;
+        if (currentVelocity.y < -terminalVelocity)
+        {
+            currentVelocity.y = -terminalVelocity;
+        }
     }
 
     void AddAirControl()
@@ -728,7 +746,9 @@ public class MainCharacterController : MonoBehaviour
     private void HookShotMove()
     {
         UpdateHookShotDirection();
+        
         currentDistanceToTarget = Vector3.Distance(hookHitPoint, transform.position);
+        
         speedModifier = Mathf.Clamp(currentDistanceToTarget / grappleSystem.intialTargetDistance, minimumSpeedModifier, 1);
         currentVelocity = (hookShotSpeed * speedModifier) * hookShotDirection;
         currentVelocity += transform.up * -gravity;
@@ -736,6 +756,8 @@ public class MainCharacterController : MonoBehaviour
         //hookShotTransform.LookAt(hookHitPoint);
         lr.SetPosition(0, hookShotTransform.position);
         lr.SetPosition(1, grappleSystem.hitPoint);
+        
+
 
         if (Vector3.Distance(hookHitPoint, transform.position) < hookShotStoppingDistance)
         {
@@ -1222,4 +1244,14 @@ public class MainCharacterController : MonoBehaviour
 
     }
     #endregion
+
+    
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (movementState == MovementState.HOOKSHOT)
+        {
+            CancelHookShot();
+        }
+
+    }
 }
