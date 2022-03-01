@@ -837,7 +837,7 @@ MonoBehaviour:
   projectileSpeed: 100
   projectileSpawn: {fileID: 167994915}
   turretMode: 0
-  minDistanceFromPlayer: 10
+  minDistanceFromPlayer: 50
   distanceToTriggerLeap: 0
   leapDuration: 0
   leapHeight: 0
@@ -891,6 +891,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   patrolPath: 1
+  knockbackMask:
+    serializedVersion: 2
+    m_Bits: 0
   basicAttackDistance: 30
   visionDistance: 250
   layersToIgnore:
@@ -906,6 +909,7 @@ MonoBehaviour:
   enemyTransform: {fileID: 7192277685749173775}
   isFlying: 0
   tether: {fileID: 0}
+  test: {fileID: 0}
 --- !u!114 &7192277685749173779
 MonoBehaviour:
   m_ObjectHideFlags: 0
